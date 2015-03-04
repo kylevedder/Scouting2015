@@ -249,7 +249,7 @@
           <Properties>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                <TitledBorder title="Comments">
+                <TitledBorder title="Comments (Optional)">
                   <Border PropertyName="innerBorder" info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
                     <EtchetBorder/>
                   </Border>
@@ -491,7 +491,7 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="checkBoxInAutoZone" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="98" max="32767" attributes="0"/>
+                          <EmptySpace pref="101" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -538,7 +538,7 @@
                           <Component id="radioCoopUnstacked" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="radioCoopStacked" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="520" max="32767" attributes="0"/>
+                      <EmptySpace pref="629" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -599,9 +599,9 @@
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <Component id="panelTeleopToteStacks" max="32767" attributes="0"/>
+                      <Component id="panelTeleopToteStacks" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="panelTeleopContainerStacks" min="-2" max="-2" attributes="0"/>
+                      <Component id="panelTeleopContainerStacks" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -636,7 +636,7 @@
                           <Component id="buttonRemoveToteStack" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="32767" attributes="0"/>
                       </Group>
-                      <Component id="jScrollPane3" max="32767" attributes="0"/>
+                      <Component id="jScrollPane3" pref="312" max="32767" attributes="0"/>
                   </Group>
                 </DimensionLayout>
                 <DimensionLayout dim="1">
@@ -679,9 +679,7 @@
                     <Component class="javax.swing.JList" name="listToteStack">
                       <Properties>
                         <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
-                          <StringArray count="1">
-                            <StringItem index="0" value="test"/>
-                          </StringArray>
+                          <StringArray count="0"/>
                         </Property>
                         <Property name="doubleBuffered" type="boolean" value="true"/>
                       </Properties>
@@ -707,7 +705,7 @@
               <Layout>
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jScrollPane2" pref="289" max="32767" attributes="0"/>
+                      <Component id="jScrollPane2" max="32767" attributes="0"/>
                       <Group type="102" attributes="0">
                           <Component id="buttonAddContainerStack" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
@@ -740,12 +738,7 @@
                     <Component class="javax.swing.JList" name="listContainerStack">
                       <Properties>
                         <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
-                          <StringArray count="4">
-                            <StringItem index="0" value="test2"/>
-                            <StringItem index="1" value="teste4asdfa"/>
-                            <StringItem index="2" value="asdfasdf"/>
-                            <StringItem index="3" value="asdf"/>
-                          </StringArray>
+                          <StringArray count="0"/>
                         </Property>
                       </Properties>
                     </Component>

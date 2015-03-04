@@ -13,6 +13,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.ListDataListener;
+import main.StackContainer;
+import main.StackTote;
 
 /**
  *
@@ -33,20 +35,16 @@ public class MatchFrame extends javax.swing.JFrame
             SwingUtilities.updateComponentTreeUI(this);
             this.setLocationRelativeTo(null);
             this.pack();
-        }
-        catch (ClassNotFoundException ex)
+        } catch (ClassNotFoundException ex)
         {
             Logger.getLogger(MatchFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        catch (InstantiationException ex)
+        } catch (InstantiationException ex)
         {
             Logger.getLogger(MatchFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        catch (IllegalAccessException ex)
+        } catch (IllegalAccessException ex)
         {
             Logger.getLogger(MatchFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        catch (UnsupportedLookAndFeelException ex)
+        } catch (UnsupportedLookAndFeelException ex)
         {
             Logger.getLogger(MatchFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -191,7 +189,7 @@ public class MatchFrame extends javax.swing.JFrame
                 .addComponent(radioActivePartial))
         );
 
-        panelRobotActivityComments.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Comments", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11))); // NOI18N
+        panelRobotActivityComments.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Comments (Optional)", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11))); // NOI18N
 
         textAreaRobotActivityComments.setColumns(20);
         textAreaRobotActivityComments.setRows(1);
@@ -292,7 +290,7 @@ public class MatchFrame extends javax.swing.JFrame
             .addGroup(panelAutoScoredRobotLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(checkBoxInAutoZone)
-                .addContainerGap(98, Short.MAX_VALUE))
+                .addContainerGap(101, Short.MAX_VALUE))
         );
         panelAutoScoredRobotLayout.setVerticalGroup(
             panelAutoScoredRobotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -340,7 +338,7 @@ public class MatchFrame extends javax.swing.JFrame
                     .addComponent(radioCoopNone)
                     .addComponent(radioCoopUnstacked)
                     .addComponent(radioCoopStacked))
-                .addContainerGap(520, Short.MAX_VALUE))
+                .addContainerGap(629, Short.MAX_VALUE))
         );
         panelCoopLayout.setVerticalGroup(
             panelCoopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -374,12 +372,6 @@ public class MatchFrame extends javax.swing.JFrame
             }
         });
 
-        listToteStack.setModel(new javax.swing.AbstractListModel()
-        {
-            String[] strings = { "test" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
-        });
         listToteStack.setDoubleBuffered(true);
         jScrollPane3.setViewportView(listToteStack);
 
@@ -392,7 +384,7 @@ public class MatchFrame extends javax.swing.JFrame
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(buttonRemoveToteStack)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(jScrollPane3)
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
         );
         panelTeleopToteStacksLayout.setVerticalGroup(
             panelTeleopToteStacksLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -406,12 +398,6 @@ public class MatchFrame extends javax.swing.JFrame
 
         panelTeleopContainerStacks.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Container Stacks", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11))); // NOI18N
 
-        listContainerStack.setModel(new javax.swing.AbstractListModel()
-        {
-            String[] strings = { "test2", "teste4asdfa", "asdfasdf", "asdf" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
-        });
         jScrollPane2.setViewportView(listContainerStack);
 
         buttonAddContainerStack.setText("+");
@@ -436,7 +422,7 @@ public class MatchFrame extends javax.swing.JFrame
         panelTeleopContainerStacks.setLayout(panelTeleopContainerStacksLayout);
         panelTeleopContainerStacksLayout.setHorizontalGroup(
             panelTeleopContainerStacksLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 289, Short.MAX_VALUE)
+            .addComponent(jScrollPane2)
             .addGroup(panelTeleopContainerStacksLayout.createSequentialGroup()
                 .addComponent(buttonAddContainerStack)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -458,9 +444,9 @@ public class MatchFrame extends javax.swing.JFrame
         panelTeleopLayout.setHorizontalGroup(
             panelTeleopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelTeleopLayout.createSequentialGroup()
-                .addComponent(panelTeleopToteStacks, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(panelTeleopToteStacks, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelTeleopContainerStacks, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(panelTeleopContainerStacks, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelTeleopLayout.setVerticalGroup(
             panelTeleopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -545,19 +531,18 @@ public class MatchFrame extends javax.swing.JFrame
 
     private void buttonAddToteStackMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_buttonAddToteStackMouseClicked
     {//GEN-HEADEREND:event_buttonAddToteStackMouseClicked
-        ToteStackDialogue dialogue = new ToteStackDialogue();
+        ToteStackDialogue dialogue = new ToteStackDialogue(this);
         dialogue.setVisible(true);
     }//GEN-LAST:event_buttonAddToteStackMouseClicked
 
     private void buttonAddContainerStackMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_buttonAddContainerStackMouseClicked
     {//GEN-HEADEREND:event_buttonAddContainerStackMouseClicked
-        ContainerStackDialogue dialogue = new ContainerStackDialogue();
+        ContainerStackDialogue dialogue = new ContainerStackDialogue(this);
         dialogue.setVisible(true);
     }//GEN-LAST:event_buttonAddContainerStackMouseClicked
 
     private void buttonRemoveToteStackMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_buttonRemoveToteStackMouseClicked
     {//GEN-HEADEREND:event_buttonRemoveToteStackMouseClicked
-
         removeSelectedFromList(listToteStack);
     }//GEN-LAST:event_buttonRemoveToteStackMouseClicked
 
@@ -566,22 +551,68 @@ public class MatchFrame extends javax.swing.JFrame
         removeSelectedFromList(listContainerStack);
     }//GEN-LAST:event_buttonRemoveContainerStackMouseClicked
 
+    /**
+     * Adds a StackContainer to the container stack list
+     * @param stack 
+     */
+    public void addItem(StackContainer stack)
+    {
+        this.addItemToList(listContainerStack, stack);
+    }
+    
+    /**
+     * Adds a StackTote to the tote stack list
+     * @param stack 
+     */
+    public void addItem(StackTote stack)
+    {
+        this.addItemToList(listToteStack, stack);
+    }
+
+    /**
+     * Adds an object to the given list
+     * @param list
+     * @param object 
+     */
+    private void addItemToList(javax.swing.JList list, Object object)
+    {
+        ListModel model = list.getModel();
+        DefaultListModel newModel = new DefaultListModel();
+
+        //get all elements
+        for (int i = 0; i < model.getSize(); i++)
+        {
+            newModel.add(i, model.getElementAt(i));
+        }
+        newModel.addElement(object);
+        list.setModel(newModel);
+        list.updateUI();
+    }
+
+    /**
+     * Removes all selected elements from the given JList.
+     *
+     * @param list
+     */
     private void removeSelectedFromList(javax.swing.JList list)
     {
-        int selectedIndex = list.getSelectedIndex();
-        if (selectedIndex != -1)
+        int[] selectedIndicies = list.getSelectedIndices();
+        if (selectedIndicies.length > 0)
         {
             ListModel model = list.getModel();
             DefaultListModel newModel = new DefaultListModel();
+
+            //get all elements
             for (int i = 0; i < model.getSize(); i++)
             {
                 newModel.add(i, model.getElementAt(i));
             }
-            newModel.remove(selectedIndex);      
+            //remove the elements to remove
+            newModel.removeRange(selectedIndicies[0], selectedIndicies[selectedIndicies.length - 1]);
             list.setModel(newModel);
         }
     }
-    
+
     /**
      * @param args the command line arguments
      */
@@ -602,20 +633,16 @@ public class MatchFrame extends javax.swing.JFrame
                     break;
                 }
             }
-        }
-        catch (ClassNotFoundException ex)
+        } catch (ClassNotFoundException ex)
         {
             java.util.logging.Logger.getLogger(MatchFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        catch (InstantiationException ex)
+        } catch (InstantiationException ex)
         {
             java.util.logging.Logger.getLogger(MatchFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        catch (IllegalAccessException ex)
+        } catch (IllegalAccessException ex)
         {
             java.util.logging.Logger.getLogger(MatchFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        catch (javax.swing.UnsupportedLookAndFeelException ex)
+        } catch (javax.swing.UnsupportedLookAndFeelException ex)
         {
             java.util.logging.Logger.getLogger(MatchFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
