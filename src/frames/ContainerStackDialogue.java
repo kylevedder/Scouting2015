@@ -6,7 +6,7 @@
 package frames;
 
 import java.awt.Color;
-import main.StackContainer;
+import objects.StackContainer;
 
 /**
  *
@@ -116,7 +116,7 @@ public class ContainerStackDialogue extends javax.swing.JFrame
 
     private void buttonOKMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_buttonOKMouseClicked
     {//GEN-HEADEREND:event_buttonOKMouseClicked
-        sendData();
+        sendDataAndExit();
     }//GEN-LAST:event_buttonOKMouseClicked
 
     private void fieldNumTotesKeyTyped(java.awt.event.KeyEvent evt)//GEN-FIRST:event_fieldNumTotesKeyTyped
@@ -124,7 +124,7 @@ public class ContainerStackDialogue extends javax.swing.JFrame
         //is enter
         if (evt.getKeyChar() == 10)
         {
-            sendData();
+            sendDataAndExit();
         }
     }//GEN-LAST:event_fieldNumTotesKeyTyped
 
@@ -133,7 +133,7 @@ public class ContainerStackDialogue extends javax.swing.JFrame
         //is enter
         if (evt.getKeyChar() == 10)
         {
-            sendData();
+            sendDataAndExit();
         }
     }//GEN-LAST:event_formKeyTyped
 
@@ -142,15 +142,18 @@ public class ContainerStackDialogue extends javax.swing.JFrame
         //is enter
         if (evt.getKeyChar() == 10)
         {
-            sendData();
+            sendDataAndExit();
         }
     }//GEN-LAST:event_checkBoxPoolNoodleKeyTyped
 
-    private void sendData()
+    /**
+     * Sends the data entered in the form to the main frame and exits
+     */
+    private void sendDataAndExit()
     {
         String numTotesString = fieldNumTotes.getText();
         //filter out non-numbers w/ basic regex
-        numTotesString = numTotesString.replaceAll("[^0-9]", "");
+        numTotesString = utils.Utils.removeNonNumericChars(numTotesString);
         if (numTotesString != null && !numTotesString.equals(""))
         {            
             parent.addItem(new StackContainer(numTotesString, checkBoxPoolNoodle.isSelected()));

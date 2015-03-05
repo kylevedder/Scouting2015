@@ -5,6 +5,9 @@
  */
 package frames;
 
+import objects.StackContainer;
+import objects.StackTote;
+
 /**
  *
  * @author Kyle
@@ -21,6 +24,7 @@ public class ToteStackDialogue extends javax.swing.JFrame
         this.parent = parent;
         initComponents();
         this.setLocationRelativeTo(null); 
+        this.setAlwaysOnTop(true);
     }
 
     /**
@@ -40,10 +44,32 @@ public class ToteStackDialogue extends javax.swing.JFrame
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Tote Stack Information");
         setResizable(false);
+        addKeyListener(new java.awt.event.KeyAdapter()
+        {
+            public void keyTyped(java.awt.event.KeyEvent evt)
+            {
+                formKeyTyped(evt);
+            }
+        });
 
         labelNumTotes.setText("Number of Totes:");
 
+        fieldNumTotes.addKeyListener(new java.awt.event.KeyAdapter()
+        {
+            public void keyTyped(java.awt.event.KeyEvent evt)
+            {
+                fieldNumTotesKeyTyped(evt);
+            }
+        });
+
         buttonOK.setText("OK");
+        buttonOK.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
+                buttonOKMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -74,7 +100,48 @@ public class ToteStackDialogue extends javax.swing.JFrame
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void buttonOKMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_buttonOKMouseClicked
+    {//GEN-HEADEREND:event_buttonOKMouseClicked
+        sendDataAndExit();
+    }//GEN-LAST:event_buttonOKMouseClicked
+
+    private void fieldNumTotesKeyTyped(java.awt.event.KeyEvent evt)//GEN-FIRST:event_fieldNumTotesKeyTyped
+    {//GEN-HEADEREND:event_fieldNumTotesKeyTyped
+        //is enter
+        if (evt.getKeyChar() == 10)
+        {
+            sendDataAndExit();
+        }
+    }//GEN-LAST:event_fieldNumTotesKeyTyped
+
+    private void formKeyTyped(java.awt.event.KeyEvent evt)//GEN-FIRST:event_formKeyTyped
+    {//GEN-HEADEREND:event_formKeyTyped
+        //is enter
+        if (evt.getKeyChar() == 10)
+        {
+            sendDataAndExit();
+        }
+    }//GEN-LAST:event_formKeyTyped
     
+    
+    /**
+     * Sends the data entered in the form to the main frame and exits
+     */
+    private void sendDataAndExit()
+    {
+        String numTotesString = fieldNumTotes.getText();
+        //filter out non-numbers w/ basic regex
+        numTotesString = utils.Utils.removeNonNumericChars(numTotesString);
+        if (numTotesString != null && !numTotesString.equals(""))
+        {            
+            parent.addItem(new StackTote(numTotesString));
+            this.dispose();
+        }
+        else
+        {
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonOK;

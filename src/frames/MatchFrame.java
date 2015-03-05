@@ -12,9 +12,9 @@ import javax.swing.ListModel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.event.ListDataListener;
-import main.StackContainer;
-import main.StackTote;
+import objects.StackContainer;
+import objects.StackTote;
+import utils.Utils;
 
 /**
  *
@@ -35,16 +35,20 @@ public class MatchFrame extends javax.swing.JFrame
             SwingUtilities.updateComponentTreeUI(this);
             this.setLocationRelativeTo(null);
             this.pack();
-        } catch (ClassNotFoundException ex)
+        }
+        catch (ClassNotFoundException ex)
         {
             Logger.getLogger(MatchFrame.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InstantiationException ex)
+        }
+        catch (InstantiationException ex)
         {
             Logger.getLogger(MatchFrame.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex)
+        }
+        catch (IllegalAccessException ex)
         {
             Logger.getLogger(MatchFrame.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (UnsupportedLookAndFeelException ex)
+        }
+        catch (UnsupportedLookAndFeelException ex)
         {
             Logger.getLogger(MatchFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -62,6 +66,7 @@ public class MatchFrame extends javax.swing.JFrame
 
         buttonGroupRobotActive = new javax.swing.ButtonGroup();
         buttonGroupCoop = new javax.swing.ButtonGroup();
+        buttonGroupHumanPlayer = new javax.swing.ButtonGroup();
         labelTitle = new javax.swing.JLabel();
         panelTeamInfo = new javax.swing.JPanel();
         labelTeamNum = new javax.swing.JLabel();
@@ -89,10 +94,6 @@ public class MatchFrame extends javax.swing.JFrame
         spinnerNumContainers = new javax.swing.JSpinner();
         panelAutoScoredRobot = new javax.swing.JPanel();
         checkBoxInAutoZone = new javax.swing.JCheckBox();
-        panelCoop = new javax.swing.JPanel();
-        radioCoopNone = new javax.swing.JRadioButton();
-        radioCoopUnstacked = new javax.swing.JRadioButton();
-        radioCoopStacked = new javax.swing.JRadioButton();
         panelTeleop = new javax.swing.JPanel();
         panelTeleopToteStacks = new javax.swing.JPanel();
         buttonAddToteStack = new javax.swing.JButton();
@@ -106,20 +107,46 @@ public class MatchFrame extends javax.swing.JFrame
         buttonRemoveContainerStack = new javax.swing.JButton();
         panelOutcome = new javax.swing.JPanel();
         labelMatchScore = new javax.swing.JLabel();
-        spinnerMatchScore = new javax.swing.JSpinner();
+        textFieldMatchScore = new javax.swing.JTextField();
+        panelCoop = new javax.swing.JPanel();
+        radioCoopNone = new javax.swing.JRadioButton();
+        radioCoopUnstacked = new javax.swing.JRadioButton();
+        radioCoopStacked = new javax.swing.JRadioButton();
+        panelHumanPlayer = new javax.swing.JPanel();
+        radioHPPoor = new javax.swing.JRadioButton();
+        radioHPMediocre = new javax.swing.JRadioButton();
+        radioHPExcellent = new javax.swing.JRadioButton();
+        checkBoxHPThrewNoodles = new javax.swing.JCheckBox();
+        buttonSave = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Match Recorder");
         setResizable(false);
 
-        labelTitle.setFont(new java.awt.Font("Tahoma", 1, 20)); // NOI18N
+        labelTitle.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         labelTitle.setText("Match Recorder");
 
         panelTeamInfo.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Team Info", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 18))); // NOI18N
 
         labelTeamNum.setText("Team #:");
 
+        fieldTeamNum.addKeyListener(new java.awt.event.KeyAdapter()
+        {
+            public void keyReleased(java.awt.event.KeyEvent evt)
+            {
+                fieldTeamNumKeyReleased(evt);
+            }
+        });
+
         labelMatchNum.setText("Match #:");
+
+        fieldMatchNum.addKeyListener(new java.awt.event.KeyAdapter()
+        {
+            public void keyReleased(java.awt.event.KeyEvent evt)
+            {
+                fieldMatchNumKeyReleased(evt);
+            }
+        });
 
         labelScouter.setText("Scouter:");
 
@@ -229,6 +256,21 @@ public class MatchFrame extends javax.swing.JFrame
 
         labelNumTotes.setText("Scored Totes:");
 
+        spinnerNumTotes.addChangeListener(new javax.swing.event.ChangeListener()
+        {
+            public void stateChanged(javax.swing.event.ChangeEvent evt)
+            {
+                spinnerNumTotesStateChanged(evt);
+            }
+        });
+        spinnerNumTotes.addPropertyChangeListener(new java.beans.PropertyChangeListener()
+        {
+            public void propertyChange(java.beans.PropertyChangeEvent evt)
+            {
+                spinnerNumTotesPropertyChange(evt);
+            }
+        });
+
         checkBoxTotesStacked.setText("Totes Stacked?");
         checkBoxTotesStacked.setEnabled(false);
 
@@ -260,6 +302,14 @@ public class MatchFrame extends javax.swing.JFrame
 
         labelNumContainers.setText("Scored Containers:");
 
+        spinnerNumContainers.addChangeListener(new javax.swing.event.ChangeListener()
+        {
+            public void stateChanged(javax.swing.event.ChangeEvent evt)
+            {
+                spinnerNumContainersStateChanged(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelAutoScoredContainerLayout = new javax.swing.GroupLayout(panelAutoScoredContainer);
         panelAutoScoredContainer.setLayout(panelAutoScoredContainerLayout);
         panelAutoScoredContainerLayout.setHorizontalGroup(
@@ -290,7 +340,7 @@ public class MatchFrame extends javax.swing.JFrame
             .addGroup(panelAutoScoredRobotLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(checkBoxInAutoZone)
-                .addContainerGap(101, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelAutoScoredRobotLayout.setVerticalGroup(
             panelAutoScoredRobotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -315,39 +365,6 @@ public class MatchFrame extends javax.swing.JFrame
             .addComponent(panelAutoScoredTotes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(panelAutoScoredContainer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(panelAutoScoredRobot, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-
-        panelCoop.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Coop", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 14))); // NOI18N
-
-        buttonGroupCoop.add(radioCoopNone);
-        radioCoopNone.setText("None");
-
-        buttonGroupCoop.add(radioCoopUnstacked);
-        radioCoopUnstacked.setText("Unstacked");
-
-        buttonGroupCoop.add(radioCoopStacked);
-        radioCoopStacked.setText("Stacked");
-
-        javax.swing.GroupLayout panelCoopLayout = new javax.swing.GroupLayout(panelCoop);
-        panelCoop.setLayout(panelCoopLayout);
-        panelCoopLayout.setHorizontalGroup(
-            panelCoopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelCoopLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(panelCoopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(radioCoopNone)
-                    .addComponent(radioCoopUnstacked)
-                    .addComponent(radioCoopStacked))
-                .addContainerGap(629, Short.MAX_VALUE))
-        );
-        panelCoopLayout.setVerticalGroup(
-            panelCoopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelCoopLayout.createSequentialGroup()
-                .addComponent(radioCoopNone)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(radioCoopUnstacked)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(radioCoopStacked))
         );
 
         panelTeleop.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Teleoperated", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 14))); // NOI18N
@@ -454,9 +471,48 @@ public class MatchFrame extends javax.swing.JFrame
             .addComponent(panelTeleopContainerStacks, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
+        javax.swing.GroupLayout panelScoringLayout = new javax.swing.GroupLayout(panelScoring);
+        panelScoring.setLayout(panelScoringLayout);
+        panelScoringLayout.setHorizontalGroup(
+            panelScoringLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(panelAutonomous, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(panelTeleop, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        panelScoringLayout.setVerticalGroup(
+            panelScoringLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelScoringLayout.createSequentialGroup()
+                .addComponent(panelAutonomous, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(panelTeleop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
         panelOutcome.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Outcome", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 14))); // NOI18N
 
-        labelMatchScore.setText("Match Score:");
+        labelMatchScore.setText("Match Total Score:");
+
+        textFieldMatchScore.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                textFieldMatchScoreActionPerformed(evt);
+            }
+        });
+        textFieldMatchScore.addKeyListener(new java.awt.event.KeyAdapter()
+        {
+            public void keyPressed(java.awt.event.KeyEvent evt)
+            {
+                textFieldMatchScoreKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt)
+            {
+                textFieldMatchScoreKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt)
+            {
+                textFieldMatchScoreKeyTyped(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelOutcomeLayout = new javax.swing.GroupLayout(panelOutcome);
         panelOutcome.setLayout(panelOutcomeLayout);
@@ -465,36 +521,109 @@ public class MatchFrame extends javax.swing.JFrame
             .addGroup(panelOutcomeLayout.createSequentialGroup()
                 .addComponent(labelMatchScore)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(spinnerMatchScore, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(textFieldMatchScore, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         panelOutcomeLayout.setVerticalGroup(
             panelOutcomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelOutcomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                 .addComponent(labelMatchScore)
-                .addComponent(spinnerMatchScore, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(textFieldMatchScore, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        javax.swing.GroupLayout panelScoringLayout = new javax.swing.GroupLayout(panelScoring);
-        panelScoring.setLayout(panelScoringLayout);
-        panelScoringLayout.setHorizontalGroup(
-            panelScoringLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelAutonomous, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(panelCoop, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(panelTeleop, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(panelOutcome, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        panelCoop.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Coop", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 14))); // NOI18N
+
+        buttonGroupCoop.add(radioCoopNone);
+        radioCoopNone.setText("None");
+
+        buttonGroupCoop.add(radioCoopUnstacked);
+        radioCoopUnstacked.setText("Unstacked");
+
+        buttonGroupCoop.add(radioCoopStacked);
+        radioCoopStacked.setText("Stacked");
+
+        javax.swing.GroupLayout panelCoopLayout = new javax.swing.GroupLayout(panelCoop);
+        panelCoop.setLayout(panelCoopLayout);
+        panelCoopLayout.setHorizontalGroup(
+            panelCoopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelCoopLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelCoopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(radioCoopNone)
+                    .addComponent(radioCoopUnstacked)
+                    .addComponent(radioCoopStacked))
+                .addContainerGap(242, Short.MAX_VALUE))
         );
-        panelScoringLayout.setVerticalGroup(
-            panelScoringLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelScoringLayout.createSequentialGroup()
-                .addComponent(panelAutonomous, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        panelCoopLayout.setVerticalGroup(
+            panelCoopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelCoopLayout.createSequentialGroup()
+                .addComponent(radioCoopNone)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelCoop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(radioCoopUnstacked)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelTeleop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelOutcome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(radioCoopStacked))
         );
+
+        panelHumanPlayer.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Human Player Noodle Throwing", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 14))); // NOI18N
+
+        buttonGroupHumanPlayer.add(radioHPPoor);
+        radioHPPoor.setText("Poor (0 - 4 pts)");
+        radioHPPoor.setEnabled(false);
+
+        buttonGroupHumanPlayer.add(radioHPMediocre);
+        radioHPMediocre.setText("Mediocre (8 - 16 pts)");
+        radioHPMediocre.setEnabled(false);
+
+        buttonGroupHumanPlayer.add(radioHPExcellent);
+        radioHPExcellent.setText("Excellent (20+ pts)");
+        radioHPExcellent.setEnabled(false);
+
+        checkBoxHPThrewNoodles.setText("HP Threw Noodles");
+        checkBoxHPThrewNoodles.addChangeListener(new javax.swing.event.ChangeListener()
+        {
+            public void stateChanged(javax.swing.event.ChangeEvent evt)
+            {
+                checkBoxHPThrewNoodlesStateChanged(evt);
+            }
+        });
+
+        javax.swing.GroupLayout panelHumanPlayerLayout = new javax.swing.GroupLayout(panelHumanPlayer);
+        panelHumanPlayer.setLayout(panelHumanPlayerLayout);
+        panelHumanPlayerLayout.setHorizontalGroup(
+            panelHumanPlayerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelHumanPlayerLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(checkBoxHPThrewNoodles)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(panelHumanPlayerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(radioHPPoor)
+                    .addComponent(radioHPMediocre)
+                    .addComponent(radioHPExcellent))
+                .addContainerGap(217, Short.MAX_VALUE))
+        );
+        panelHumanPlayerLayout.setVerticalGroup(
+            panelHumanPlayerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelHumanPlayerLayout.createSequentialGroup()
+                .addComponent(radioHPPoor)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelHumanPlayerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(radioHPMediocre)
+                    .addComponent(checkBoxHPThrewNoodles))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(radioHPExcellent))
+        );
+
+        buttonSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/SaveIconMedium.png"))); // NOI18N
+        buttonSave.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        buttonSave.setMaximumSize(new java.awt.Dimension(55, 55));
+        buttonSave.setMinimumSize(new java.awt.Dimension(55, 55));
+        buttonSave.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                buttonSaveActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -505,23 +634,39 @@ public class MatchFrame extends javax.swing.JFrame
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(panelTeamInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(panelRobotActivity, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(panelScoring, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(panelOutcome, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(panelCoop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(panelHumanPlayer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 20, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(labelTitle)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(panelScoring, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(buttonSave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(labelTitle)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labelTitle)
+                    .addComponent(buttonSave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelTeamInfo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelRobotActivity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelScoring, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(panelScoring, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(panelCoop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(panelOutcome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(panelHumanPlayer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         getAccessibleContext().setAccessibleDescription("");
@@ -551,18 +696,157 @@ public class MatchFrame extends javax.swing.JFrame
         removeSelectedFromList(listContainerStack);
     }//GEN-LAST:event_buttonRemoveContainerStackMouseClicked
 
+    private void spinnerNumTotesPropertyChange(java.beans.PropertyChangeEvent evt)//GEN-FIRST:event_spinnerNumTotesPropertyChange
+    {//GEN-HEADEREND:event_spinnerNumTotesPropertyChange
+
+    }//GEN-LAST:event_spinnerNumTotesPropertyChange
+
+    private void spinnerNumTotesStateChanged(javax.swing.event.ChangeEvent evt)//GEN-FIRST:event_spinnerNumTotesStateChanged
+    {//GEN-HEADEREND:event_spinnerNumTotesStateChanged
+        int value = (Integer) spinnerNumTotes.getValue();
+        int newValue = value;
+
+        //clamp value
+        if (value < 0)
+        {
+            newValue = 0;
+        }
+        else if (value > 3)
+        {
+            newValue = 3;
+        }
+        //set clamped value
+        spinnerNumTotes.setValue(newValue);
+
+        //allow for enabling/disabling of stack check
+        checkBoxTotesStacked.setEnabled((newValue > 1));
+        //removes checkmark if disabled
+        checkBoxTotesStacked.setSelected((newValue > 1) ? checkBoxTotesStacked.isSelected() : false);
+
+    }//GEN-LAST:event_spinnerNumTotesStateChanged
+
+    private void spinnerNumContainersStateChanged(javax.swing.event.ChangeEvent evt)//GEN-FIRST:event_spinnerNumContainersStateChanged
+    {//GEN-HEADEREND:event_spinnerNumContainersStateChanged
+        int value = (Integer) spinnerNumContainers.getValue();
+        int newValue = value;
+
+        //clamp value
+        if (value < 0)
+        {
+            newValue = 0;
+        }
+        else if (value > 3)
+        {
+            newValue = 3;
+        }
+        //set clamped value
+        spinnerNumContainers.setValue(newValue);
+    }//GEN-LAST:event_spinnerNumContainersStateChanged
+
+    private void checkBoxHPThrewNoodlesStateChanged(javax.swing.event.ChangeEvent evt)//GEN-FIRST:event_checkBoxHPThrewNoodlesStateChanged
+    {//GEN-HEADEREND:event_checkBoxHPThrewNoodlesStateChanged
+        boolean threw = checkBoxHPThrewNoodles.isSelected();
+        radioHPPoor.setEnabled(threw);
+        radioHPMediocre.setEnabled(threw);
+        radioHPExcellent.setEnabled(threw);
+        if (!threw)
+        {
+            buttonGroupHumanPlayer.clearSelection();
+        }
+    }//GEN-LAST:event_checkBoxHPThrewNoodlesStateChanged
+
+    private void textFieldMatchScoreActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_textFieldMatchScoreActionPerformed
+    {//GEN-HEADEREND:event_textFieldMatchScoreActionPerformed
+
+    }//GEN-LAST:event_textFieldMatchScoreActionPerformed
+
+    private void textFieldMatchScoreKeyTyped(java.awt.event.KeyEvent evt)//GEN-FIRST:event_textFieldMatchScoreKeyTyped
+    {//GEN-HEADEREND:event_textFieldMatchScoreKeyTyped
+
+    }//GEN-LAST:event_textFieldMatchScoreKeyTyped
+
+    private void textFieldMatchScoreKeyPressed(java.awt.event.KeyEvent evt)//GEN-FIRST:event_textFieldMatchScoreKeyPressed
+    {//GEN-HEADEREND:event_textFieldMatchScoreKeyPressed
+
+    }//GEN-LAST:event_textFieldMatchScoreKeyPressed
+
+    private void textFieldMatchScoreKeyReleased(java.awt.event.KeyEvent evt)//GEN-FIRST:event_textFieldMatchScoreKeyReleased
+    {//GEN-HEADEREND:event_textFieldMatchScoreKeyReleased
+        //remove all non-numeric charecters
+        textFieldMatchScore.setText(utils.Utils.removeNonNumericChars(textFieldMatchScore.getText()));
+    }//GEN-LAST:event_textFieldMatchScoreKeyReleased
+
+    private void buttonSaveActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_buttonSaveActionPerformed
+    {//GEN-HEADEREND:event_buttonSaveActionPerformed
+        System.out.println(assessCompletion());
+    }//GEN-LAST:event_buttonSaveActionPerformed
+
+    private void fieldTeamNumKeyReleased(java.awt.event.KeyEvent evt)//GEN-FIRST:event_fieldTeamNumKeyReleased
+    {//GEN-HEADEREND:event_fieldTeamNumKeyReleased
+        fieldTeamNum.setText(utils.Utils.removeNonNumericChars(fieldTeamNum.getText()));
+    }//GEN-LAST:event_fieldTeamNumKeyReleased
+
+    private void fieldMatchNumKeyReleased(java.awt.event.KeyEvent evt)//GEN-FIRST:event_fieldMatchNumKeyReleased
+    {//GEN-HEADEREND:event_fieldMatchNumKeyReleased
+        fieldMatchNum.setText(utils.Utils.removeNonNumericChars(fieldMatchNum.getText()));
+    }//GEN-LAST:event_fieldMatchNumKeyReleased
+
+    /**
+     * Checks to see if all fields are completed
+     *
+     * @return passed - if passed completion inspection
+     */
+    private boolean assessCompletion()
+    {
+        boolean passed = true;
+
+        //scouter info complete
+        if (fieldTeamNum.getText().equals("") || fieldMatchNum.getText().equals("") || fieldScouter.getText().equals(""))
+        {
+            Utils.showErrorBox("Scouter section not filled out!");
+            passed = false;
+        }
+        //active section unfilled out
+        else if (!radioActiveNo.isSelected() && !radioActivePartial.isSelected() && !radioActiveYes.isSelected())
+        {
+            Utils.showErrorBox("Robot Activity section not filled out!");
+            passed = false;
+        }
+        //coop unfilled out
+        else if (!radioCoopNone.isSelected() && !radioCoopStacked.isSelected() && !radioCoopUnstacked.isSelected())
+        {
+            Utils.showErrorBox("Coop section not filled out!");
+            passed = false;
+        }
+        //HP throws but radio unselected
+        else if (checkBoxHPThrewNoodles.isSelected() && !radioHPPoor.isSelected() && !radioHPMediocre.isSelected() && !radioHPExcellent.isSelected())
+        {
+            Utils.showErrorBox("Human Player section not filled out!");
+            passed = false;
+        }
+        else if (textFieldMatchScore.getText().equals(""))
+        {
+            Utils.showErrorBox("Final Score not filled out!");
+            passed = false;
+        }
+
+        return passed;
+    }
+
     /**
      * Adds a StackContainer to the container stack list
-     * @param stack 
+     *
+     * @param stack
      */
     public void addItem(StackContainer stack)
     {
         this.addItemToList(listContainerStack, stack);
     }
-    
+
     /**
      * Adds a StackTote to the tote stack list
-     * @param stack 
+     *
+     * @param stack
      */
     public void addItem(StackTote stack)
     {
@@ -571,8 +855,9 @@ public class MatchFrame extends javax.swing.JFrame
 
     /**
      * Adds an object to the given list
+     *
      * @param list
-     * @param object 
+     * @param object
      */
     private void addItemToList(javax.swing.JList list, Object object)
     {
@@ -633,16 +918,20 @@ public class MatchFrame extends javax.swing.JFrame
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex)
+        }
+        catch (ClassNotFoundException ex)
         {
             java.util.logging.Logger.getLogger(MatchFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex)
+        }
+        catch (InstantiationException ex)
         {
             java.util.logging.Logger.getLogger(MatchFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex)
+        }
+        catch (IllegalAccessException ex)
         {
             java.util.logging.Logger.getLogger(MatchFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex)
+        }
+        catch (javax.swing.UnsupportedLookAndFeelException ex)
         {
             java.util.logging.Logger.getLogger(MatchFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
@@ -662,9 +951,12 @@ public class MatchFrame extends javax.swing.JFrame
     private javax.swing.JButton buttonAddContainerStack;
     private javax.swing.JButton buttonAddToteStack;
     private javax.swing.ButtonGroup buttonGroupCoop;
+    private javax.swing.ButtonGroup buttonGroupHumanPlayer;
     private javax.swing.ButtonGroup buttonGroupRobotActive;
     private javax.swing.JButton buttonRemoveContainerStack;
     private javax.swing.JButton buttonRemoveToteStack;
+    private javax.swing.JButton buttonSave;
+    private javax.swing.JCheckBox checkBoxHPThrewNoodles;
     private javax.swing.JCheckBox checkBoxInAutoZone;
     private javax.swing.JCheckBox checkBoxTotesStacked;
     private javax.swing.JTextField fieldMatchNum;
@@ -687,6 +979,7 @@ public class MatchFrame extends javax.swing.JFrame
     private javax.swing.JPanel panelAutoScoredTotes;
     private javax.swing.JPanel panelAutonomous;
     private javax.swing.JPanel panelCoop;
+    private javax.swing.JPanel panelHumanPlayer;
     private javax.swing.JPanel panelOutcome;
     private javax.swing.JPanel panelRobotActivity;
     private javax.swing.JPanel panelRobotActivityComments;
@@ -702,9 +995,12 @@ public class MatchFrame extends javax.swing.JFrame
     private javax.swing.JRadioButton radioCoopNone;
     private javax.swing.JRadioButton radioCoopStacked;
     private javax.swing.JRadioButton radioCoopUnstacked;
-    private javax.swing.JSpinner spinnerMatchScore;
+    private javax.swing.JRadioButton radioHPExcellent;
+    private javax.swing.JRadioButton radioHPMediocre;
+    private javax.swing.JRadioButton radioHPPoor;
     private javax.swing.JSpinner spinnerNumContainers;
     private javax.swing.JSpinner spinnerNumTotes;
     private javax.swing.JTextArea textAreaRobotActivityComments;
+    private javax.swing.JTextField textFieldMatchScore;
     // End of variables declaration//GEN-END:variables
 }
