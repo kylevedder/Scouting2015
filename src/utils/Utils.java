@@ -5,7 +5,14 @@
  */
 package utils;
 
+import java.awt.Font;
+import java.awt.FontFormatException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import scouting2015.MainFrame;
 
 /**
  *
@@ -23,6 +30,30 @@ public class Utils
         return s0.replaceAll("[^0-9]", "");
     }
     
+    /**
+     * Load a font from the fonts folder with the given path
+     * @param path - path to the font
+     * @return 
+     */
+    public static Font loadFont(String path)
+    {
+        InputStream is = MainFrame.class.getResourceAsStream(path);
+        Font font = null;
+        try
+        {
+            font = Font.createFont(Font.TRUETYPE_FONT, is);
+            System.out.println("Loaded font from: " + MainFrame.class.getResource(path).getPath());
+        }
+        catch (FontFormatException ex)
+        {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (IOException ex)
+        {
+            
+        }
+        return font;
+    }
     
     /**
      * Creates an error message with a custom body.

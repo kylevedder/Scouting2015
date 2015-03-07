@@ -5,6 +5,12 @@
  */
 package frames;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+
 /**
  *
  * @author kyle
@@ -13,11 +19,35 @@ public class MainFrame extends javax.swing.JFrame
 {
 
     /**
-     * Creates new form MainFrame
+     * Creates form MainFrame
      */
     public MainFrame()
     {
         initComponents();
+        try
+        {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            SwingUtilities.updateComponentTreeUI(this);
+            this.setLocationRelativeTo(null);
+            this.pack();
+        }
+        catch (ClassNotFoundException ex)
+        {
+            Logger.getLogger(MatchFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (InstantiationException ex)
+        {
+            Logger.getLogger(MatchFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (IllegalAccessException ex)
+        {
+            Logger.getLogger(MatchFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (UnsupportedLookAndFeelException ex)
+        {
+            Logger.getLogger(MatchFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.setVisible(true);
     }
 
     /**
@@ -30,21 +60,104 @@ public class MainFrame extends javax.swing.JFrame
     private void initComponents()
     {
 
+        labelTitle = new javax.swing.JLabel();
+        panelScoutingDeploy = new javax.swing.JPanel();
+        buttonScoutingNewMatch = new javax.swing.JButton();
+        buttonScoutingNewActive = new javax.swing.JButton();
+        menuBarTop = new javax.swing.JMenuBar();
+        menuServer = new javax.swing.JMenu();
+        menuServerConnect = new javax.swing.JMenuItem();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Team 467 2015 Scouting Program");
+
+        labelTitle.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        labelTitle.setText("Team 467 Scouting Software");
+
+        panelScoutingDeploy.setBorder(javax.swing.BorderFactory.createTitledBorder("Scouting"));
+
+        buttonScoutingNewMatch.setText("New Match Scout");
+        buttonScoutingNewMatch.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                buttonScoutingNewMatchActionPerformed(evt);
+            }
+        });
+
+        buttonScoutingNewActive.setText("New Active Scout");
+
+        javax.swing.GroupLayout panelScoutingDeployLayout = new javax.swing.GroupLayout(panelScoutingDeploy);
+        panelScoutingDeploy.setLayout(panelScoutingDeployLayout);
+        panelScoutingDeployLayout.setHorizontalGroup(
+            panelScoutingDeployLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelScoutingDeployLayout.createSequentialGroup()
+                .addComponent(buttonScoutingNewMatch)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(buttonScoutingNewActive)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        panelScoutingDeployLayout.setVerticalGroup(
+            panelScoutingDeployLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelScoutingDeployLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(buttonScoutingNewMatch)
+                .addComponent(buttonScoutingNewActive))
+        );
+
+        menuServer.setText("Server");
+
+        menuServerConnect.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        menuServerConnect.setText("Connect");
+        menuServerConnect.setBorder(null);
+        menuServerConnect.setBorderPainted(true);
+        menuServerConnect.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                menuServerConnectActionPerformed(evt);
+            }
+        });
+        menuServer.add(menuServerConnect);
+
+        menuBarTop.add(menuServer);
+
+        setJMenuBar(menuBarTop);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(labelTitle)
+                        .addGap(0, 287, Short.MAX_VALUE))
+                    .addComponent(panelScoutingDeploy, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(labelTitle)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(panelScoutingDeploy, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(191, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void menuServerConnectActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_menuServerConnectActionPerformed
+    {//GEN-HEADEREND:event_menuServerConnectActionPerformed
+        System.out.println("connect...");
+    }//GEN-LAST:event_menuServerConnectActionPerformed
+
+    private void buttonScoutingNewMatchActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_buttonScoutingNewMatchActionPerformed
+    {//GEN-HEADEREND:event_buttonScoutingNewMatchActionPerformed
+        MatchFrame match = new MatchFrame();        
+    }//GEN-LAST:event_buttonScoutingNewMatchActionPerformed
 
     /**
      * @param args the command line arguments
@@ -92,5 +205,12 @@ public class MainFrame extends javax.swing.JFrame
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton buttonScoutingNewActive;
+    private javax.swing.JButton buttonScoutingNewMatch;
+    private javax.swing.JLabel labelTitle;
+    private javax.swing.JMenuBar menuBarTop;
+    private javax.swing.JMenu menuServer;
+    private javax.swing.JMenuItem menuServerConnect;
+    private javax.swing.JPanel panelScoutingDeploy;
     // End of variables declaration//GEN-END:variables
 }

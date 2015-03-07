@@ -3,23 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package main;
-
-import frames.*;
+package objects;
 
 /**
  *
  * @author kyle
  */
-public class Main
+public class HumanPlayer
 {
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args)
+    public HumanPlayer()
     {
-        MainFrame main = new MainFrame();
     }
     
 }

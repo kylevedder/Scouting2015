@@ -11,5 +11,7 @@ package objects;
  */
 public class MatchData
 {
-    
+    public MatchData(StackTote[] toteArray, StackContainer[] containerArray, RobotActivity activity)
+    {
+    }    
 }
