@@ -5,6 +5,7 @@
  */
 package frames;
 
+import java.lang.reflect.Field;
 import java.util.Enumeration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,7 +30,7 @@ import utils.Utils;
  *
  * @author kyle
  */
-public class MatchFrame extends javax.swing.JFrame
+public class MatchFrame extends javax.swing.JFrame implements ResetableFrame
 {
 
     private static final int SCROLL_SPEED = 16;
@@ -64,6 +65,31 @@ public class MatchFrame extends javax.swing.JFrame
             Logger.getLogger(MatchFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
         this.setVisible(true);
+    }
+
+    /**
+     * Resets the frame to its default values
+     */
+    @Override
+    public void resetFrame()
+    {
+        fieldMatchNum.setText("");
+        fieldScouter.setText("");
+        fieldTeamNum.setText("");
+        buttonGroupCoop.clearSelection();
+        buttonGroupHumanPlayer.clearSelection();
+        buttonGroupRobotActive.clearSelection();
+        textFieldMatchScore.setText("");
+        textAreaRobotActivityComments.setText("");
+        spinnerNumContainers.setValue(0);
+        spinnerNumTotes.setValue(0);
+        checkBoxInAutoZone.setSelected(false);
+        checkBoxTotesStacked.setEnabled(false);
+        checkBoxTotesStacked.setSelected(false);
+        checkBoxHPThrewNoodles.setSelected(false);
+        radioHPExcellent.setEnabled(false);
+        radioHPMediocre.setEnabled(false);
+        radioHPPoor.setEnabled(false);
     }
 
     /**
@@ -648,21 +674,23 @@ public class MatchFrame extends javax.swing.JFrame
         mainPanelLayout.setHorizontalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mainPanelLayout.createSequentialGroup()
-                .addComponent(labelTitle)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(buttonSave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(mainPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panelTeamInfo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(panelRobotActivity, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(panelScoring, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(mainPanelLayout.createSequentialGroup()
-                        .addComponent(panelCoop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(panelHumanPlayer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(panelOutcome, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                        .addComponent(labelTitle)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(buttonSave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(mainPanelLayout.createSequentialGroup()
+                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(panelTeamInfo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(panelRobotActivity, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(panelScoring, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(mainPanelLayout.createSequentialGroup()
+                                .addComponent(panelCoop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(panelHumanPlayer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(panelOutcome, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap())))
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -809,9 +837,12 @@ public class MatchFrame extends javax.swing.JFrame
 
     private void buttonSaveActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_buttonSaveActionPerformed
     {//GEN-HEADEREND:event_buttonSaveActionPerformed
+
         if (assessCompletion(true))
         {
             MatchData matchData = scrapeData();
+            //requests user input to reset the frame
+            new ResetRequestFrame(this);
         }
     }//GEN-LAST:event_buttonSaveActionPerformed
 
@@ -825,65 +856,68 @@ public class MatchFrame extends javax.swing.JFrame
         fieldMatchNum.setText(utils.Utils.removeNonNumericChars(fieldMatchNum.getText()));
     }//GEN-LAST:event_fieldMatchNumKeyReleased
 
-    
     private MatchData scrapeData()
     {
         //GET HP data            
-            HumanPlayerType hpType = HumanPlayerType.NO_THROW;
-            if (checkBoxHPThrewNoodles.isSelected())
-            {
-                try
-                {
-                    hpType = HumanPlayerType.valueOf(getSelectedButtonActionCommandOrDefault(buttonGroupHumanPlayer, HumanPlayerType.NO_THROW.toString()));
-                }
-                catch (Exception ex)
-                {
-                    hpType = HumanPlayerType.NO_THROW;
-                }
-            }
-
-            //GET COOP data   
-            CoOpType coopType;
+        HumanPlayerType hpType = HumanPlayerType.NO_THROW;
+        if (checkBoxHPThrewNoodles.isSelected())
+        {
             try
             {
-                coopType = CoOpType.valueOf(getSelectedButtonActionCommandOrDefault(buttonGroupCoop, CoOpType.NONE.toString()));
+                hpType = HumanPlayerType.valueOf(getSelectedButtonActionCommandOrDefault(buttonGroupHumanPlayer, HumanPlayerType.NO_THROW.toString()));
             }
             catch (Exception ex)
             {
-                coopType = CoOpType.NONE;
+                hpType = HumanPlayerType.NO_THROW;
             }
+        }
 
-            //GET robotActive data 
-            RobotActivityType rbtActType;
-            try
-            {
-                rbtActType = RobotActivityType.valueOf(getSelectedButtonActionCommandOrDefault(buttonGroupRobotActive, RobotActivityType.INACTIVE.toString()));
-            }
-            catch (Exception ex)
-            {
-                rbtActType = RobotActivityType.INACTIVE;
-            }
-            RobotActivity rbtActivity = new RobotActivity(rbtActType, textAreaRobotActivityComments.getText().trim());
+        //GET COOP data   
+        CoOpType coopType;
+        try
+        {
+            coopType = CoOpType.valueOf(getSelectedButtonActionCommandOrDefault(buttonGroupCoop, CoOpType.NONE.toString()));
+        }
+        catch (Exception ex)
+        {
+            coopType = CoOpType.NONE;
+        }
 
-            //GET StackTotes            
-            ListModel<StackBase> listModel = listToteStack.getModel();
-            StackTote[] stackTotes = new StackTote[listModel.getSize()];
-            for (int i = 0; i < listModel.getSize(); i++)
-            {
-                stackTotes[i] = (StackTote)listModel.getElementAt(i);                
-            }
-            
-            //GET StackContainer
-            listModel = listContainerStack.getModel();
-            StackContainer[] stackContainers = new StackContainer[listModel.getSize()];
-            for (int i = 0; i < listModel.getSize(); i++)
-            {
-                stackContainers[i] = (StackContainer)listModel.getElementAt(i);                
-            }
+        //GET robotActive data 
+        RobotActivityType rbtActType;
+        try
+        {
+            rbtActType = RobotActivityType.valueOf(getSelectedButtonActionCommandOrDefault(buttonGroupRobotActive, RobotActivityType.INACTIVE.toString()));
+        }
+        catch (Exception ex)
+        {
+            rbtActType = RobotActivityType.INACTIVE;
+        }
+        RobotActivity rbtActivity = new RobotActivity(rbtActType, textAreaRobotActivityComments.getText().trim());
 
-            return new MatchData(stackTotes, stackContainers, rbtActivity, coopType, hpType);
+        //GET StackTotes            
+        ListModel<StackBase> listModel = listToteStack.getModel();
+        StackTote[] stackTotes = new StackTote[listModel.getSize()];
+        for (int i = 0; i < listModel.getSize(); i++)
+        {
+            stackTotes[i] = (StackTote) listModel.getElementAt(i);
+        }
+
+        //GET StackContainer
+        listModel = listContainerStack.getModel();
+        StackContainer[] stackContainers = new StackContainer[listModel.getSize()];
+        for (int i = 0; i < listModel.getSize(); i++)
+        {
+            stackContainers[i] = (StackContainer) listModel.getElementAt(i);
+        }
+
+        int matchNum = Integer.valueOf(fieldMatchNum.getText());
+        int teamNum = Integer.valueOf(fieldTeamNum.getText());
+        String scouter = fieldScouter.getText();
+
+        return new MatchData(matchNum, teamNum, scouter, stackTotes, stackContainers, rbtActivity, coopType, hpType);
     }
-    
+
     /**
      * Checks to see if all fields are completed
      *

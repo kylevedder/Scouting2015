@@ -61,25 +61,29 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="labelTitle" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
-                      <Component id="buttonSave" min="-2" max="-2" attributes="0"/>
-                  </Group>
                   <Group type="102" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="panelTeamInfo" alignment="1" max="32767" attributes="0"/>
-                          <Component id="panelRobotActivity" alignment="1" max="32767" attributes="0"/>
-                          <Component id="panelScoring" alignment="0" max="32767" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
-                              <Component id="panelCoop" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="panelHumanPlayer" max="32767" attributes="0"/>
+                              <Component id="labelTitle" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
+                              <Component id="buttonSave" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <Component id="panelOutcome" alignment="0" max="32767" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="panelTeamInfo" alignment="1" max="32767" attributes="0"/>
+                                  <Component id="panelRobotActivity" alignment="1" max="32767" attributes="0"/>
+                                  <Component id="panelScoring" alignment="0" max="32767" attributes="0"/>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="panelCoop" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="panelHumanPlayer" max="32767" attributes="0"/>
+                                  </Group>
+                                  <Component id="panelOutcome" alignment="0" max="32767" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                          </Group>
                       </Group>
-                      <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>

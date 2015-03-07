@@ -14,7 +14,7 @@ import objects.stacks.StackTote;
  */
 public class MatchData
 {
-    public MatchData(StackTote[] toteArray, StackContainer[] containerArray, RobotActivity activity, CoOpType coopType, HumanPlayerType hpType)
+    public MatchData(int matchNum, int teamNum, String scouter, StackTote[] toteArray, StackContainer[] containerArray, RobotActivity activity, CoOpType coopType, HumanPlayerType hpType)
     {
     }    
 }
