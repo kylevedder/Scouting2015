@@ -26,8 +26,3 @@ public class RobotActivity
     }
     
 }
-
-enum RobotActivityType
-{
-    INACTIVE, PARTIALLY_ACTIVE, ACTIVE
-}

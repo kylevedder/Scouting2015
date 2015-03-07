@@ -6,7 +6,7 @@
 package frames;
 
 import java.awt.Color;
-import objects.StackContainer;
+import objects.stacks.StackContainer;
 
 /**
  *

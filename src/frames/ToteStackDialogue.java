@@ -5,8 +5,8 @@
  */
 package frames;
 
-import objects.StackContainer;
-import objects.StackTote;
+import objects.stacks.StackContainer;
+import objects.stacks.StackTote;
 
 /**
  *

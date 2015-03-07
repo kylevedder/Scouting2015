@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package objects;
+package objects.stacks;
 
 /**
  *
  * @author kyle
  */
-public class StackTote
+public class StackTote implements StackBase
 {
 
     private final int POINTS_PER_TOTE = 2;

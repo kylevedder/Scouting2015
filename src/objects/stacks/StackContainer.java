@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package objects;
+package objects.stacks;
 
 /**
  *
  * @author kyle
  */
-public class StackContainer
+public class StackContainer implements StackBase
 {
     private final int POINTS_PER_LEVEL = 4;
     private final int POINTS_FOR_NOODLE = 6;

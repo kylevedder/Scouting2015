@@ -5,15 +5,24 @@
  */
 package frames;
 
+import java.util.Enumeration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.AbstractButton;
+import javax.swing.ButtonGroup;
 import javax.swing.DefaultListModel;
 import javax.swing.ListModel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import objects.StackContainer;
-import objects.StackTote;
+import objects.CoOpType;
+import objects.HumanPlayerType;
+import objects.MatchData;
+import objects.RobotActivity;
+import objects.RobotActivityType;
+import objects.stacks.StackBase;
+import objects.stacks.StackContainer;
+import objects.stacks.StackTote;
 import utils.Utils;
 
 /**
@@ -22,6 +31,8 @@ import utils.Utils;
  */
 public class MatchFrame extends javax.swing.JFrame
 {
+
+    private static final int SCROLL_SPEED = 16;
 
     /**
      * Creates new form MatchFrame
@@ -68,7 +79,10 @@ public class MatchFrame extends javax.swing.JFrame
         buttonGroupRobotActive = new javax.swing.ButtonGroup();
         buttonGroupCoop = new javax.swing.ButtonGroup();
         buttonGroupHumanPlayer = new javax.swing.ButtonGroup();
+        mainPanelScroll = new javax.swing.JScrollPane();
+        mainPanel = new javax.swing.JPanel();
         labelTitle = new javax.swing.JLabel();
+        buttonSave = new javax.swing.JButton();
         panelTeamInfo = new javax.swing.JPanel();
         labelTeamNum = new javax.swing.JLabel();
         fieldTeamNum = new javax.swing.JTextField();
@@ -100,15 +114,12 @@ public class MatchFrame extends javax.swing.JFrame
         buttonAddToteStack = new javax.swing.JButton();
         buttonRemoveToteStack = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
-        listToteStack = new javax.swing.JList();
+        listToteStack = new javax.swing.JList<StackBase>();
         panelTeleopContainerStacks = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        listContainerStack = new javax.swing.JList();
+        listContainerStack = new javax.swing.JList<StackBase>();
         buttonAddContainerStack = new javax.swing.JButton();
         buttonRemoveContainerStack = new javax.swing.JButton();
-        panelOutcome = new javax.swing.JPanel();
-        labelMatchScore = new javax.swing.JLabel();
-        textFieldMatchScore = new javax.swing.JTextField();
         panelCoop = new javax.swing.JPanel();
         radioCoopNone = new javax.swing.JRadioButton();
         radioCoopUnstacked = new javax.swing.JRadioButton();
@@ -118,14 +129,30 @@ public class MatchFrame extends javax.swing.JFrame
         radioHPMediocre = new javax.swing.JRadioButton();
         radioHPExcellent = new javax.swing.JRadioButton();
         checkBoxHPThrewNoodles = new javax.swing.JCheckBox();
-        buttonSave = new javax.swing.JButton();
+        panelOutcome = new javax.swing.JPanel();
+        labelMatchScore = new javax.swing.JLabel();
+        textFieldMatchScore = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Match Recorder");
         setResizable(false);
 
+        mainPanelScroll.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+
         labelTitle.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         labelTitle.setText("Match Recorder");
+
+        buttonSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/SaveIconMedium.png"))); // NOI18N
+        buttonSave.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        buttonSave.setMaximumSize(new java.awt.Dimension(55, 55));
+        buttonSave.setMinimumSize(new java.awt.Dimension(55, 55));
+        buttonSave.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                buttonSaveActionPerformed(evt);
+            }
+        });
 
         panelTeamInfo.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Team Info", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 18))); // NOI18N
 
@@ -440,7 +467,7 @@ public class MatchFrame extends javax.swing.JFrame
         panelTeleopContainerStacks.setLayout(panelTeleopContainerStacksLayout);
         panelTeleopContainerStacksLayout.setHorizontalGroup(
             panelTeleopContainerStacksLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 471, Short.MAX_VALUE)
             .addGroup(panelTeleopContainerStacksLayout.createSequentialGroup()
                 .addComponent(buttonAddContainerStack)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -488,6 +515,90 @@ public class MatchFrame extends javax.swing.JFrame
                 .addContainerGap())
         );
 
+        panelCoop.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Coop", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 14))); // NOI18N
+
+        buttonGroupCoop.add(radioCoopNone);
+        radioCoopNone.setText("None");
+
+        buttonGroupCoop.add(radioCoopUnstacked);
+        radioCoopUnstacked.setText("Unstacked");
+
+        buttonGroupCoop.add(radioCoopStacked);
+        radioCoopStacked.setText("Stacked");
+
+        javax.swing.GroupLayout panelCoopLayout = new javax.swing.GroupLayout(panelCoop);
+        panelCoop.setLayout(panelCoopLayout);
+        panelCoopLayout.setHorizontalGroup(
+            panelCoopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelCoopLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelCoopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(radioCoopNone)
+                    .addComponent(radioCoopUnstacked)
+                    .addComponent(radioCoopStacked))
+                .addContainerGap(242, Short.MAX_VALUE))
+        );
+        panelCoopLayout.setVerticalGroup(
+            panelCoopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelCoopLayout.createSequentialGroup()
+                .addComponent(radioCoopNone)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(radioCoopUnstacked)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(radioCoopStacked))
+        );
+
+        panelHumanPlayer.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Human Player Noodle Throwing", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 14))); // NOI18N
+
+        buttonGroupHumanPlayer.add(radioHPPoor);
+        radioHPPoor.setSelected(true);
+        radioHPPoor.setText("Poor (0 - 12 pts)");
+        radioHPPoor.setEnabled(false);
+
+        buttonGroupHumanPlayer.add(radioHPMediocre);
+        radioHPMediocre.setText("Mediocre (16 - 24 pts)");
+        radioHPMediocre.setEnabled(false);
+
+        buttonGroupHumanPlayer.add(radioHPExcellent);
+        radioHPExcellent.setText("Excellent (28+ pts)");
+        radioHPExcellent.setActionCommand("Excellent");
+        radioHPExcellent.setEnabled(false);
+
+        checkBoxHPThrewNoodles.setText("HP Threw Noodles");
+        checkBoxHPThrewNoodles.addChangeListener(new javax.swing.event.ChangeListener()
+        {
+            public void stateChanged(javax.swing.event.ChangeEvent evt)
+            {
+                checkBoxHPThrewNoodlesStateChanged(evt);
+            }
+        });
+
+        javax.swing.GroupLayout panelHumanPlayerLayout = new javax.swing.GroupLayout(panelHumanPlayer);
+        panelHumanPlayer.setLayout(panelHumanPlayerLayout);
+        panelHumanPlayerLayout.setHorizontalGroup(
+            panelHumanPlayerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelHumanPlayerLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(checkBoxHPThrewNoodles)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(panelHumanPlayerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(radioHPPoor)
+                    .addComponent(radioHPMediocre)
+                    .addComponent(radioHPExcellent))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        panelHumanPlayerLayout.setVerticalGroup(
+            panelHumanPlayerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelHumanPlayerLayout.createSequentialGroup()
+                .addComponent(radioHPPoor)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelHumanPlayerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(radioHPMediocre)
+                    .addComponent(checkBoxHPThrewNoodles))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(radioHPExcellent))
+        );
+
         panelOutcome.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Outcome", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 14))); // NOI18N
 
         labelMatchScore.setText("Match Total Score:");
@@ -532,130 +643,33 @@ public class MatchFrame extends javax.swing.JFrame
                 .addComponent(textFieldMatchScore, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        panelCoop.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Coop", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 14))); // NOI18N
-
-        buttonGroupCoop.add(radioCoopNone);
-        radioCoopNone.setText("None");
-
-        buttonGroupCoop.add(radioCoopUnstacked);
-        radioCoopUnstacked.setText("Unstacked");
-
-        buttonGroupCoop.add(radioCoopStacked);
-        radioCoopStacked.setText("Stacked");
-
-        javax.swing.GroupLayout panelCoopLayout = new javax.swing.GroupLayout(panelCoop);
-        panelCoop.setLayout(panelCoopLayout);
-        panelCoopLayout.setHorizontalGroup(
-            panelCoopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelCoopLayout.createSequentialGroup()
+        javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
+        mainPanel.setLayout(mainPanelLayout);
+        mainPanelLayout.setHorizontalGroup(
+            mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(mainPanelLayout.createSequentialGroup()
+                .addComponent(labelTitle)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(buttonSave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(mainPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(panelCoopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(radioCoopNone)
-                    .addComponent(radioCoopUnstacked)
-                    .addComponent(radioCoopStacked))
-                .addContainerGap(242, Short.MAX_VALUE))
-        );
-        panelCoopLayout.setVerticalGroup(
-            panelCoopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelCoopLayout.createSequentialGroup()
-                .addComponent(radioCoopNone)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(radioCoopUnstacked)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(radioCoopStacked))
-        );
-
-        panelHumanPlayer.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Human Player Noodle Throwing", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 14))); // NOI18N
-
-        buttonGroupHumanPlayer.add(radioHPPoor);
-        radioHPPoor.setText("Poor (0 - 4 pts)");
-        radioHPPoor.setEnabled(false);
-
-        buttonGroupHumanPlayer.add(radioHPMediocre);
-        radioHPMediocre.setText("Mediocre (8 - 16 pts)");
-        radioHPMediocre.setEnabled(false);
-
-        buttonGroupHumanPlayer.add(radioHPExcellent);
-        radioHPExcellent.setText("Excellent (20+ pts)");
-        radioHPExcellent.setEnabled(false);
-
-        checkBoxHPThrewNoodles.setText("HP Threw Noodles");
-        checkBoxHPThrewNoodles.addChangeListener(new javax.swing.event.ChangeListener()
-        {
-            public void stateChanged(javax.swing.event.ChangeEvent evt)
-            {
-                checkBoxHPThrewNoodlesStateChanged(evt);
-            }
-        });
-
-        javax.swing.GroupLayout panelHumanPlayerLayout = new javax.swing.GroupLayout(panelHumanPlayer);
-        panelHumanPlayer.setLayout(panelHumanPlayerLayout);
-        panelHumanPlayerLayout.setHorizontalGroup(
-            panelHumanPlayerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelHumanPlayerLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(checkBoxHPThrewNoodles)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(panelHumanPlayerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(radioHPPoor)
-                    .addComponent(radioHPMediocre)
-                    .addComponent(radioHPExcellent))
-                .addContainerGap(217, Short.MAX_VALUE))
-        );
-        panelHumanPlayerLayout.setVerticalGroup(
-            panelHumanPlayerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelHumanPlayerLayout.createSequentialGroup()
-                .addComponent(radioHPPoor)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panelHumanPlayerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(radioHPMediocre)
-                    .addComponent(checkBoxHPThrewNoodles))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(radioHPExcellent))
-        );
-
-        buttonSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/SaveIconMedium.png"))); // NOI18N
-        buttonSave.setMargin(new java.awt.Insets(2, 2, 2, 2));
-        buttonSave.setMaximumSize(new java.awt.Dimension(55, 55));
-        buttonSave.setMinimumSize(new java.awt.Dimension(55, 55));
-        buttonSave.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
-                buttonSaveActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panelTeamInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(panelRobotActivity, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(panelTeamInfo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(panelRobotActivity, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(panelScoring, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(panelOutcome, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(mainPanelLayout.createSequentialGroup()
                         .addComponent(panelCoop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(panelHumanPlayer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 20, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(labelTitle)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(buttonSave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(panelHumanPlayer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(panelOutcome, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(buttonSave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(labelTitle)))
+        mainPanelLayout.setVerticalGroup(
+            mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(mainPanelLayout.createSequentialGroup()
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(labelTitle)
+                    .addComponent(buttonSave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelTeamInfo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -663,14 +677,28 @@ public class MatchFrame extends javax.swing.JFrame
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelScoring, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(panelCoop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(panelOutcome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(panelCoop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(panelHumanPlayer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(panelOutcome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 11, Short.MAX_VALUE))
         );
+
+        mainPanelScroll.setViewportView(mainPanel);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(mainPanelScroll, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 876, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(mainPanelScroll, javax.swing.GroupLayout.PREFERRED_SIZE, 530, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+
+        mainPanelScroll.getVerticalScrollBar().setUnitIncrement(SCROLL_SPEED);
 
         getAccessibleContext().setAccessibleDescription("");
 
@@ -781,7 +809,10 @@ public class MatchFrame extends javax.swing.JFrame
 
     private void buttonSaveActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_buttonSaveActionPerformed
     {//GEN-HEADEREND:event_buttonSaveActionPerformed
-        System.out.println(assessCompletion());
+        if (assessCompletion(true))
+        {
+            MatchData matchData = scrapeData();
+        }
     }//GEN-LAST:event_buttonSaveActionPerformed
 
     private void fieldTeamNumKeyReleased(java.awt.event.KeyEvent evt)//GEN-FIRST:event_fieldTeamNumKeyReleased
@@ -794,46 +825,141 @@ public class MatchFrame extends javax.swing.JFrame
         fieldMatchNum.setText(utils.Utils.removeNonNumericChars(fieldMatchNum.getText()));
     }//GEN-LAST:event_fieldMatchNumKeyReleased
 
+    
+    private MatchData scrapeData()
+    {
+        //GET HP data            
+            HumanPlayerType hpType = HumanPlayerType.NO_THROW;
+            if (checkBoxHPThrewNoodles.isSelected())
+            {
+                try
+                {
+                    hpType = HumanPlayerType.valueOf(getSelectedButtonActionCommandOrDefault(buttonGroupHumanPlayer, HumanPlayerType.NO_THROW.toString()));
+                }
+                catch (Exception ex)
+                {
+                    hpType = HumanPlayerType.NO_THROW;
+                }
+            }
+
+            //GET COOP data   
+            CoOpType coopType;
+            try
+            {
+                coopType = CoOpType.valueOf(getSelectedButtonActionCommandOrDefault(buttonGroupCoop, CoOpType.NONE.toString()));
+            }
+            catch (Exception ex)
+            {
+                coopType = CoOpType.NONE;
+            }
+
+            //GET robotActive data 
+            RobotActivityType rbtActType;
+            try
+            {
+                rbtActType = RobotActivityType.valueOf(getSelectedButtonActionCommandOrDefault(buttonGroupRobotActive, RobotActivityType.INACTIVE.toString()));
+            }
+            catch (Exception ex)
+            {
+                rbtActType = RobotActivityType.INACTIVE;
+            }
+            RobotActivity rbtActivity = new RobotActivity(rbtActType, textAreaRobotActivityComments.getText().trim());
+
+            //GET StackTotes            
+            ListModel<StackBase> listModel = listToteStack.getModel();
+            StackTote[] stackTotes = new StackTote[listModel.getSize()];
+            for (int i = 0; i < listModel.getSize(); i++)
+            {
+                stackTotes[i] = (StackTote)listModel.getElementAt(i);                
+            }
+            
+            //GET StackContainer
+            listModel = listContainerStack.getModel();
+            StackContainer[] stackContainers = new StackContainer[listModel.getSize()];
+            for (int i = 0; i < listModel.getSize(); i++)
+            {
+                stackContainers[i] = (StackContainer)listModel.getElementAt(i);                
+            }
+
+            return new MatchData(stackTotes, stackContainers, rbtActivity, coopType, hpType);
+    }
+    
     /**
      * Checks to see if all fields are completed
      *
      * @return passed - if passed completion inspection
      */
-    private boolean assessCompletion()
+    private boolean assessCompletion(boolean reportErrors)
     {
         boolean passed = true;
 
         //scouter info complete
         if (fieldTeamNum.getText().equals("") || fieldMatchNum.getText().equals("") || fieldScouter.getText().equals(""))
         {
-            Utils.showErrorBox("Scouter section not filled out!");
+            if (reportErrors)
+            {
+                Utils.showErrorBox("Scouter section not filled out!");
+            }
             passed = false;
         }
         //active section unfilled out
         else if (!radioActiveNo.isSelected() && !radioActivePartial.isSelected() && !radioActiveYes.isSelected())
         {
-            Utils.showErrorBox("Robot Activity section not filled out!");
+            if (reportErrors)
+            {
+                Utils.showErrorBox("Robot Activity section not filled out!");
+            }
             passed = false;
         }
         //coop unfilled out
         else if (!radioCoopNone.isSelected() && !radioCoopStacked.isSelected() && !radioCoopUnstacked.isSelected())
         {
-            Utils.showErrorBox("Coop section not filled out!");
+            if (reportErrors)
+            {
+                Utils.showErrorBox("Coop section not filled out!");
+            }
             passed = false;
         }
         //HP throws but radio unselected
         else if (checkBoxHPThrewNoodles.isSelected() && !radioHPPoor.isSelected() && !radioHPMediocre.isSelected() && !radioHPExcellent.isSelected())
         {
-            Utils.showErrorBox("Human Player section not filled out!");
+            if (reportErrors)
+            {
+                Utils.showErrorBox("Human Player section not filled out!");
+            }
             passed = false;
         }
         else if (textFieldMatchScore.getText().equals(""))
         {
-            Utils.showErrorBox("Final Score not filled out!");
+            if (reportErrors)
+            {
+                Utils.showErrorBox("Final Score not filled out!");
+            }
             passed = false;
         }
-
         return passed;
+    }
+
+    /**
+     * Gets the AbstractButton's action command for the selected button, or
+     * returns the default value if none selected
+     *
+     * @param buttonGroup
+     * @return
+     */
+    public String getSelectedButtonActionCommandOrDefault(ButtonGroup buttonGroup, String defaultValue)
+    {
+        for (Enumeration<AbstractButton> buttons = buttonGroup.getElements(); buttons.hasMoreElements();)
+        {
+            AbstractButton button = buttons.nextElement();
+
+            if (button.isSelected())
+            {
+                return button.getActionCommand().toUpperCase();
+            }
+        }
+
+        return defaultValue;
     }
 
     /**
@@ -862,10 +988,10 @@ public class MatchFrame extends javax.swing.JFrame
      * @param list
      * @param object
      */
-    private void addItemToList(javax.swing.JList list, Object object)
+    private void addItemToList(javax.swing.JList<StackBase> list, StackBase object)
     {
-        ListModel model = list.getModel();
-        DefaultListModel newModel = new DefaultListModel();
+        ListModel<StackBase> model = list.getModel();
+        DefaultListModel<StackBase> newModel = new DefaultListModel<StackBase>();
 
         //get all elements
         for (int i = 0; i < model.getSize(); i++)
@@ -882,13 +1008,13 @@ public class MatchFrame extends javax.swing.JFrame
      *
      * @param list
      */
-    private void removeSelectedFromList(javax.swing.JList list)
+    private void removeSelectedFromList(javax.swing.JList<StackBase> list)
     {
         int[] selectedIndicies = list.getSelectedIndices();
         if (selectedIndicies.length > 0)
         {
-            ListModel model = list.getModel();
-            DefaultListModel newModel = new DefaultListModel();
+            ListModel<StackBase> model = list.getModel();
+            DefaultListModel<StackBase> newModel = new DefaultListModel<StackBase>();
 
             //get all elements
             for (int i = 0; i < model.getSize(); i++)
@@ -975,8 +1101,10 @@ public class MatchFrame extends javax.swing.JFrame
     private javax.swing.JLabel labelScouter;
     private javax.swing.JLabel labelTeamNum;
     private javax.swing.JLabel labelTitle;
-    private javax.swing.JList listContainerStack;
-    private javax.swing.JList listToteStack;
+    private javax.swing.JList<StackBase> listContainerStack;
+    private javax.swing.JList<StackBase> listToteStack;
+    private javax.swing.JPanel mainPanel;
+    private javax.swing.JScrollPane mainPanelScroll;
     private javax.swing.JPanel panelAutoScoredContainer;
     private javax.swing.JPanel panelAutoScoredRobot;
     private javax.swing.JPanel panelAutoScoredTotes;

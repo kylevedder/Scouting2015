@@ -9,11 +9,7 @@ package objects;
  *
  * @author kyle
  */
-public class HumanPlayer
+public enum HumanPlayerType
 {
-
-    public HumanPlayer()
-    {
-    }
-    
+    NO_THROW, POOR, MEDIOCRE, EXCELLENT
 }

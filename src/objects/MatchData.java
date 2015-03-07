@@ -5,13 +5,16 @@
  */
 package objects;
 
+import objects.stacks.StackContainer;
+import objects.stacks.StackTote;
+
 /**
  *
  * @author Kyle
  */
 public class MatchData
 {
-    public MatchData(StackTote[] toteArray, StackContainer[] containerArray, RobotActivity activity)
+    public MatchData(StackTote[] toteArray, StackContainer[] containerArray, RobotActivity activity, CoOpType coopType, HumanPlayerType hpType)
     {
     }    
 }
