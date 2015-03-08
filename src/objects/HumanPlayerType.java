@@ -7,7 +7,7 @@ package objects;
 
 /**
  *
- * @author kyle
+ * @author Kyle
  */
 public enum HumanPlayerType
 {
