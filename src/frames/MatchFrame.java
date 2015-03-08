@@ -16,6 +16,7 @@ import javax.swing.ListModel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import objects.AutoObject;
 import objects.CoOpType;
 import objects.HumanPlayerType;
 import objects.MatchData;
@@ -90,6 +91,8 @@ public class MatchFrame extends javax.swing.JFrame implements ResetableFrame
         radioHPExcellent.setEnabled(false);
         radioHPMediocre.setEnabled(false);
         radioHPPoor.setEnabled(false);
+        listContainerStack.setModel(new DefaultListModel<StackBase>());
+        listToteStack.setModel(new DefaultListModel<StackBase>());
     }
 
     /**
@@ -856,6 +859,10 @@ public class MatchFrame extends javax.swing.JFrame implements ResetableFrame
         fieldMatchNum.setText(utils.Utils.removeNonNumericChars(fieldMatchNum.getText()));
     }//GEN-LAST:event_fieldMatchNumKeyReleased
 
+    /**
+     * Pulls all data from the form and sticks it in a match data object.
+     * @return 
+     */
     private MatchData scrapeData()
     {
         //GET HP data            
@@ -911,11 +918,19 @@ public class MatchFrame extends javax.swing.JFrame implements ResetableFrame
             stackContainers[i] = (StackContainer) listModel.getElementAt(i);
         }
 
+        //GET Scouter data
         int matchNum = Integer.valueOf(fieldMatchNum.getText());
         int teamNum = Integer.valueOf(fieldTeamNum.getText());
         String scouter = fieldScouter.getText();
+        
+        //GET Auto data
+        int numContainers = (int)spinnerNumContainers.getValue();
+        int numTotes = (int)spinnerNumTotes.getValue();
+        boolean totesStacked = checkBoxTotesStacked.isSelected();
+        boolean inAutoZone = checkBoxInAutoZone.isSelected();
+        AutoObject auto = new AutoObject(numTotes, numContainers, totesStacked, inAutoZone);
 
-        return new MatchData(matchNum, teamNum, scouter, stackTotes, stackContainers, rbtActivity, coopType, hpType);
+        return new MatchData(matchNum, teamNum, scouter, auto, stackTotes, stackContainers, rbtActivity, coopType, hpType);
     }
 
     /**
