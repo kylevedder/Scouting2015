@@ -5,6 +5,7 @@
  */
 package filemanager;
 
+import java.io.File;
 import objects.MatchData;
 
 /**
@@ -13,9 +14,16 @@ import objects.MatchData;
  */
 public class MatchManager
 {
-
+    //singleton object
     private static MatchManager matchManager = null;
+    
+    private static final String LOCAL_FOLDER_PATH = "./saves/local";
+    private static final String SERVER_FOLDER_PATH = "./saves/server";
 
+    /**
+     * Gets the singleton instance of this class.
+     * @return 
+     */
     public static MatchManager getInstance()
     {
         if (matchManager == null)
@@ -27,10 +35,28 @@ public class MatchManager
 
     private MatchManager()
     {
+        File localFolder = new File(LOCAL_FOLDER_PATH);
+        File serverFolder = new File(SERVER_FOLDER_PATH);
+        
+        if(!localFolder.exists())
+        {
+            localFolder.mkdirs();
+        }
+        if(!serverFolder.exists())
+        {
+            serverFolder.mkdirs();
+        }
+        
+        
     }
     
     public void addMatch(MatchData match)
     {
         
+    }
+    
+    private String getFileNameFromMatchData(MatchData match)
+    {
+        return "";
     }
 }
