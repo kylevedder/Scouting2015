@@ -5,7 +5,6 @@
  */
 package frames;
 
-import java.lang.reflect.Field;
 import java.util.Enumeration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,11 +15,9 @@ import javax.swing.ListModel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import objects.AutoObject;
 import objects.CoOpType;
 import objects.HumanPlayerType;
 import objects.MatchData;
-import objects.RobotActivity;
 import objects.RobotActivityType;
 import objects.stacks.StackBase;
 import objects.stacks.StackContainer;
@@ -80,7 +77,7 @@ public class MatchFrame extends javax.swing.JFrame implements ResetableFrame
         buttonGroupCoop.clearSelection();
         buttonGroupHumanPlayer.clearSelection();
         buttonGroupRobotActive.clearSelection();
-        textFieldMatchScore.setText("");
+        fieldMatchScore.setText("");
         textAreaRobotActivityComments.setText("");
         spinnerNumContainers.setValue(0);
         spinnerNumTotes.setValue(0);
@@ -160,7 +157,7 @@ public class MatchFrame extends javax.swing.JFrame implements ResetableFrame
         checkBoxHPThrewNoodles = new javax.swing.JCheckBox();
         panelOutcome = new javax.swing.JPanel();
         labelMatchScore = new javax.swing.JLabel();
-        textFieldMatchScore = new javax.swing.JTextField();
+        fieldMatchScore = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Match Recorder");
@@ -632,26 +629,26 @@ public class MatchFrame extends javax.swing.JFrame implements ResetableFrame
 
         labelMatchScore.setText("Match Total Score:");
 
-        textFieldMatchScore.addActionListener(new java.awt.event.ActionListener()
+        fieldMatchScore.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
             {
-                textFieldMatchScoreActionPerformed(evt);
+                fieldMatchScoreActionPerformed(evt);
             }
         });
-        textFieldMatchScore.addKeyListener(new java.awt.event.KeyAdapter()
+        fieldMatchScore.addKeyListener(new java.awt.event.KeyAdapter()
         {
             public void keyPressed(java.awt.event.KeyEvent evt)
             {
-                textFieldMatchScoreKeyPressed(evt);
+                fieldMatchScoreKeyPressed(evt);
             }
             public void keyReleased(java.awt.event.KeyEvent evt)
             {
-                textFieldMatchScoreKeyReleased(evt);
+                fieldMatchScoreKeyReleased(evt);
             }
             public void keyTyped(java.awt.event.KeyEvent evt)
             {
-                textFieldMatchScoreKeyTyped(evt);
+                fieldMatchScoreKeyTyped(evt);
             }
         });
 
@@ -662,14 +659,14 @@ public class MatchFrame extends javax.swing.JFrame implements ResetableFrame
             .addGroup(panelOutcomeLayout.createSequentialGroup()
                 .addComponent(labelMatchScore)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(textFieldMatchScore, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(fieldMatchScore, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         panelOutcomeLayout.setVerticalGroup(
             panelOutcomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelOutcomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                 .addComponent(labelMatchScore)
-                .addComponent(textFieldMatchScore, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(fieldMatchScore, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
@@ -817,26 +814,26 @@ public class MatchFrame extends javax.swing.JFrame implements ResetableFrame
         }
     }//GEN-LAST:event_checkBoxHPThrewNoodlesStateChanged
 
-    private void textFieldMatchScoreActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_textFieldMatchScoreActionPerformed
-    {//GEN-HEADEREND:event_textFieldMatchScoreActionPerformed
+    private void fieldMatchScoreActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_fieldMatchScoreActionPerformed
+    {//GEN-HEADEREND:event_fieldMatchScoreActionPerformed
 
-    }//GEN-LAST:event_textFieldMatchScoreActionPerformed
+    }//GEN-LAST:event_fieldMatchScoreActionPerformed
 
-    private void textFieldMatchScoreKeyTyped(java.awt.event.KeyEvent evt)//GEN-FIRST:event_textFieldMatchScoreKeyTyped
-    {//GEN-HEADEREND:event_textFieldMatchScoreKeyTyped
+    private void fieldMatchScoreKeyTyped(java.awt.event.KeyEvent evt)//GEN-FIRST:event_fieldMatchScoreKeyTyped
+    {//GEN-HEADEREND:event_fieldMatchScoreKeyTyped
 
-    }//GEN-LAST:event_textFieldMatchScoreKeyTyped
+    }//GEN-LAST:event_fieldMatchScoreKeyTyped
 
-    private void textFieldMatchScoreKeyPressed(java.awt.event.KeyEvent evt)//GEN-FIRST:event_textFieldMatchScoreKeyPressed
-    {//GEN-HEADEREND:event_textFieldMatchScoreKeyPressed
+    private void fieldMatchScoreKeyPressed(java.awt.event.KeyEvent evt)//GEN-FIRST:event_fieldMatchScoreKeyPressed
+    {//GEN-HEADEREND:event_fieldMatchScoreKeyPressed
 
-    }//GEN-LAST:event_textFieldMatchScoreKeyPressed
+    }//GEN-LAST:event_fieldMatchScoreKeyPressed
 
-    private void textFieldMatchScoreKeyReleased(java.awt.event.KeyEvent evt)//GEN-FIRST:event_textFieldMatchScoreKeyReleased
-    {//GEN-HEADEREND:event_textFieldMatchScoreKeyReleased
+    private void fieldMatchScoreKeyReleased(java.awt.event.KeyEvent evt)//GEN-FIRST:event_fieldMatchScoreKeyReleased
+    {//GEN-HEADEREND:event_fieldMatchScoreKeyReleased
         //remove all non-numeric charecters
-        textFieldMatchScore.setText(utils.Utils.removeNonNumericChars(textFieldMatchScore.getText()));
-    }//GEN-LAST:event_textFieldMatchScoreKeyReleased
+        fieldMatchScore.setText(utils.Utils.removeNonNumericChars(fieldMatchScore.getText()));
+    }//GEN-LAST:event_fieldMatchScoreKeyReleased
 
     private void buttonSaveActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_buttonSaveActionPerformed
     {//GEN-HEADEREND:event_buttonSaveActionPerformed
@@ -900,7 +897,8 @@ public class MatchFrame extends javax.swing.JFrame implements ResetableFrame
         {
             rbtActType = RobotActivityType.INACTIVE;
         }
-        RobotActivity rbtActivity = new RobotActivity(rbtActType, textAreaRobotActivityComments.getText().trim());
+        String rbtActComment = textAreaRobotActivityComments.getText().trim();
+        
 
         //GET StackTotes            
         ListModel<StackBase> listModel = listToteStack.getModel();
@@ -924,13 +922,17 @@ public class MatchFrame extends javax.swing.JFrame implements ResetableFrame
         String scouter = fieldScouter.getText();
         
         //GET Auto data
-        int numContainers = (int)spinnerNumContainers.getValue();
-        int numTotes = (int)spinnerNumTotes.getValue();
-        boolean totesStacked = checkBoxTotesStacked.isSelected();
-        boolean inAutoZone = checkBoxInAutoZone.isSelected();
-        AutoObject auto = new AutoObject(numTotes, numContainers, totesStacked, inAutoZone);
-
-        return new MatchData(matchNum, teamNum, scouter, auto, stackTotes, stackContainers, rbtActivity, coopType, hpType);
+        int autoNumContainers = (int)spinnerNumContainers.getValue();
+        int autoNumTotes = (int)spinnerNumTotes.getValue();
+        boolean autoTotesStacked = checkBoxTotesStacked.isSelected();
+        boolean autoInAutoZone = checkBoxInAutoZone.isSelected();
+        
+        //GET final match data
+        int finalScore = Integer.parseInt(fieldMatchScore.getText());
+        
+        
+        return new MatchData(matchNum, teamNum, scouter, autoNumTotes, autoNumContainers, autoTotesStacked, autoInAutoZone, stackTotes, stackContainers, rbtActType, rbtActComment, coopType, hpType, finalScore);
+        
     }
 
     /**
@@ -978,7 +980,7 @@ public class MatchFrame extends javax.swing.JFrame implements ResetableFrame
             }
             passed = false;
         }
-        else if (textFieldMatchScore.getText().equals(""))
+        else if (fieldMatchScore.getText().equals(""))
         {
             if (reportErrors)
             {
@@ -1138,6 +1140,7 @@ public class MatchFrame extends javax.swing.JFrame implements ResetableFrame
     private javax.swing.JCheckBox checkBoxInAutoZone;
     private javax.swing.JCheckBox checkBoxTotesStacked;
     private javax.swing.JTextField fieldMatchNum;
+    private javax.swing.JTextField fieldMatchScore;
     private javax.swing.JTextField fieldScouter;
     private javax.swing.JTextField fieldTeamNum;
     private javax.swing.JScrollPane jScrollPane1;
@@ -1181,6 +1184,5 @@ public class MatchFrame extends javax.swing.JFrame implements ResetableFrame
     private javax.swing.JSpinner spinnerNumContainers;
     private javax.swing.JSpinner spinnerNumTotes;
     private javax.swing.JTextArea textAreaRobotActivityComments;
-    private javax.swing.JTextField textFieldMatchScore;
     // End of variables declaration//GEN-END:variables
 }

@@ -954,7 +954,7 @@
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="labelMatchScore" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="textFieldMatchScore" min="-2" pref="90" max="-2" attributes="0"/>
+                          <Component id="fieldMatchScore" min="-2" pref="90" max="-2" attributes="0"/>
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       </Group>
                   </Group>
@@ -963,7 +963,7 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="labelMatchScore" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="textFieldMatchScore" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="fieldMatchScore" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -974,12 +974,12 @@
                     <Property name="text" type="java.lang.String" value="Match Total Score:"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="textFieldMatchScore">
+                <Component class="javax.swing.JTextField" name="fieldMatchScore">
                   <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="textFieldMatchScoreActionPerformed"/>
-                    <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="textFieldMatchScoreKeyPressed"/>
-                    <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="textFieldMatchScoreKeyReleased"/>
-                    <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="textFieldMatchScoreKeyTyped"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="fieldMatchScoreActionPerformed"/>
+                    <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="fieldMatchScoreKeyPressed"/>
+                    <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="fieldMatchScoreKeyReleased"/>
+                    <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="fieldMatchScoreKeyTyped"/>
                   </Events>
                 </Component>
               </SubComponents>
