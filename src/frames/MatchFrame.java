@@ -15,6 +15,7 @@ import javax.swing.ListModel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import main.Main;
 import objects.CoOpType;
 import objects.HumanPlayerType;
 import objects.MatchData;
@@ -841,8 +842,9 @@ public class MatchFrame extends javax.swing.JFrame implements ResetableFrame
         if (assessCompletion(true))
         {
             MatchData matchData = scrapeData();
+            Main.matchManager.addMatch(matchData);
             //requests user input to reset the frame
-            new ResetRequestFrame(this);
+            new ResetRequestFrame(this);            
         }
     }//GEN-LAST:event_buttonSaveActionPerformed
 

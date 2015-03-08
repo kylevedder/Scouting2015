@@ -5,6 +5,7 @@
  */
 package main;
 
+import filemanager.MatchManager;
 import frames.*;
 
 /**
@@ -14,11 +15,13 @@ import frames.*;
 public class Main
 {
 
+    public static MatchManager matchManager = null;
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args)
     {
+        matchManager = MatchManager.getInstance();
         MainFrame main = new MainFrame();
     }
     

@@ -5,8 +5,15 @@
  */
 package objects;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import objects.stacks.StackContainer;
 import objects.stacks.StackTote;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 /**
  *
@@ -16,29 +23,43 @@ public class MatchData
 {
     //match meta data
     private int matchMatchNumber = -1;
+    public static String matchMatchNumberKey = "matchMatchNumberKey";
     private int matchTeamNumber = -1;
+    public static String matchTeamNumberKey = "matchTeamNumberKey";
     private String matchScouter = "";
+    public static String matchScouterKey = "matchScouterKey";
     private int matchFinalScore = -1;
+    public static String matchFinalScoreKey = "matchFinalScoreKey";
     
     //Activity data
     private RobotActivityType activityType = RobotActivityType.INACTIVE;
+    public static String activityTypeKey = "activityTypeKey";
     private String activityComment = "";
+    public static String activityCommentKey = "activityCommentKey";
     
     //Autonomous data
     private int autoNumberTotes = -1;
+    public static String autoNumberTotesKey = "autoNumberTotesKey";
     private boolean autoTotesStacked = false;
+    public static String autoTotesStackedKey = "autoTotesStackedKey";
     private int autoNumberContainers = -1;
+    public static String autoNumberContainersKey = "autoNumberContainersKey";
     private boolean autoInAutoZone = false;
+    public static String autoInAutoZoneKey = "autoInAutoZoneKey";
     
     //Coop data
     private CoOpType coopType = CoOpType.NONE;
+    public static String coopTypeKey = "coopTypeKey";
     
     //Teleop data
     private StackTote[] teleopToteStacks = null;
+    public static String teleopToteStacksKey = "teleopToteStacksKey";
     private StackContainer[] teleopContainerStacks = null;
+    public static String teleopContainerStacksKey = "teleopContainerStacksKey";
     
     //Human Player data
     private HumanPlayerType humanPlayerType = HumanPlayerType.NO_THROW;        
+    public static String humanPlayerTypeKey = "humanPlayerTypeKey";
 
     /**
      * Object for storing all match data.
@@ -84,6 +105,32 @@ public class MatchData
         this.teleopContainerStacks = teleopContainerStacks;
         
         this.humanPlayerType = humanPlayerType;
+        System.out.println(toJSON());
+    }
+    
+    public String toJSON()
+    {                                        
+        JSONObject json = new JSONObject();
+        json.put(matchMatchNumberKey, matchMatchNumber);
+        json.put(matchTeamNumberKey, matchTeamNumber);
+        json.put(matchScouterKey, matchScouter);
+        json.put(matchFinalScoreKey, matchFinalScore);
+        
+        json.put(activityTypeKey, activityType);
+        json.put(activityCommentKey, activityComment);
+        
+        json.put(autoNumberTotesKey, autoNumberTotes);
+        json.put(autoTotesStackedKey, autoTotesStacked);
+        json.put(autoNumberContainersKey, autoNumberContainers);
+        json.put(autoInAutoZoneKey, autoInAutoZone);
+        
+        json.put(coopTypeKey, coopType);
+        
+        json.put(teleopContainerStacksKey, teleopContainerStacks);        
+        json.put(teleopToteStacksKey, teleopToteStacks);
+        
+        json.put(humanPlayerTypeKey, humanPlayerType);
+        return json.toJSONString();
     }
 
     public String getActivityComment()
