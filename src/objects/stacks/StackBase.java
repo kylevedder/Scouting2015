@@ -5,6 +5,9 @@
  */
 package objects.stacks;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 /**
  *
  * @author Kyle
@@ -14,4 +17,7 @@ public interface StackBase
     public int getScore();   
     @Override
     public String toString();    
+    
+    public JSONObject getJSONObject();
+            
 }

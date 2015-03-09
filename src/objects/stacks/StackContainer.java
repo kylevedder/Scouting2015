@@ -5,12 +5,18 @@
  */
 package objects.stacks;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 /**
  *
  * @author kyle
  */
 public class StackContainer implements StackBase
 {
+    public static String HEIGHT_KEY = "height";
+    public static String NOODLE_KEY = "noodle";
+    
     private final int POINTS_PER_LEVEL = 4;
     private final int POINTS_FOR_NOODLE = 6;
 
@@ -63,6 +69,15 @@ public class StackContainer implements StackBase
     public String toString()
     {
         return "Stack Height:" + stackHeight + " Noodle:" + hasNoodle;
+    }
+
+    @Override
+    public JSONObject getJSONObject()
+    {
+        JSONObject json = new JSONObject();
+        json.put(HEIGHT_KEY, stackHeight);
+        json.put(NOODLE_KEY, hasNoodle);
+        return json;
     }
     
     

@@ -125,7 +125,7 @@ public class MatchData
         json.put(autoInAutoZoneKey, autoInAutoZone);
         
         json.put(coopTypeKey, coopType);
-        
+                
         json.put(teleopContainerStacksKey, teleopContainerStacks);        
         json.put(teleopToteStacksKey, teleopToteStacks);
         

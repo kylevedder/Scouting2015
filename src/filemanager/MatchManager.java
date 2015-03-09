@@ -55,9 +55,12 @@ public class MatchManager
         {
             serverFolder.mkdirs();
         }
-
     }
 
+    /**
+     * Adds a completed match to the queue.
+     * @param match 
+     */
     public void addMatch(MatchData match)
     {
         String fileName = getFileNameFromMatchData(match);

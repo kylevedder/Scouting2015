@@ -5,6 +5,9 @@
  */
 package objects.stacks;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 /**
  *
  * @author kyle
@@ -12,9 +15,11 @@ package objects.stacks;
 public class StackTote implements StackBase
 {
 
+    public static String HEIGHT_KEY = "height";    
+    
     private final int POINTS_PER_TOTE = 2;
 
-    private int height = 0;
+    private int stackHeight = 0;
 
     /**
      * Creates a new tote stack of the given height
@@ -23,7 +28,7 @@ public class StackTote implements StackBase
      */
     public StackTote(int height)
     {
-        this.height = height;
+        this.stackHeight = height;
     }
 
     /**
@@ -35,7 +40,7 @@ public class StackTote implements StackBase
     {
         try
         {
-            this.height = Integer.parseInt(height);
+            this.stackHeight = Integer.parseInt(height);
         } 
         catch (Exception ex)
         {
@@ -50,13 +55,21 @@ public class StackTote implements StackBase
      */
     public int getScore()
     {
-        return POINTS_PER_TOTE * height;
+        return POINTS_PER_TOTE * stackHeight;
     }
 
     @Override
     public String toString()
     {
-        return "Height:" + height;
+        return "Height:" + stackHeight;
+    }
+
+    @Override
+    public JSONObject getJSONObject()
+    {
+        JSONObject json = new JSONObject();
+        json.put(HEIGHT_KEY, stackHeight);
+        return json;
     }
 
 }
