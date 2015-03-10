@@ -16,7 +16,7 @@ import org.json.JSONObject;
 public class StackTote implements StackBase
 {
 
-    public static String HEIGHT_KEY = "height";    
+    public static String KEY_HEIGHT = "height";    
     
     private final int POINTS_PER_TOTE = 2;
 
@@ -67,12 +67,32 @@ public class StackTote implements StackBase
     }
 
     @Override
-    public JSONObject getJSONObject()
+    public JSONObject serialize()
     {
         HashMap<String, Object> map = new HashMap<>();        
-        map.put(HEIGHT_KEY, stackHeight);
+        map.put(KEY_HEIGHT, stackHeight);
         JSONObject json = new JSONObject(map);
         return json;
     }
 
+    /**
+     * Converts the JSON string into an object.
+     * @param jsonStr
+     * @return 
+     */
+    public static StackTote deserialize(String jsonStr)
+    {
+        JSONObject json = new JSONObject(jsonStr);
+        return deserialize(json);
+    }
+    
+    /**
+     * Converts the JSON object into an object.
+     * @param json
+     * @return 
+     */
+    public static StackTote deserialize(JSONObject json)
+    {        
+        return new StackTote(json.getInt(KEY_HEIGHT));
+    }
 }

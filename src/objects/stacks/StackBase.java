@@ -19,6 +19,6 @@ public interface StackBase
     @Override
     public String toString();    
     
-    public JSONObject getJSONObject();
-            
+    public JSONObject serialize();
+                
 }

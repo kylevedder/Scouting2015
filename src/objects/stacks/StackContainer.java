@@ -15,8 +15,8 @@ import org.json.JSONObject;
  */
 public class StackContainer implements StackBase
 {
-    public static String HEIGHT_KEY = "height";
-    public static String NOODLE_KEY = "noodle";
+    public static String KEY_HEIGHT = "height";
+    public static String KEY_NOODLE = "noodle";
     
     private final int POINTS_PER_LEVEL = 4;
     private final int POINTS_FOR_NOODLE = 6;
@@ -73,15 +73,34 @@ public class StackContainer implements StackBase
     }
 
     @Override
-    public JSONObject getJSONObject()
+    public JSONObject serialize()
     {
         HashMap<String, Object> map = new HashMap<>();        
-        map.put(HEIGHT_KEY, stackHeight);
-        map.put(NOODLE_KEY, hasNoodle);
+        map.put(KEY_HEIGHT, stackHeight);
+        map.put(KEY_NOODLE, hasNoodle);
         JSONObject json = new JSONObject(map);        
         return json;
     }
     
+    /**
+     * Converts the the JSON String into a valid object
+     * @param jsonStr
+     * @return 
+     */
+    public static StackContainer deserialize(String jsonStr)
+    {
+        JSONObject json = new JSONObject(jsonStr);
+        return deserialize(json);
+    }
     
-
+    
+    /**
+     * Converts the the JSON object into a valid object
+     * @param json
+     * @return 
+     */
+    public static StackContainer deserialize(JSONObject json)
+    {        
+        return new StackContainer(json.getInt(KEY_HEIGHT), json.getBoolean(KEY_NOODLE));
+    }
 }
