@@ -121,7 +121,7 @@ public class MatchData
         map.put(matchScouterKey, matchScouter);
         map.put(matchFinalScoreKey, matchFinalScore);
         
-        map.put(activityTypeKey, activityType);
+        map.put(activityTypeKey, activityType.toString());
         map.put(activityCommentKey, activityComment);
         
         map.put(autoNumberTotesKey, autoNumberTotes);
@@ -129,7 +129,9 @@ public class MatchData
         map.put(autoNumberContainersKey, autoNumberContainers);
         map.put(autoInAutoZoneKey, autoInAutoZone);
         
-        map.put(coopTypeKey, coopType);
+        map.put(coopTypeKey, coopType.toString());
+        
+        
                
         //load the JSON object into an array
         ArrayList<JSONObject> containerArrayList = new ArrayList<>();              
@@ -150,7 +152,7 @@ public class MatchData
         map.put(teleopContainerStacksKey, containerArray);
         map.put(teleopToteStacksKey, toteArray);
         
-        map.put(humanPlayerTypeKey, humanPlayerType);
+        map.put(humanPlayerTypeKey, humanPlayerType.toString());
         JSONObject json = new JSONObject(map);          
         return json.toString();
     }
