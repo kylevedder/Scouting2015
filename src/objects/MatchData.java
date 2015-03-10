@@ -162,17 +162,7 @@ public class MatchData
      */
     public static MatchData fromJSONtoMatchData(String jsonStr)
     {
-//        JSONObject jsonObj = new JSONObject("{\"phonetype\":\"N95\",\"cat\":\"WP\"}");
-//        JSONParser parser = new JSONParser();
-//        try
-//        {
-////            JSONObject jsonObj = (JSONObject)parser.parse(jsonStr);
-//            System.out.println(jsonObj.toJSONString());
-//        }
-//        catch (ParseException ex)
-//        {
-//            Logger.getLogger(MatchData.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+        JSONObject json = new JSONObject(jsonStr);
         return null;
     }
 
