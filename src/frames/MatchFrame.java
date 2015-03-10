@@ -434,6 +434,13 @@ public class MatchFrame extends javax.swing.JFrame implements ResetableFrame
                 buttonAddToteStackMouseClicked(evt);
             }
         });
+        buttonAddToteStack.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                buttonAddToteStackActionPerformed(evt);
+            }
+        });
 
         buttonRemoveToteStack.setText("-");
         buttonRemoveToteStack.addMouseListener(new java.awt.event.MouseAdapter()
@@ -441,6 +448,13 @@ public class MatchFrame extends javax.swing.JFrame implements ResetableFrame
             public void mouseClicked(java.awt.event.MouseEvent evt)
             {
                 buttonRemoveToteStackMouseClicked(evt);
+            }
+        });
+        buttonRemoveToteStack.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                buttonRemoveToteStackActionPerformed(evt);
             }
         });
 
@@ -480,6 +494,13 @@ public class MatchFrame extends javax.swing.JFrame implements ResetableFrame
                 buttonAddContainerStackMouseClicked(evt);
             }
         });
+        buttonAddContainerStack.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                buttonAddContainerStackActionPerformed(evt);
+            }
+        });
 
         buttonRemoveContainerStack.setText("-");
         buttonRemoveContainerStack.addMouseListener(new java.awt.event.MouseAdapter()
@@ -487,6 +508,13 @@ public class MatchFrame extends javax.swing.JFrame implements ResetableFrame
             public void mouseClicked(java.awt.event.MouseEvent evt)
             {
                 buttonRemoveContainerStackMouseClicked(evt);
+            }
+        });
+        buttonRemoveContainerStack.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                buttonRemoveContainerStackActionPerformed(evt);
             }
         });
 
@@ -736,24 +764,17 @@ public class MatchFrame extends javax.swing.JFrame implements ResetableFrame
 
     private void buttonAddToteStackMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_buttonAddToteStackMouseClicked
     {//GEN-HEADEREND:event_buttonAddToteStackMouseClicked
-        ToteStackDialogue dialogue = new ToteStackDialogue(this);
-        dialogue.setVisible(true);
+        
     }//GEN-LAST:event_buttonAddToteStackMouseClicked
 
     private void buttonAddContainerStackMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_buttonAddContainerStackMouseClicked
     {//GEN-HEADEREND:event_buttonAddContainerStackMouseClicked
-        ContainerStackDialogue dialogue = new ContainerStackDialogue(this);
-        dialogue.setVisible(true);
-    }//GEN-LAST:event_buttonAddContainerStackMouseClicked
 
-    private void buttonRemoveToteStackMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_buttonRemoveToteStackMouseClicked
-    {//GEN-HEADEREND:event_buttonRemoveToteStackMouseClicked
-        removeSelectedFromList(listToteStack);
-    }//GEN-LAST:event_buttonRemoveToteStackMouseClicked
+    }//GEN-LAST:event_buttonAddContainerStackMouseClicked
 
     private void buttonRemoveContainerStackMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_buttonRemoveContainerStackMouseClicked
     {//GEN-HEADEREND:event_buttonRemoveContainerStackMouseClicked
-        removeSelectedFromList(listContainerStack);
+        
     }//GEN-LAST:event_buttonRemoveContainerStackMouseClicked
 
     private void spinnerNumTotesPropertyChange(java.beans.PropertyChangeEvent evt)//GEN-FIRST:event_spinnerNumTotesPropertyChange
@@ -844,7 +865,7 @@ public class MatchFrame extends javax.swing.JFrame implements ResetableFrame
             MatchData matchData = scrapeData();
             Main.matchManager.addMatch(matchData);
             //requests user input to reset the frame
-            new ResetRequestFrame(this);            
+            new ResetRequestFrame(this);
         }
     }//GEN-LAST:event_buttonSaveActionPerformed
 
@@ -858,9 +879,37 @@ public class MatchFrame extends javax.swing.JFrame implements ResetableFrame
         fieldMatchNum.setText(utils.Utils.removeNonNumericChars(fieldMatchNum.getText()));
     }//GEN-LAST:event_fieldMatchNumKeyReleased
 
+    private void buttonAddToteStackActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_buttonAddToteStackActionPerformed
+    {//GEN-HEADEREND:event_buttonAddToteStackActionPerformed
+        ToteStackDialogue dialogue = new ToteStackDialogue(this);
+        dialogue.setVisible(true);
+    }//GEN-LAST:event_buttonAddToteStackActionPerformed
+
+    private void buttonAddContainerStackActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_buttonAddContainerStackActionPerformed
+    {//GEN-HEADEREND:event_buttonAddContainerStackActionPerformed
+        ContainerStackDialogue dialogue = new ContainerStackDialogue(this);
+        dialogue.setVisible(true);
+    }//GEN-LAST:event_buttonAddContainerStackActionPerformed
+
+    private void buttonRemoveContainerStackActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_buttonRemoveContainerStackActionPerformed
+    {//GEN-HEADEREND:event_buttonRemoveContainerStackActionPerformed
+        removeSelectedFromList(listContainerStack);
+    }//GEN-LAST:event_buttonRemoveContainerStackActionPerformed
+
+    private void buttonRemoveToteStackActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_buttonRemoveToteStackActionPerformed
+    {//GEN-HEADEREND:event_buttonRemoveToteStackActionPerformed
+        removeSelectedFromList(listToteStack);
+    }//GEN-LAST:event_buttonRemoveToteStackActionPerformed
+
+    private void buttonRemoveToteStackMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_buttonRemoveToteStackMouseClicked
+    {//GEN-HEADEREND:event_buttonRemoveToteStackMouseClicked
+
+    }//GEN-LAST:event_buttonRemoveToteStackMouseClicked
+
     /**
      * Pulls all data from the form and sticks it in a match data object.
-     * @return 
+     *
+     * @return
      */
     private MatchData scrapeData()
     {
@@ -900,7 +949,6 @@ public class MatchFrame extends javax.swing.JFrame implements ResetableFrame
             rbtActType = RobotActivityType.INACTIVE;
         }
         String rbtActComment = textAreaRobotActivityComments.getText().trim();
-        
 
         //GET StackTotes            
         ListModel<StackBase> listModel = listToteStack.getModel();
@@ -922,19 +970,18 @@ public class MatchFrame extends javax.swing.JFrame implements ResetableFrame
         int matchNum = Integer.valueOf(fieldMatchNum.getText());
         int teamNum = Integer.valueOf(fieldTeamNum.getText());
         String scouter = fieldScouter.getText();
-        
+
         //GET Auto data
-        int autoNumContainers = (int)spinnerNumContainers.getValue();
-        int autoNumTotes = (int)spinnerNumTotes.getValue();
+        int autoNumContainers = (int) spinnerNumContainers.getValue();
+        int autoNumTotes = (int) spinnerNumTotes.getValue();
         boolean autoTotesStacked = checkBoxTotesStacked.isSelected();
         boolean autoInAutoZone = checkBoxInAutoZone.isSelected();
-        
+
         //GET final match data
         int finalScore = Integer.parseInt(fieldMatchScore.getText());
-        
-        
+
         return new MatchData(matchNum, teamNum, scouter, autoNumTotes, autoNumContainers, autoTotesStacked, autoInAutoZone, stackTotes, stackContainers, rbtActType, rbtActComment, coopType, hpType, finalScore);
-        
+
     }
 
     /**

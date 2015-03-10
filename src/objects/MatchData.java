@@ -5,15 +5,16 @@
  */
 package objects;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import objects.stacks.StackBase;
 import objects.stacks.StackContainer;
 import objects.stacks.StackTote;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 
 /**
  *
@@ -107,30 +108,72 @@ public class MatchData
         this.humanPlayerType = humanPlayerType;
         System.out.println(toJSON());
     }
-    
+        
+    /**
+     * Converts the match data object to JSON String
+     * @return 
+     */    
     public String toJSON()
-    {                                        
-        JSONObject json = new JSONObject();
-        json.put(matchMatchNumberKey, matchMatchNumber);
-        json.put(matchTeamNumberKey, matchTeamNumber);
-        json.put(matchScouterKey, matchScouter);
-        json.put(matchFinalScoreKey, matchFinalScore);
+    {        
+        HashMap<String, Object> map = new HashMap<>();        
+        map.put(matchMatchNumberKey, matchMatchNumber);
+        map.put(matchTeamNumberKey, matchTeamNumber);
+        map.put(matchScouterKey, matchScouter);
+        map.put(matchFinalScoreKey, matchFinalScore);
         
-        json.put(activityTypeKey, activityType);
-        json.put(activityCommentKey, activityComment);
+        map.put(activityTypeKey, activityType);
+        map.put(activityCommentKey, activityComment);
         
-        json.put(autoNumberTotesKey, autoNumberTotes);
-        json.put(autoTotesStackedKey, autoTotesStacked);
-        json.put(autoNumberContainersKey, autoNumberContainers);
-        json.put(autoInAutoZoneKey, autoInAutoZone);
+        map.put(autoNumberTotesKey, autoNumberTotes);
+        map.put(autoTotesStackedKey, autoTotesStacked);
+        map.put(autoNumberContainersKey, autoNumberContainers);
+        map.put(autoInAutoZoneKey, autoInAutoZone);
         
-        json.put(coopTypeKey, coopType);
-                
-        json.put(teleopContainerStacksKey, teleopContainerStacks);        
-        json.put(teleopToteStacksKey, teleopToteStacks);
+        map.put(coopTypeKey, coopType);
+               
+        //load the JSON object into an array
+        ArrayList<JSONObject> containerArrayList = new ArrayList<>();              
+        for(StackBase stack: teleopContainerStacks)
+        {           
+            containerArrayList.add(stack.getJSONObject());           
+        }
+        JSONArray containerArray = new JSONArray(containerArrayList.toArray());  
         
-        json.put(humanPlayerTypeKey, humanPlayerType);
-        return json.toJSONString();
+        //load the JSON object into an array
+        ArrayList<JSONObject> toteArrayList = new ArrayList<>();
+        for(StackBase stack: teleopToteStacks)
+        {            
+            toteArrayList.add(stack.getJSONObject());
+        }
+        JSONArray toteArray = new JSONArray(toteArrayList.toArray());
+        
+        map.put(teleopContainerStacksKey, containerArray);
+        map.put(teleopToteStacksKey, toteArray);
+        
+        map.put(humanPlayerTypeKey, humanPlayerType);
+        JSONObject json = new JSONObject(map);          
+        return json.toString();
+    }
+    
+    /**
+     * Converts a JSON string into a MatchData object.
+     * @param jsonStr
+     * @return 
+     */
+    public static MatchData fromJSONtoMatchData(String jsonStr)
+    {
+//        JSONObject jsonObj = new JSONObject("{\"phonetype\":\"N95\",\"cat\":\"WP\"}");
+//        JSONParser parser = new JSONParser();
+//        try
+//        {
+////            JSONObject jsonObj = (JSONObject)parser.parse(jsonStr);
+//            System.out.println(jsonObj.toJSONString());
+//        }
+//        catch (ParseException ex)
+//        {
+//            Logger.getLogger(MatchData.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+        return null;
     }
 
     public String getActivityComment()

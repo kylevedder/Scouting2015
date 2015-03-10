@@ -5,8 +5,9 @@
  */
 package objects.stacks;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
+import java.util.HashMap;
+import org.json.JSONObject;
+
 
 /**
  *
@@ -44,6 +45,7 @@ public class StackTote implements StackBase
         } 
         catch (Exception ex)
         {
+            this.stackHeight = 0;
             ex.printStackTrace();
         }
     }
@@ -67,8 +69,9 @@ public class StackTote implements StackBase
     @Override
     public JSONObject getJSONObject()
     {
-        JSONObject json = new JSONObject();
-        json.put(HEIGHT_KEY, stackHeight);
+        HashMap<String, Object> map = new HashMap<>();        
+        map.put(HEIGHT_KEY, stackHeight);
+        JSONObject json = new JSONObject(map);
         return json;
     }
 

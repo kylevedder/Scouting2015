@@ -5,8 +5,9 @@
  */
 package objects.stacks;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
+import java.util.HashMap;
+import org.json.JSONObject;
+
 
 /**
  *
@@ -74,9 +75,10 @@ public class StackContainer implements StackBase
     @Override
     public JSONObject getJSONObject()
     {
-        JSONObject json = new JSONObject();
-        json.put(HEIGHT_KEY, stackHeight);
-        json.put(NOODLE_KEY, hasNoodle);
+        HashMap<String, Object> map = new HashMap<>();        
+        map.put(HEIGHT_KEY, stackHeight);
+        map.put(NOODLE_KEY, hasNoodle);
+        JSONObject json = new JSONObject(map);        
         return json;
     }
     
