@@ -108,7 +108,8 @@ public class MatchData
         this.teleopContainerStacks = teleopContainerStacks;
 
         this.humanPlayerType = humanPlayerType;
-        System.out.println(serialize());
+        String serialized = serialize();
+        System.out.println(serialized);        
     }
 
     /**
