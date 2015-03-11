@@ -63,7 +63,7 @@ public class StackTote implements StackBase
     @Override
     public String toString()
     {
-        return "Height:" + stackHeight;
+        return "Height: " + stackHeight;
     }
 
     @Override

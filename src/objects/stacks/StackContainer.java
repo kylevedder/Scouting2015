@@ -69,7 +69,7 @@ public class StackContainer implements StackBase
     @Override
     public String toString()
     {
-        return "Stack Height:" + stackHeight + " Noodle:" + hasNoodle;
+        return "Stack Height: " + stackHeight + " Noodle: " + ((hasNoodle)?"yes":"no");
     }
 
     @Override

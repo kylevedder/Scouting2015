@@ -607,15 +607,16 @@ public class MatchFrame extends javax.swing.JFrame implements ResetableFrame
 
         buttonGroupHumanPlayer.add(radioHPPoor);
         radioHPPoor.setSelected(true);
-        radioHPPoor.setText("Poor (0 - 12 pts)");
+        radioHPPoor.setText("Attempted (0 scored noodles)");
         radioHPPoor.setEnabled(false);
 
         buttonGroupHumanPlayer.add(radioHPMediocre);
-        radioHPMediocre.setText("Mediocre (16 - 24 pts)");
+        radioHPMediocre.setText("Mediocre (1 to 2 scored noodles)");
+        radioHPMediocre.setToolTipText("");
         radioHPMediocre.setEnabled(false);
 
         buttonGroupHumanPlayer.add(radioHPExcellent);
-        radioHPExcellent.setText("Excellent (28+ pts)");
+        radioHPExcellent.setText("Excellent (3+ scored noodles)");
         radioHPExcellent.setActionCommand("Excellent");
         radioHPExcellent.setEnabled(false);
 
