@@ -9,6 +9,9 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import objects.MatchData;
@@ -22,6 +25,11 @@ public class MatchManager
 
     //singleton object
     private static MatchManager matchManager = null;
+    
+    private String host = "127.0.0.1";
+    private int port = 8080;
+
+    public static final List<File> filesToSend = Collections.synchronizedList(new ArrayList<File>());
 
     private static final String LOCAL_FOLDER_PATH = "./saves/local";
     private static final String SERVER_FOLDER_PATH = "./saves/server";
@@ -58,6 +66,7 @@ public class MatchManager
         {
             serverFolder.mkdirs();
         }
+        Thread fileSenderThread = new Thread(new FileClient(host, port));
     }
 
     /**
@@ -70,15 +79,19 @@ public class MatchManager
         FileWriter fw = null;
         String fileName = getFileNameFromMatchData(match);
         File localFile = new File(localFolder, fileName);
-        String content = match.serialize();        
+        String content = match.serialize();
         try
         {
             System.out.println("Writing File: " + localFile.getCanonicalPath() + "\n"
-            + "Content: " + content);
+                    + "Content: " + content);
             fw = new FileWriter(localFile.getAbsoluteFile());
             BufferedWriter bw = new BufferedWriter(fw);
             bw.write(content);
             bw.close();
+            synchronized (filesToSend)
+            {
+                filesToSend.add(localFile);
+            }            
         } catch (IOException ex)
         {
             Logger.getLogger(MatchManager.class.getName()).log(Level.SEVERE, null, ex);
@@ -87,7 +100,10 @@ public class MatchManager
         {
             try
             {
-                fw.close();
+                if (fw != null)
+                {
+                    fw.close();
+                }
             } catch (IOException ex)
             {
                 Logger.getLogger(MatchManager.class.getName()).log(Level.SEVERE, null, ex);
