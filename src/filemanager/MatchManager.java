@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import objects.MatchData;
+import threading.Flag;
 
 /**
  *
@@ -25,10 +26,11 @@ public class MatchManager
 
     //singleton object
     private static MatchManager matchManager = null;
-    
+
     private String host = "127.0.0.1";
     private int port = 8080;
 
+    public Flag filesToSendFlag = new Flag(true);
     public static final List<File> filesToSend = Collections.synchronizedList(new ArrayList<File>());
 
     private static final String LOCAL_FOLDER_PATH = "./saves/local";
@@ -66,6 +68,8 @@ public class MatchManager
         {
             serverFolder.mkdirs();
         }
+
+        filesToSendFlag.lock();
         Thread fileSenderThread = new Thread(new FileClient(host, port));
     }
 
@@ -88,10 +92,6 @@ public class MatchManager
             BufferedWriter bw = new BufferedWriter(fw);
             bw.write(content);
             bw.close();
-            synchronized (filesToSend)
-            {
-                filesToSend.add(localFile);
-            }            
         } catch (IOException ex)
         {
             Logger.getLogger(MatchManager.class.getName()).log(Level.SEVERE, null, ex);
@@ -108,6 +108,56 @@ public class MatchManager
             {
                 Logger.getLogger(MatchManager.class.getName()).log(Level.SEVERE, null, ex);
             }
+        }
+        synchronized (filesToSend)
+        {
+            filesToSend.add(localFile);
+        }
+    }
+
+    /**
+     * Gets a file to send to
+     *
+     * @return
+     */
+    public File getFileToSend()
+    {
+        synchronized (filesToSend)
+        {
+            if (!filesToSend.isEmpty())
+            {
+                return filesToSend.get(0);
+            }
+            else
+            {
+                return null;
+            }
+        }
+    }
+
+    /**
+     * Checks to see of there are files to send to the server.
+     *
+     * @return
+     */
+    public boolean hasFilesToSend()
+    {
+        synchronized (filesToSend)
+        {
+            return !filesToSend.isEmpty();
+        }
+    }
+
+    /**
+     * Removes the instance of passed file from the list
+     *
+     * @param f
+     */
+    public void removeFile(File f)
+    {
+        synchronized (filesToSend)//hi kyle -pimp
+        {
+            filesToSend.remove(f);
         }
     }
 

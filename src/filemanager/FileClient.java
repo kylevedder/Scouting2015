@@ -14,6 +14,7 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import main.Main;
 import org.apache.commons.io.IOUtils;
 
 /**
@@ -22,6 +23,9 @@ import org.apache.commons.io.IOUtils;
  */
 public class FileClient implements Runnable
 {
+
+    private boolean isRunning = true;
+
     private int port;
     private String address = "";
 
@@ -34,23 +38,45 @@ public class FileClient implements Runnable
     @Override
     public void run()
     {
-        
-        try
+        while (isRunning)
         {
-            //Access the file
-            File fileToSend = new File("./test.txt");
-            
-            //setup connection
-            Socket connection = new Socket(this.address, this.port);
-            
-            InputStream fileStream = new BufferedInputStream(new FileInputStream(fileToSend));            
-            OutputStream out = connection.getOutputStream(); 
-            
-            //spit the "filestream" into the "out" stream
-            IOUtils.copy(fileStream, out);            
-        } catch (IOException ex)
-        {
-            Logger.getLogger(FileClient.class.getName()).log(Level.SEVERE, null, ex);
-        }                
+            Main.matchManager.filesToSendFlag.await();
+                        
+            if (Main.matchManager.hasFilesToSend())
+            {
+                //Access the file
+                File fileToSend = Main.matchManager.getFileToSend();
+                try
+                {
+
+                    //setup connection
+                    Socket connection = new Socket(this.address, this.port);
+
+                    InputStream fileStream = new BufferedInputStream(new FileInputStream(fileToSend));
+                    OutputStream out = connection.getOutputStream();
+
+                    //spit the "filestream" into the "out" stream
+                    IOUtils.copy(fileStream, out);
+                    
+                    //now, with the file sent, remove the file from the list
+                    Main.matchManager.removeFile(fileToSend);
+                } catch (IOException ex)
+                {
+                    Logger.getLogger(FileClient.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            else
+            {
+                Main.matchManager.filesToSendFlag.unlock();
+            }
+        }
+    }
+
+    /**
+     * Gracefully kills the thread
+     */
+    public void kill()
+    {
+        this.isRunning = false;
     }
 }
