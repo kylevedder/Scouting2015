@@ -11,7 +11,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.net.Socket;
+import java.nio.charset.Charset;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import main.Main;
@@ -38,36 +40,54 @@ public class FileClient implements Runnable
     @Override
     public void run()
     {
+        Socket connection = null;
+        while (connection == null)
+        {
+            try
+            {
+                connection = new Socket(this.address, this.port);
+            } catch (IOException ex)
+            {
+
+            }
+        }
         while (isRunning)
         {
             Main.matchManager.filesToSendFlag.await();
-                        
-            if (Main.matchManager.hasFilesToSend())
+
+            File fileToSend = null;
+            try
             {
-                //Access the file
-                File fileToSend = Main.matchManager.getFileToSend();
-                try
+                if (Main.matchManager.hasFilesToSend())
                 {
+                    //Access the file
+                    fileToSend = Main.matchManager.getFileToSend();
 
-                    //setup connection
-                    Socket connection = new Socket(this.address, this.port);
-
+                    //setup connection                    
                     InputStream fileStream = new BufferedInputStream(new FileInputStream(fileToSend));
                     OutputStream out = connection.getOutputStream();
-
+                    
+                    PrintWriter write = new PrintWriter(out);                    
+                    
                     //spit the "filestream" into the "out" stream
                     IOUtils.copy(fileStream, out);
-                    
-                    //now, with the file sent, remove the file from the list
-                    Main.matchManager.removeFile(fileToSend);
-                } catch (IOException ex)
-                {
-                    Logger.getLogger(FileClient.class.getName()).log(Level.SEVERE, null, ex);
+                    //appends the new line to get the line to be read on the server end.
+                    byte[] b = "\n".getBytes(Charset.forName("UTF-8"));
+                    out.write(b);
+                    //sends the buffered content out
+                    out.flush();                   
+
+                    System.out.println("Sent File: " + fileToSend.getName());
                 }
-            }
-            else
+                else
+                {
+                    Main.matchManager.filesToSendFlag.lock();
+                }
+            } catch (IOException ex)
             {
-                Main.matchManager.filesToSendFlag.unlock();
+                Logger.getLogger(FileClient.class.getName()).log(Level.SEVERE, null, ex);
+                //return any unwritten files to the queue
+                Main.matchManager.returnFile(fileToSend);
             }
         }
     }

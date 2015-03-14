@@ -71,6 +71,7 @@ public class MatchManager
 
         filesToSendFlag.lock();
         Thread fileSenderThread = new Thread(new FileClient(host, port));
+        fileSenderThread.start();
     }
 
     /**
@@ -113,10 +114,11 @@ public class MatchManager
         {
             filesToSend.add(localFile);
         }
+        filesToSendFlag.unlock();
     }
 
     /**
-     * Gets a file to send to
+     * Gets a file to send to the server
      *
      * @return
      */
@@ -125,8 +127,8 @@ public class MatchManager
         synchronized (filesToSend)
         {
             if (!filesToSend.isEmpty())
-            {
-                return filesToSend.get(0);
+            {                
+                return filesToSend.remove(0);
             }
             else
             {
@@ -147,17 +149,17 @@ public class MatchManager
             return !filesToSend.isEmpty();
         }
     }
-
+    
+    
     /**
-     * Removes the instance of passed file from the list
-     *
-     * @param f
+     * Returns any assigned but unwritten files to the queue.
+     * @param f 
      */
-    public void removeFile(File f)
+    public void returnFile(File f)
     {
-        synchronized (filesToSend)//hi kyle -pimp
+        synchronized (filesToSend)
         {
-            filesToSend.remove(f);
+            filesToSend.add(f);
         }
     }
 
@@ -169,6 +171,6 @@ public class MatchManager
      */
     private String getFileNameFromMatchData(MatchData match)
     {
-        return String.valueOf(match.getMatchMatchNumber()) + "_" + String.valueOf(match.getMatchTeamNumber() + ".txt");
+        return String.valueOf(match.getMatchMatchNumber()) + "_" + String.valueOf(match.getMatchTeamNumber() + "_" + String.valueOf(match.getMatchScouter().trim().replaceAll(" ", "_")) + ".json");
     }
 }
