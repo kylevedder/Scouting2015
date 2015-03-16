@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package objects;
+package client.objects;
 
 /**
  *
  * @author Kyle
  */
-public enum CoOpType
+public enum HumanPlayerType
 {
-    NONE, UNSTACKED, STACKED
+    NO_THROW, POOR, MEDIOCRE, EXCELLENT
 }

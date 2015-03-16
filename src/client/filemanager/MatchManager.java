@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package filemanager;
+package client.filemanager;
 
-import networking.SyncFilesThread;
+import client.networking.SyncFilesClientThread;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -16,8 +16,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import objects.MatchData;
-import threading.Flag;
+import client.objects.MatchData;
+import utils.Flag;
 
 /**
  *
@@ -114,7 +114,7 @@ public class MatchManager
                 Logger.getLogger(MatchManager.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        Thread fileSenderThread = new Thread(new SyncFilesThread(host, port, 5));
+        Thread fileSenderThread = new Thread(new SyncFilesClientThread(host, port, 5));
         fileSenderThread.start();
     }
 

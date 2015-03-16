@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package threading;
+package utils;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Semaphore;

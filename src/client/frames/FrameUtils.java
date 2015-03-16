@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package frames;
+package client.frames;
 
 import javax.swing.BorderFactory;
 import javax.swing.border.Border;

@@ -3,13 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package objects;
+package client.frames;
 
 /**
  *
  * @author Kyle
  */
-public enum HumanPlayerType
+public interface ResetableFrame
 {
-    NO_THROW, POOR, MEDIOCRE, EXCELLENT
+    /**
+     * Resets the frame to its default values.
+     */
+    public void resetFrame();
 }

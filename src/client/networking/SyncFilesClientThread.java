@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package networking;
+package client.networking;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import main.Main;
+import client.main.Main;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
 
@@ -29,7 +29,7 @@ import org.json.JSONObject;
  *
  * @author kyle
  */
-public class SyncFilesThread implements Runnable
+public class SyncFilesClientThread implements Runnable
 {
 
     private int port = -1;
@@ -50,7 +50,7 @@ public class SyncFilesThread implements Runnable
      * @param port
      * @param numConnectRetries
      */
-    public SyncFilesThread(String address, int port, int numConnectRetries)
+    public SyncFilesClientThread(String address, int port, int numConnectRetries)
     {
         this.port = port;
         this.address = address;
@@ -96,7 +96,7 @@ public class SyncFilesThread implements Runnable
         }
         catch (IOException ex)
         {
-            Logger.getLogger(SyncFilesThread.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SyncFilesClientThread.class.getName()).log(Level.SEVERE, null, ex);
             return;
         }
 
@@ -127,7 +127,7 @@ public class SyncFilesThread implements Runnable
             }
             catch (IOException ex)
             {
-                Logger.getLogger(SyncFilesThread.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(SyncFilesClientThread.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
 
@@ -140,7 +140,7 @@ public class SyncFilesThread implements Runnable
         }
         catch (IOException ex)
         {
-            Logger.getLogger(SyncFilesThread.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SyncFilesClientThread.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
@@ -170,11 +170,11 @@ public class SyncFilesThread implements Runnable
         }
         catch (FileNotFoundException ex)
         {
-            Logger.getLogger(SyncFilesThread.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SyncFilesClientThread.class.getName()).log(Level.SEVERE, null, ex);
         }
         catch (IOException ex)
         {
-            Logger.getLogger(SyncFilesThread.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SyncFilesClientThread.class.getName()).log(Level.SEVERE, null, ex);
         }
         return contents;
     }

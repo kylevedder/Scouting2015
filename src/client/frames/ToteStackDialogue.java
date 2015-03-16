@@ -3,28 +3,27 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package frames;
+package client.frames;
 
-import java.awt.Color;
-import objects.stacks.StackContainer;
+import client.objects.stacks.StackContainer;
+import client.objects.stacks.StackTote;
 
 /**
  *
  * @author Kyle
  */
-public class ContainerStackDialogue extends javax.swing.JFrame
+public class ToteStackDialogue extends javax.swing.JFrame
 {
-
     MatchFrame parent = null;
 
     /**
      * Creates new form ToteStackDialogue
      */
-    public ContainerStackDialogue(MatchFrame parent)
+    public ToteStackDialogue(MatchFrame parent)
     {
         this.parent = parent;
         initComponents();
-        this.setLocationRelativeTo(null);
+        this.setLocationRelativeTo(null); 
         this.setAlwaysOnTop(true);
     }
 
@@ -41,10 +40,9 @@ public class ContainerStackDialogue extends javax.swing.JFrame
         labelNumTotes = new javax.swing.JLabel();
         fieldNumTotes = new javax.swing.JTextField();
         buttonOK = new javax.swing.JButton();
-        checkBoxPoolNoodle = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Container Stack Information");
+        setTitle("Tote Stack Information");
         setResizable(false);
         addKeyListener(new java.awt.event.KeyAdapter()
         {
@@ -54,7 +52,7 @@ public class ContainerStackDialogue extends javax.swing.JFrame
             }
         });
 
-        labelNumTotes.setText("Stack Height:");
+        labelNumTotes.setText("Number of Totes:");
 
         fieldNumTotes.addKeyListener(new java.awt.event.KeyAdapter()
         {
@@ -73,15 +71,6 @@ public class ContainerStackDialogue extends javax.swing.JFrame
             }
         });
 
-        checkBoxPoolNoodle.setText("Pool Noodle?");
-        checkBoxPoolNoodle.addKeyListener(new java.awt.event.KeyAdapter()
-        {
-            public void keyTyped(java.awt.event.KeyEvent evt)
-            {
-                checkBoxPoolNoodleKeyTyped(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -94,8 +83,7 @@ public class ContainerStackDialogue extends javax.swing.JFrame
                         .addComponent(labelNumTotes)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(fieldNumTotes, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(checkBoxPoolNoodle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -104,8 +92,7 @@ public class ContainerStackDialogue extends javax.swing.JFrame
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelNumTotes)
-                    .addComponent(fieldNumTotes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(checkBoxPoolNoodle))
+                    .addComponent(fieldNumTotes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(buttonOK)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -136,16 +123,8 @@ public class ContainerStackDialogue extends javax.swing.JFrame
             sendDataAndExit();
         }
     }//GEN-LAST:event_formKeyTyped
-
-    private void checkBoxPoolNoodleKeyTyped(java.awt.event.KeyEvent evt)//GEN-FIRST:event_checkBoxPoolNoodleKeyTyped
-    {//GEN-HEADEREND:event_checkBoxPoolNoodleKeyTyped
-        //is enter
-        if (evt.getKeyChar() == 10)
-        {
-            sendDataAndExit();
-        }
-    }//GEN-LAST:event_checkBoxPoolNoodleKeyTyped
-
+    
+    
     /**
      * Sends the data entered in the form to the main frame and exits
      */
@@ -156,7 +135,7 @@ public class ContainerStackDialogue extends javax.swing.JFrame
         numTotesString = utils.Utils.removeNonNumericChars(numTotesString);
         if (numTotesString != null && !numTotesString.equals(""))
         {            
-            parent.addItem(new StackContainer(numTotesString, checkBoxPoolNoodle.isSelected()));
+            parent.addItem(new StackTote(numTotesString));
             this.dispose();
         }
         else
@@ -164,10 +143,8 @@ public class ContainerStackDialogue extends javax.swing.JFrame
         }
     }
 
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonOK;
-    private javax.swing.JCheckBox checkBoxPoolNoodle;
     private javax.swing.JTextField fieldNumTotes;
     private javax.swing.JLabel labelNumTotes;
     // End of variables declaration//GEN-END:variables

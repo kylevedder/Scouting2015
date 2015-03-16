@@ -3,15 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package objects;
+package client.objects;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import objects.stacks.StackBase;
-import objects.stacks.StackContainer;
-import objects.stacks.StackTote;
+import client.objects.stacks.StackBase;
+import client.objects.stacks.StackContainer;
+import client.objects.stacks.StackTote;
 import org.json.JSONArray;
 import org.json.JSONObject;
 

@@ -3,16 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package frames;
+package client.objects;
 
 /**
  *
  * @author Kyle
  */
-public interface ResetableFrame
+public enum CoOpType
 {
-    /**
-     * Resets the frame to its default values.
-     */
-    public void resetFrame();
+    NONE, UNSTACKED, STACKED
 }

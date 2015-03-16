@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package frames;
+package client.frames;
 
 import java.util.Enumeration;
 import java.util.logging.Level;
@@ -15,14 +15,14 @@ import javax.swing.ListModel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import main.Main;
-import objects.CoOpType;
-import objects.HumanPlayerType;
-import objects.MatchData;
-import objects.RobotActivityType;
-import objects.stacks.StackBase;
-import objects.stacks.StackContainer;
-import objects.stacks.StackTote;
+import client.main.Main;
+import client.objects.CoOpType;
+import client.objects.HumanPlayerType;
+import client.objects.MatchData;
+import client.objects.RobotActivityType;
+import client.objects.stacks.StackBase;
+import client.objects.stacks.StackContainer;
+import client.objects.stacks.StackTote;
 import utils.Utils;
 
 /**
