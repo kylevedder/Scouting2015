@@ -75,7 +75,7 @@ public class Utils
     }
     
     /**
-     * Creates an Warning message with a custom body.
+     * Creates a Warning message with a custom body.
      *
      * @param bodyMessage String holding message body
      */
