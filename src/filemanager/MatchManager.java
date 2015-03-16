@@ -5,11 +5,13 @@
  */
 package filemanager;
 
+import networking.SyncFilesThread;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
@@ -30,8 +32,7 @@ public class MatchManager
     private String host = "127.0.0.1";
     private int port = 8080;
 
-    public Flag filesToSendFlag = new Flag(true);
-    public static final List<File> filesToSend = Collections.synchronizedList(new ArrayList<File>());
+    private Flag blockAddingFilesToSendFlag = new Flag(false);
 
     private static final String LOCAL_FOLDER_PATH = "./saves/local";
     private static final String SERVER_FOLDER_PATH = "./saves/server";
@@ -69,9 +70,8 @@ public class MatchManager
             serverFolder.mkdirs();
         }
 
-        filesToSendFlag.lock();
-        Thread fileSenderThread = new Thread(new FileClient(host, port));
-        fileSenderThread.start();
+        //leave unlocked, should be locked for pulling all files from the SyncFilesThread only
+        blockAddingFilesToSendFlag.unlock();
     }
 
     /**
@@ -81,6 +81,8 @@ public class MatchManager
      */
     public void addMatch(MatchData match)
     {
+        //block until clear to add match data
+        blockAddingFilesToSendFlag.await();
         FileWriter fw = null;
         String fileName = getFileNameFromMatchData(match);
         File localFile = new File(localFolder, fileName);
@@ -93,7 +95,8 @@ public class MatchManager
             BufferedWriter bw = new BufferedWriter(fw);
             bw.write(content);
             bw.close();
-        } catch (IOException ex)
+        }
+        catch (IOException ex)
         {
             Logger.getLogger(MatchManager.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -105,62 +108,30 @@ public class MatchManager
                 {
                     fw.close();
                 }
-            } catch (IOException ex)
+            }
+            catch (IOException ex)
             {
                 Logger.getLogger(MatchManager.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        synchronized (filesToSend)
-        {
-            filesToSend.add(localFile);
-        }
-        filesToSendFlag.unlock();
+        Thread fileSenderThread = new Thread(new SyncFilesThread(host, port, 5));
+        fileSenderThread.start();
     }
 
     /**
-     * Gets a file to send to the server
+     * Gets an File array from the local directory that need to be sent to the
+     * server.
+     * <br/>
+     * Locks the folder so that the files can be fetched without modification.
      *
      * @return
      */
-    public File getFileToSend()
+    public File[] getFilesToSend()
     {
-        synchronized (filesToSend)
-        {
-            if (!filesToSend.isEmpty())
-            {                
-                return filesToSend.remove(0);
-            }
-            else
-            {
-                return null;
-            }
-        }
-    }
-
-    /**
-     * Checks to see of there are files to send to the server.
-     *
-     * @return
-     */
-    public boolean hasFilesToSend()
-    {
-        synchronized (filesToSend)
-        {
-            return !filesToSend.isEmpty();
-        }
-    }
-    
-    
-    /**
-     * Returns any assigned but unwritten files to the queue.
-     * @param f 
-     */
-    public void returnFile(File f)
-    {
-        synchronized (filesToSend)
-        {
-            filesToSend.add(f);
-        }
+        this.blockAddingFilesToSendFlag.lock();
+        File[] files = (localFolder.listFiles());
+        this.blockAddingFilesToSendFlag.unlock();
+        return files;
     }
 
     /**
@@ -169,8 +140,11 @@ public class MatchManager
      * @param match
      * @return
      */
-    private String getFileNameFromMatchData(MatchData match)
+    public static String getFileNameFromMatchData(MatchData match)
     {
-        return String.valueOf(match.getMatchMatchNumber()) + "_" + String.valueOf(match.getMatchTeamNumber() + "_" + String.valueOf(match.getMatchScouter().trim().replaceAll(" ", "_")) + ".json");
+        return String.valueOf(match.getMatchMatchNumber()) + "_"
+                + String.valueOf(match.getMatchTeamNumber() + "_"
+                        + String.valueOf(match.getMatchScouter().trim().replaceAll(" ", "_").replace("\\", "").replace("/", "").replace(".", ""))
+                        + "_" + String.valueOf(match.serialize().hashCode()) + ".json");
     }
 }
