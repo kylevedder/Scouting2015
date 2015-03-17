@@ -5,6 +5,7 @@
  */
 package client.frames;
 
+import client.objects.activedata.RobotShape;
 import java.util.Enumeration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,10 +17,10 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import main.Main;
-import client.objects.CoOpType;
-import client.objects.HumanPlayerType;
-import client.objects.MatchData;
-import client.objects.RobotActivityType;
+import client.objects.matchdata.CoOpType;
+import client.objects.matchdata.HumanPlayerType;
+import client.objects.matchdata.MatchData;
+import client.objects.matchdata.RobotActivityType;
 import client.objects.stacks.StackBase;
 import client.objects.stacks.StackContainer;
 import client.objects.stacks.StackTote;
@@ -164,7 +165,7 @@ public class ActiveFrame extends javax.swing.JFrame implements ResetableFrame
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Match Recorder");
-        setPreferredSize(new java.awt.Dimension(930, 530));
+        setPreferredSize(null);
         setResizable(false);
 
         mainPanelScroll.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
@@ -249,7 +250,7 @@ public class ActiveFrame extends javax.swing.JFrame implements ResetableFrame
         panelRobotShape.setLayout(panelRobotShapeLayout);
         panelRobotShapeLayout.setHorizontalGroup(
             panelRobotShapeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(comboBoxRobotShape, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(comboBoxRobotShape, 0, 420, Short.MAX_VALUE)
         );
         panelRobotShapeLayout.setVerticalGroup(
             panelRobotShapeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -283,7 +284,7 @@ public class ActiveFrame extends javax.swing.JFrame implements ResetableFrame
         panelRobotDriveTrain.setLayout(panelRobotDriveTrainLayout);
         panelRobotDriveTrainLayout.setHorizontalGroup(
             panelRobotDriveTrainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(comboBoxRobotDriveTrain, 0, 420, Short.MAX_VALUE)
+            .addComponent(comboBoxRobotDriveTrain, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         panelRobotDriveTrainLayout.setVerticalGroup(
             panelRobotDriveTrainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -517,22 +518,19 @@ public class ActiveFrame extends javax.swing.JFrame implements ResetableFrame
         panelTeleopTotes.setLayout(panelTeleopTotesLayout);
         panelTeleopTotesLayout.setHorizontalGroup(
             panelTeleopTotesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelTeleopTotesLayout.createSequentialGroup()
-                .addGroup(panelTeleopTotesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(labelTeleopTotesMaxHeight)
-                    .addComponent(checkBoxTeleopTotesCanPickup)
-                    .addGroup(panelTeleopTotesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelTeleopTotesLayout.createSequentialGroup()
-                            .addComponent(labelPickupOrintation)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(comboBoxTeleopTotePickupOrientation, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelTeleopTotesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(spinnerMaxNumTotes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(panelTeleopTotesLayout.createSequentialGroup()
-                                .addComponent(labelFeedLocation)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(comboBoxTeleopToteFeedLocation, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addGap(0, 127, Short.MAX_VALUE))
+            .addComponent(labelTeleopTotesMaxHeight)
+            .addComponent(checkBoxTeleopTotesCanPickup)
+            .addGroup(panelTeleopTotesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelTeleopTotesLayout.createSequentialGroup()
+                    .addComponent(labelPickupOrintation)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(comboBoxTeleopTotePickupOrientation, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelTeleopTotesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(spinnerMaxNumTotes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(panelTeleopTotesLayout.createSequentialGroup()
+                        .addComponent(labelFeedLocation)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(comboBoxTeleopToteFeedLocation, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
         );
         panelTeleopTotesLayout.setVerticalGroup(
             panelTeleopTotesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -586,8 +584,7 @@ public class ActiveFrame extends javax.swing.JFrame implements ResetableFrame
             .addGroup(panelTeleopContainerLayout.createSequentialGroup()
                 .addComponent(labelTeleopContainersMaxHeight)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(spinnerMaxHeightContainer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 114, Short.MAX_VALUE))
+                .addComponent(spinnerMaxHeightContainer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(panelTeleopContainerLayout.createSequentialGroup()
                 .addGap(21, 21, 21)
                 .addComponent(checkBoxTeleopContainersUpright, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -614,8 +611,7 @@ public class ActiveFrame extends javax.swing.JFrame implements ResetableFrame
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelTeleopContainer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelTeleopLitter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(panelTeleopLitter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelTeleopLayout.setVerticalGroup(
             panelTeleopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -677,7 +673,7 @@ public class ActiveFrame extends javax.swing.JFrame implements ResetableFrame
                 .addGroup(panelCoopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelCoopLayout.createSequentialGroup()
                         .addComponent(radioCoopUnstacked)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 112, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(labeCoopMaxStackHeight)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(spinnerMaxCoopStack, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -732,14 +728,13 @@ public class ActiveFrame extends javax.swing.JFrame implements ResetableFrame
         panelHumanPlayerLayout.setHorizontalGroup(
             panelHumanPlayerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelHumanPlayerLayout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(checkBoxHPThrewNoodles)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelHumanPlayerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(radioHPPoor)
                     .addComponent(radioHPMediocre)
-                    .addComponent(radioHPExcellent))
-                .addContainerGap(180, Short.MAX_VALUE))
+                    .addComponent(radioHPExcellent)))
         );
         panelHumanPlayerLayout.setVerticalGroup(
             panelHumanPlayerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -759,21 +754,20 @@ public class ActiveFrame extends javax.swing.JFrame implements ResetableFrame
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mainPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(mainPanelLayout.createSequentialGroup()
-                        .addComponent(labelTitle)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(buttonSave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(mainPanelLayout.createSequentialGroup()
-                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(panelTeamInfo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(panelRobotConfig, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(panelScoring, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(mainPanelLayout.createSequentialGroup()
-                                .addComponent(panelCoop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(panelHumanPlayer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .addContainerGap())))
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(panelScoring, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, mainPanelLayout.createSequentialGroup()
+                        .addComponent(panelCoop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(panelHumanPlayer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(mainPanelLayout.createSequentialGroup()
+                            .addComponent(labelTitle)
+                            .addGap(588, 588, 588)
+                            .addComponent(buttonSave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(panelTeamInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(panelRobotConfig, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -788,7 +782,7 @@ public class ActiveFrame extends javax.swing.JFrame implements ResetableFrame
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelScoring, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(panelCoop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(panelHumanPlayer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 0, Short.MAX_VALUE))
@@ -800,11 +794,13 @@ public class ActiveFrame extends javax.swing.JFrame implements ResetableFrame
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(mainPanelScroll, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(mainPanelScroll)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(mainPanelScroll)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(mainPanelScroll, javax.swing.GroupLayout.PREFERRED_SIZE, 588, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         mainPanelScroll.getVerticalScrollBar().setUnitIncrement(SCROLL_SPEED);
@@ -878,6 +874,7 @@ public class ActiveFrame extends javax.swing.JFrame implements ResetableFrame
 
         if (assessCompletion(true))
         {
+            scrapeData();
 //            MatchData matchData = scrapeData();
 //            Main.matchManager.addMatch(matchData);
             //requests user input to reset the frame
@@ -964,15 +961,16 @@ public class ActiveFrame extends javax.swing.JFrame implements ResetableFrame
         int matchNum = Integer.valueOf(fieldMatchNum.getText());
         int teamNum = Integer.valueOf(fieldTeamNum.getText());
         String scouter = fieldScouter.getText();
+        
+        //GET Robot Shape
+        System.out.println(comboBoxRobotShape.getActionCommand().toUpperCase());
+        RobotShape robotShape = RobotShape.valueOf(comboBoxRobotShape.getActionCommand().toUpperCase());
 
         //GET Auto data
         int autoNumContainers = (int) spinnerNumContainers.getValue();
         int autoNumTotes = (int) spinnerNumTotes.getValue();
         boolean autoTotesStacked = checkBoxTotesStacked.isSelected();
-        boolean autoInAutoZone = checkBoxInAutoZone.isSelected();
-        
-
-        
+        boolean autoInAutoZone = checkBoxInAutoZone.isSelected();                
 
     }
 
@@ -1035,51 +1033,6 @@ public class ActiveFrame extends javax.swing.JFrame implements ResetableFrame
         }
 
         return defaultValue;
-    }
-
-    /**
-     * Adds an object to the given list
-     *
-     * @param list
-     * @param object
-     */
-    private void addItemToList(javax.swing.JList<StackBase> list, StackBase object)
-    {
-        ListModel<StackBase> model = list.getModel();
-        DefaultListModel<StackBase> newModel = new DefaultListModel<StackBase>();
-
-        //get all elements
-        for (int i = 0; i < model.getSize(); i++)
-        {
-            newModel.add(i, model.getElementAt(i));
-        }
-        newModel.addElement(object);
-        list.setModel(newModel);
-        list.updateUI();
-    }
-
-    /**
-     * Removes all selected elements from the given JList.
-     *
-     * @param list
-     */
-    private void removeSelectedFromList(javax.swing.JList<StackBase> list)
-    {
-        int[] selectedIndicies = list.getSelectedIndices();
-        if (selectedIndicies.length > 0)
-        {
-            ListModel<StackBase> model = list.getModel();
-            DefaultListModel<StackBase> newModel = new DefaultListModel<StackBase>();
-
-            //get all elements
-            for (int i = 0; i < model.getSize(); i++)
-            {
-                newModel.add(i, model.getElementAt(i));
-            }
-            //remove the elements to remove
-            newModel.removeRange(selectedIndicies[0], selectedIndicies[selectedIndicies.length - 1]);
-            list.setModel(newModel);
-        }
     }
 
     /**
@@ -1152,7 +1105,6 @@ public class ActiveFrame extends javax.swing.JFrame implements ResetableFrame
     private javax.swing.JTextField fieldMatchNum;
     private javax.swing.JTextField fieldScouter;
     private javax.swing.JTextField fieldTeamNum;
-    private javax.swing.JComboBox jComboBox2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel labeCoopMaxStackHeight;
     private javax.swing.JLabel labelFeedLocation;
@@ -1174,7 +1126,6 @@ public class ActiveFrame extends javax.swing.JFrame implements ResetableFrame
     private javax.swing.JPanel panelCoop;
     private javax.swing.JPanel panelHumanPlayer;
     private javax.swing.JPanel panelRobotActivityComments;
-    private javax.swing.JPanel panelRobotActivityRadio1;
     private javax.swing.JPanel panelRobotConfig;
     private javax.swing.JPanel panelRobotDriveTrain;
     private javax.swing.JPanel panelRobotShape;

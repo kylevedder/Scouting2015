@@ -95,15 +95,22 @@ public class MainFrame extends javax.swing.JFrame
         });
 
         buttonScoutingNewActive.setText("New Active Scout");
+        buttonScoutingNewActive.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                buttonScoutingNewActiveActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelScoutingDeployLayout = new javax.swing.GroupLayout(panelScoutingDeploy);
         panelScoutingDeploy.setLayout(panelScoutingDeployLayout);
         panelScoutingDeployLayout.setHorizontalGroup(
             panelScoutingDeployLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelScoutingDeployLayout.createSequentialGroup()
-                .addComponent(buttonScoutingNewMatch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(buttonScoutingNewActive, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(buttonScoutingNewMatch, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(buttonScoutingNewActive, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelScoutingDeployLayout.setVerticalGroup(
             panelScoutingDeployLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -126,7 +133,7 @@ public class MainFrame extends javax.swing.JFrame
                 .addContainerGap()
                 .addGroup(panelDataDisplayMatchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(labelDataDisplayMatchLocal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(labelDataDisplayMatchServer, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE))
+                    .addComponent(labelDataDisplayMatchServer, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE))
                 .addContainerGap())
         );
         panelDataDisplayMatchLayout.setVerticalGroup(
@@ -152,7 +159,7 @@ public class MainFrame extends javax.swing.JFrame
                 .addContainerGap()
                 .addGroup(panelDataDisplayActiveLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(labelDataDisplayActiveLocal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(labelDataDisplayActiveServer, javax.swing.GroupLayout.DEFAULT_SIZE, 135, Short.MAX_VALUE))
+                    .addComponent(labelDataDisplayActiveServer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         panelDataDisplayActiveLayout.setVerticalGroup(
@@ -191,11 +198,14 @@ public class MainFrame extends javax.swing.JFrame
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(panelScoutingDeploy, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(labelTitle)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(panelDataDisplayMatch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(panelDataDisplayActive, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(labelTitle)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(panelDataDisplayMatch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(panelDataDisplayActive, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -226,6 +236,12 @@ public class MainFrame extends javax.swing.JFrame
         String ip = Utils.showInputBoxAndGetResponse("Enter Server IP", "Server IP");
         System.out.println(ip);
     }//GEN-LAST:event_menuServerSyncActionPerformed
+
+    private void buttonScoutingNewActiveActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_buttonScoutingNewActiveActionPerformed
+    {//GEN-HEADEREND:event_buttonScoutingNewActiveActionPerformed
+        ActiveFrame activeFrame = new ActiveFrame();
+        activeFrame.setVisible(true);
+    }//GEN-LAST:event_buttonScoutingNewActiveActionPerformed
 
     /**
      * @param args the command line arguments

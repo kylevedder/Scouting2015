@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package client.objects;
+package client.objects.matchdata;
 
 /**
  *
  * @author Kyle
  */
-public enum RobotActivityType
+public enum HumanPlayerType
 {
-    INACTIVE, PARTIALLY, ACTIVE
+    NO_THROW, POOR, MEDIOCRE, EXCELLENT
 }

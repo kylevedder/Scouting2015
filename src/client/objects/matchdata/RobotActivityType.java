@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package client.objects;
+package client.objects.matchdata;
 
 /**
  *
  * @author Kyle
  */
-public enum CoOpType
+public enum RobotActivityType
 {
-    NONE, UNSTACKED, STACKED
+    INACTIVE, PARTIALLY, ACTIVE
 }

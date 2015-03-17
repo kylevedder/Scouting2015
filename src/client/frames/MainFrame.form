@@ -58,11 +58,16 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="panelScoutingDeploy" max="32767" attributes="0"/>
-                  <Component id="labelTitle" min="-2" max="-2" attributes="0"/>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="panelDataDisplayMatch" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="panelDataDisplayActive" min="-2" max="-2" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="labelTitle" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Component id="panelDataDisplayMatch" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="panelDataDisplayActive" max="32767" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -108,9 +113,9 @@
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
-                  <Component id="buttonScoutingNewMatch" max="32767" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="buttonScoutingNewActive" min="-2" pref="163" max="-2" attributes="0"/>
+                  <Component id="buttonScoutingNewMatch" min="-2" pref="176" max="-2" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Component id="buttonScoutingNewActive" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -136,6 +141,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="New Active Scout"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonScoutingNewActiveActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
@@ -157,7 +165,7 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="labelDataDisplayMatchLocal" alignment="0" max="32767" attributes="0"/>
-                      <Component id="labelDataDisplayMatchServer" alignment="0" pref="138" max="32767" attributes="0"/>
+                      <Component id="labelDataDisplayMatchServer" alignment="0" pref="150" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -205,7 +213,7 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="labelDataDisplayActiveLocal" alignment="0" max="32767" attributes="0"/>
-                      <Component id="labelDataDisplayActiveServer" alignment="0" pref="135" max="32767" attributes="0"/>
+                      <Component id="labelDataDisplayActiveServer" alignment="0" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
