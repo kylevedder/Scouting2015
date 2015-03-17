@@ -53,6 +53,48 @@ public class Utils
         }
         return font;
     }
+        
+    /**
+     * Creates an OK/Cancel message with a custom body and title.
+     * 
+     * @param title
+     * @param contents
+     * @return 
+     */
+    public static boolean showOKCancelAndGetResponse(String title, String contents)
+    {
+        //0 is the OK response.
+        return JOptionPane.showConfirmDialog(null, contents, title, JOptionPane.OK_CANCEL_OPTION) == 0;        
+    }
+    
+    /**
+     * Creates a user input message with a custom body, title, and an empty default suggestion.
+     * @param title
+     * @param body
+     * @return 
+     */
+    public static String showInputBoxAndGetResponse(String title, String body)
+    {
+        return showInputBoxAndGetResponse(title, body, "");
+    }
+    
+    /**
+     * Creates a user input message with a custom body, title, and default value.
+     * @param title
+     * @param body
+     * @param defaultValue 
+     * @return 
+     */
+    public static String showInputBoxAndGetResponse(String title, String body, String defaultValue)
+    {
+        return (String)JOptionPane.showInputDialog(null,
+                            body,
+                            title,
+                            JOptionPane.PLAIN_MESSAGE,
+                            null, 
+                            null, 
+                            defaultValue);
+    }
     
     /**
      * Creates an error message with a custom body.

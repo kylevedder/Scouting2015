@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import client.main.Main;
+import main.Main;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
 

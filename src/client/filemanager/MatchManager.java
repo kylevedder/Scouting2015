@@ -34,8 +34,8 @@ public class MatchManager
 
     private Flag blockAddingFilesToSendFlag = new Flag(false);
 
-    private static final String LOCAL_FOLDER_PATH = "./saves/local";
-    private static final String SERVER_FOLDER_PATH = "./saves/server";
+    private static final String LOCAL_FOLDER_PATH = "./saves/match/local";
+    private static final String SERVER_FOLDER_PATH = "./saves/match/server";
 
     private File localFolder = null;
     private File serverFolder = null;
