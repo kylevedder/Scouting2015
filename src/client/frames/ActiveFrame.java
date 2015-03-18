@@ -5,7 +5,11 @@
  */
 package client.frames;
 
+import client.objects.activedata.FeedLocation;
+import client.objects.activedata.RobotNumWheels;
 import client.objects.activedata.RobotShape;
+import client.objects.activedata.RobotWheelType;
+import client.objects.activedata.TotePickupOrientation;
 import java.util.Enumeration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -78,7 +82,7 @@ public class ActiveFrame extends javax.swing.JFrame implements ResetableFrame
         fieldTeamNum.setText("");
         buttonGroupCoop.clearSelection();
         buttonGroupHumanPlayer.clearSelection();
-        textAreaRobotActivityComments.setText("");
+        textAreaRobotConfigComments.setText("");
         spinnerNumContainers.setValue(0);
         spinnerNumTotes.setValue(0);
         checkBoxInAutoZone.setSelected(false);
@@ -87,7 +91,7 @@ public class ActiveFrame extends javax.swing.JFrame implements ResetableFrame
         checkBoxHPThrewNoodles.setSelected(false);
         radioHPExcellent.setEnabled(false);
         radioHPMediocre.setEnabled(false);
-        radioHPPoor.setEnabled(false);        
+        radioHPPoor.setEnabled(false);
     }
 
     /**
@@ -118,7 +122,7 @@ public class ActiveFrame extends javax.swing.JFrame implements ResetableFrame
         comboBoxRobotShape = new javax.swing.JComboBox();
         panelRobotActivityComments = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        textAreaRobotActivityComments = new javax.swing.JTextArea();
+        textAreaRobotConfigComments = new javax.swing.JTextArea();
         panelRobotDriveTrain = new javax.swing.JPanel();
         comboBoxRobotDriveTrain = new javax.swing.JComboBox();
         panelRobotWheelType = new javax.swing.JPanel();
@@ -165,7 +169,6 @@ public class ActiveFrame extends javax.swing.JFrame implements ResetableFrame
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Match Recorder");
-        setPreferredSize(null);
         setResizable(false);
 
         mainPanelScroll.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
@@ -261,9 +264,9 @@ public class ActiveFrame extends javax.swing.JFrame implements ResetableFrame
 
         panelRobotActivityComments.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Comments (Optional)", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11))); // NOI18N
 
-        textAreaRobotActivityComments.setColumns(20);
-        textAreaRobotActivityComments.setRows(1);
-        jScrollPane1.setViewportView(textAreaRobotActivityComments);
+        textAreaRobotConfigComments.setColumns(20);
+        textAreaRobotConfigComments.setRows(1);
+        jScrollPane1.setViewportView(textAreaRobotConfigComments);
 
         javax.swing.GroupLayout panelRobotActivityCommentsLayout = new javax.swing.GroupLayout(panelRobotActivityComments);
         panelRobotActivityComments.setLayout(panelRobotActivityCommentsLayout);
@@ -468,9 +471,9 @@ public class ActiveFrame extends javax.swing.JFrame implements ResetableFrame
         panelTeleopLitterLayout.setHorizontalGroup(
             panelTeleopLitterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelTeleopLitterLayout.createSequentialGroup()
-                .addGroup(panelTeleopLitterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(checkBoxTeleopLitterPushLitter, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(checkBoxTeleopLitterPickupLitter))
+                .addGroup(panelTeleopLitterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(checkBoxTeleopLitterPickupLitter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(checkBoxTeleopLitterPushLitter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         panelTeleopLitterLayout.setVerticalGroup(
@@ -503,6 +506,13 @@ public class ActiveFrame extends javax.swing.JFrame implements ResetableFrame
         });
 
         checkBoxTeleopTotesCanPickup.setText("Can Pick Up Totes?");
+        checkBoxTeleopTotesCanPickup.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                checkBoxTeleopTotesCanPickupActionPerformed(evt);
+            }
+        });
 
         comboBoxTeleopTotePickupOrientation.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Large", "Small", "Both" }));
         comboBoxTeleopTotePickupOrientation.setEnabled(false);
@@ -554,6 +564,13 @@ public class ActiveFrame extends javax.swing.JFrame implements ResetableFrame
         panelTeleopContainer.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Containers", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11))); // NOI18N
 
         checkBoxTeleopContainersPickup.setText("Can Pick Up Containers?");
+        checkBoxTeleopContainersPickup.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                checkBoxTeleopContainersPickupActionPerformed(evt);
+            }
+        });
 
         checkBoxTeleopContainersUpright.setText("Must To Be Upright?");
         checkBoxTeleopContainersUpright.setEnabled(false);
@@ -760,12 +777,11 @@ public class ActiveFrame extends javax.swing.JFrame implements ResetableFrame
                         .addComponent(panelCoop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(panelHumanPlayer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(mainPanelLayout.createSequentialGroup()
-                            .addComponent(labelTitle)
-                            .addGap(588, 588, 588)
-                            .addComponent(buttonSave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(panelTeamInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(mainPanelLayout.createSequentialGroup()
+                        .addComponent(labelTitle)
+                        .addGap(588, 588, 588)
+                        .addComponent(buttonSave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(panelTeamInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(panelRobotConfig, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
@@ -878,7 +894,7 @@ public class ActiveFrame extends javax.swing.JFrame implements ResetableFrame
 //            MatchData matchData = scrapeData();
 //            Main.matchManager.addMatch(matchData);
             //requests user input to reset the frame
-            if(Utils.showOKCancelAndGetResponse("Reset frame?", "Reset the match frame?"))
+            if (Utils.showOKCancelAndGetResponse("Reset frame?", "Reset the match frame?"))
             {
                 this.resetFrame();
             }
@@ -897,7 +913,16 @@ public class ActiveFrame extends javax.swing.JFrame implements ResetableFrame
 
     private void spinnerMaxNumTotesStateChanged(javax.swing.event.ChangeEvent evt)//GEN-FIRST:event_spinnerMaxNumTotesStateChanged
     {//GEN-HEADEREND:event_spinnerMaxNumTotesStateChanged
-        // TODO add your handling code here:
+        int val = (Integer) spinnerMaxNumTotes.getValue();
+        if (val > 6)
+        {
+            val = 6;
+        }
+        else if (val < 0)
+        {
+            val = 0;
+        }
+        spinnerMaxNumTotes.setValue(val);
     }//GEN-LAST:event_spinnerMaxNumTotesStateChanged
 
     private void spinnerMaxNumTotesPropertyChange(java.beans.PropertyChangeEvent evt)//GEN-FIRST:event_spinnerMaxNumTotesPropertyChange
@@ -907,7 +932,17 @@ public class ActiveFrame extends javax.swing.JFrame implements ResetableFrame
 
     private void spinnerMaxHeightContainerStateChanged(javax.swing.event.ChangeEvent evt)//GEN-FIRST:event_spinnerMaxHeightContainerStateChanged
     {//GEN-HEADEREND:event_spinnerMaxHeightContainerStateChanged
-        // TODO add your handling code here:
+
+        int val = (Integer) spinnerMaxHeightContainer.getValue();
+        if (val > 6)
+        {
+            val = 6;
+        }
+        else if (val < 0)
+        {
+            val = 0;
+        }
+        spinnerMaxHeightContainer.setValue(val);
     }//GEN-LAST:event_spinnerMaxHeightContainerStateChanged
 
     private void spinnerMaxHeightContainerPropertyChange(java.beans.PropertyChangeEvent evt)//GEN-FIRST:event_spinnerMaxHeightContainerPropertyChange
@@ -917,13 +952,38 @@ public class ActiveFrame extends javax.swing.JFrame implements ResetableFrame
 
     private void spinnerMaxCoopStackStateChanged(javax.swing.event.ChangeEvent evt)//GEN-FIRST:event_spinnerMaxCoopStackStateChanged
     {//GEN-HEADEREND:event_spinnerMaxCoopStackStateChanged
-        // TODO add your handling code here:
+        int value = (Integer)spinnerMaxCoopStack.getValue();
+        if(value > 4)
+        {
+            value = 4;
+        }
+        else if( value < 0)
+        {
+            value = 0;
+        }
+        spinnerMaxCoopStack.setValue(value);
     }//GEN-LAST:event_spinnerMaxCoopStackStateChanged
 
     private void spinnerMaxCoopStackPropertyChange(java.beans.PropertyChangeEvent evt)//GEN-FIRST:event_spinnerMaxCoopStackPropertyChange
     {//GEN-HEADEREND:event_spinnerMaxCoopStackPropertyChange
         // TODO add your handling code here:
     }//GEN-LAST:event_spinnerMaxCoopStackPropertyChange
+
+    private void checkBoxTeleopTotesCanPickupActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_checkBoxTeleopTotesCanPickupActionPerformed
+    {//GEN-HEADEREND:event_checkBoxTeleopTotesCanPickupActionPerformed
+        comboBoxTeleopTotePickupOrientation.setEnabled(!comboBoxTeleopTotePickupOrientation.isEnabled());
+        spinnerMaxNumTotes.setEnabled(!spinnerMaxNumTotes.isEnabled());
+        spinnerMaxNumTotes.setValue(0);
+        comboBoxTeleopToteFeedLocation.setEnabled(!comboBoxTeleopToteFeedLocation.isEnabled());
+    }//GEN-LAST:event_checkBoxTeleopTotesCanPickupActionPerformed
+
+    private void checkBoxTeleopContainersPickupActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_checkBoxTeleopContainersPickupActionPerformed
+    {//GEN-HEADEREND:event_checkBoxTeleopContainersPickupActionPerformed
+        checkBoxTeleopContainersUpright.setEnabled(!checkBoxTeleopContainersUpright.isEnabled());
+        checkBoxTeleopContainersUpright.setSelected(false);
+        spinnerMaxHeightContainer.setEnabled(!spinnerMaxHeightContainer.isEnabled());
+        spinnerMaxHeightContainer.setValue(0);
+    }//GEN-LAST:event_checkBoxTeleopContainersPickupActionPerformed
 
     /**
      * Pulls all data from the form and sticks it in a match data object.
@@ -955,22 +1015,49 @@ public class ActiveFrame extends javax.swing.JFrame implements ResetableFrame
         catch (Exception ex)
         {
             coopType = CoOpType.NONE;
-        }                
+        }
 
         //GET Scouter data
         int matchNum = Integer.valueOf(fieldMatchNum.getText());
         int teamNum = Integer.valueOf(fieldTeamNum.getText());
         String scouter = fieldScouter.getText();
+
+        //GET Robot Shape                
+        RobotShape robotShape = RobotShape.valueOf(comboBoxRobotShape.getSelectedItem().toString().toUpperCase());
+
+        //GET NUM Robot wheels
+        RobotNumWheels robotNumWheels = RobotNumWheels.valueOf("WHEEL_" + comboBoxRobotDriveTrain.getSelectedItem().toString().toUpperCase().replaceAll(" ", "_"));
+
+        //GET Robot Wheel type
+        RobotWheelType robotWheelType = RobotWheelType.valueOf(comboBoxRobotWheelType.getSelectedItem().toString().toUpperCase());
+
+        //GET Robot cnfig comments
+        String robotComments = textAreaRobotConfigComments.getText();
         
-        //GET Robot Shape
-        System.out.println(comboBoxRobotShape.getActionCommand().toUpperCase());
-        RobotShape robotShape = RobotShape.valueOf(comboBoxRobotShape.getActionCommand().toUpperCase());
+        //GET totes data
+        boolean canGetTotes = checkBoxTeleopTotesCanPickup.isSelected();
+        TotePickupOrientation totePickupOrientation = TotePickupOrientation.NONE;
+        if(canGetTotes)
+        {
+            totePickupOrientation = TotePickupOrientation.valueOf(comboBoxTeleopTotePickupOrientation.getSelectedItem().toString());
+        }
+        int toteMaxStackHeight = (Integer) spinnerMaxNumTotes.getValue();
+        FeedLocation feedLocation = FeedLocation.valueOf(comboBoxTeleopToteFeedLocation.getSelectedItem().toString().toUpperCase().replaceAll(" ", "_"));
+        
+        //GET container data
+        boolean canGetContainers = checkBoxTeleopContainersPickup.isSelected();
+        boolean containersMustBeUpright = checkBoxTeleopContainersUpright.isSelected();
+        int maxCappableStackHeight = (Integer)spinnerMaxHeightContainer.getValue();
+        
+        //GET Litter info
+        boolean canPushLitter = checkBoxTeleopLitterPushLitter.isSelected();
+        boolean canPickupLitter = checkBoxTeleopLitterPickupLitter.isSelected();        
 
         //GET Auto data
         int autoNumContainers = (int) spinnerNumContainers.getValue();
         int autoNumTotes = (int) spinnerNumTotes.getValue();
         boolean autoTotesStacked = checkBoxTotesStacked.isSelected();
-        boolean autoInAutoZone = checkBoxInAutoZone.isSelected();                
+        boolean autoInAutoZone = checkBoxInAutoZone.isSelected();
 
     }
 
@@ -991,7 +1078,7 @@ public class ActiveFrame extends javax.swing.JFrame implements ResetableFrame
                 Utils.showErrorBox("Scouter section not filled out!");
             }
             passed = false;
-        }       
+        }
         //coop unfilled out
         else if (!radioCoopNone.isSelected() && !radioCoopStacked.isSelected() && !radioCoopUnstacked.isSelected())
         {
@@ -1009,7 +1096,7 @@ public class ActiveFrame extends javax.swing.JFrame implements ResetableFrame
                 Utils.showErrorBox("Human Player section not filled out!");
             }
             passed = false;
-        }        
+        }
         return passed;
     }
 
@@ -1147,6 +1234,6 @@ public class ActiveFrame extends javax.swing.JFrame implements ResetableFrame
     private javax.swing.JSpinner spinnerMaxNumTotes;
     private javax.swing.JSpinner spinnerNumContainers;
     private javax.swing.JSpinner spinnerNumTotes;
-    private javax.swing.JTextArea textAreaRobotActivityComments;
+    private javax.swing.JTextArea textAreaRobotConfigComments;
     // End of variables declaration//GEN-END:variables
 }

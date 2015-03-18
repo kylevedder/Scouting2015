@@ -5,6 +5,9 @@
  */
 package client.objects.activedata;
 
+import client.objects.matchdata.CoOpType;
+import client.objects.matchdata.HumanPlayerType;
+
 /**
  *
  * @author kyle
@@ -12,8 +15,16 @@ package client.objects.activedata;
 public class ActiveData
 {
 
-    public ActiveData(int matchMatchNumber, int matchTeamNumber, String matchScouter)
+    public ActiveData(int matchMatchNumber, int matchTeamNumber, String matchScouter, //scouter info
+            RobotShape robotShape, RobotNumWheels robotNumWheels, RobotWheelType robotWheelType, String robotComments,//robot type
+            int autoNumTotes, int autoNumContainers, boolean autoTotesStacked, boolean autoInAutoZone,//auto info
+            
+            CoOpType coopType, //coop info
+            HumanPlayerType humanPlayerType //human player info
+            
+            
+            )
     {
     }
-    
+
 }
