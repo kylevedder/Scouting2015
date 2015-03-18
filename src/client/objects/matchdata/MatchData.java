@@ -23,7 +23,6 @@ public class MatchData
 {
 
     //match meta data
-
     private int matchMatchNumber = -1;
     public static String matchMatchNumberKey = "matchMatchNumberKey";
     private int matchTeamNumber = -1;
