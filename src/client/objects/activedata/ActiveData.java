@@ -103,5 +103,111 @@ public class ActiveData
         this.coopType = coopType;
         
         this.humanPlayerType = humanPlayerType;
-    }    
+    }  
+
+    public int getAutoNumContainers()
+    {
+        return autoNumContainers;
+    }
+
+    public int getAutoNumTotes()
+    {
+        return autoNumTotes;
+    }
+
+    public int getContainerMaxCappableStackHeight()
+    {
+        return containerMaxCappableStackHeight;
+    }
+
+    public CoOpType getCoopType()
+    {
+        return coopType;
+    }
+
+    public HumanPlayerType getHumanPlayerType()
+    {
+        return humanPlayerType;
+    }
+
+    public String getMatchRobotScouter()
+    {
+        return matchRobotScouter;
+    }
+
+    public int getMatchTeamNumber()
+    {
+        return matchTeamNumber;
+    }
+
+    public String getRobotComments()
+    {
+        return robotComments;
+    }
+
+    public RobotNumWheels getRobotNumWheels()
+    {
+        return robotNumWheels;
+    }
+
+    public RobotShape getRobotShape()
+    {
+        return robotShape;
+    }
+
+    public RobotWheelType getRobotWheelType()
+    {
+        return robotWheelType;
+    }
+
+    public FeedLocation getToteFeedLocation()
+    {
+        return toteFeedLocation;
+    }
+
+    public int getToteMaxStackHeight()
+    {
+        return toteMaxStackHeight;
+    }
+
+    public TotePickupOrientation getTotePickupOrientation()
+    {
+        return totePickupOrientation;
+    }
+
+    public boolean getAutoInAutoZone()
+    {
+        return autoInAutoZone;
+    }
+
+    public boolean getAutoTotesStacked()
+    {
+        return autoTotesStacked;
+    }
+
+    public boolean getContainerCanGetContainers()
+    {
+        return containerCanGetContainers;
+    }
+
+    public boolean getContainerMustBeUpright()
+    {
+        return containerMustBeUpright;
+    }
+
+    public boolean getLitterCanPickupLitter()
+    {
+        return litterCanPickupLitter;
+    }
+
+    public boolean getLitterCanPushLitter()
+    {
+        return litterCanPushLitter;
+    }
+
+    public boolean getToteCanGetTotes()
+    {
+        return toteCanGetTotes;
+    }        
+    
 }
