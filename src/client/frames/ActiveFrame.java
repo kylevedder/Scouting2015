@@ -5,6 +5,7 @@
  */
 package client.frames;
 
+import client.objects.activedata.ActiveData;
 import client.objects.activedata.FeedLocation;
 import client.objects.activedata.RobotNumWheels;
 import client.objects.activedata.RobotShape;
@@ -76,8 +77,7 @@ public class ActiveFrame extends javax.swing.JFrame implements ResetableFrame
      */
     @Override
     public void resetFrame()
-    {
-        fieldMatchNum.setText("");
+    {        
         fieldScouter.setText("");
         fieldTeamNum.setText("");
         buttonGroupCoop.clearSelection();
@@ -113,8 +113,6 @@ public class ActiveFrame extends javax.swing.JFrame implements ResetableFrame
         panelTeamInfo = new javax.swing.JPanel();
         labelTeamNum = new javax.swing.JLabel();
         fieldTeamNum = new javax.swing.JTextField();
-        labelMatchNum = new javax.swing.JLabel();
-        fieldMatchNum = new javax.swing.JTextField();
         labelScouter = new javax.swing.JLabel();
         fieldScouter = new javax.swing.JTextField();
         panelRobotConfig = new javax.swing.JPanel();
@@ -200,16 +198,6 @@ public class ActiveFrame extends javax.swing.JFrame implements ResetableFrame
             }
         });
 
-        labelMatchNum.setText("Match #:");
-
-        fieldMatchNum.addKeyListener(new java.awt.event.KeyAdapter()
-        {
-            public void keyReleased(java.awt.event.KeyEvent evt)
-            {
-                fieldMatchNumKeyReleased(evt);
-            }
-        });
-
         labelScouter.setText("Scouter:");
 
         javax.swing.GroupLayout panelTeamInfoLayout = new javax.swing.GroupLayout(panelTeamInfo);
@@ -221,11 +209,7 @@ public class ActiveFrame extends javax.swing.JFrame implements ResetableFrame
                 .addComponent(labelTeamNum)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(fieldTeamNum, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(labelMatchNum)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(fieldMatchNum, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(labelScouter)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(fieldScouter, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -234,13 +218,10 @@ public class ActiveFrame extends javax.swing.JFrame implements ResetableFrame
         panelTeamInfoLayout.setVerticalGroup(
             panelTeamInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelTeamInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                .addComponent(labelScouter)
-                .addComponent(fieldScouter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelTeamInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                 .addComponent(fieldTeamNum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addComponent(labelTeamNum)
-                .addComponent(labelMatchNum)
-                .addComponent(fieldMatchNum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(labelScouter)
+                .addComponent(fieldScouter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         panelRobotConfig.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Robot Configuration", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 18))); // NOI18N
@@ -906,11 +887,6 @@ public class ActiveFrame extends javax.swing.JFrame implements ResetableFrame
         fieldTeamNum.setText(utils.Utils.removeNonNumericChars(fieldTeamNum.getText()));
     }//GEN-LAST:event_fieldTeamNumKeyReleased
 
-    private void fieldMatchNumKeyReleased(java.awt.event.KeyEvent evt)//GEN-FIRST:event_fieldMatchNumKeyReleased
-    {//GEN-HEADEREND:event_fieldMatchNumKeyReleased
-        fieldMatchNum.setText(utils.Utils.removeNonNumericChars(fieldMatchNum.getText()));
-    }//GEN-LAST:event_fieldMatchNumKeyReleased
-
     private void spinnerMaxNumTotesStateChanged(javax.swing.event.ChangeEvent evt)//GEN-FIRST:event_spinnerMaxNumTotesStateChanged
     {//GEN-HEADEREND:event_spinnerMaxNumTotesStateChanged
         int val = (Integer) spinnerMaxNumTotes.getValue();
@@ -1018,7 +994,6 @@ public class ActiveFrame extends javax.swing.JFrame implements ResetableFrame
         }
 
         //GET Scouter data
-        int matchNum = Integer.valueOf(fieldMatchNum.getText());
         int teamNum = Integer.valueOf(fieldTeamNum.getText());
         String scouter = fieldScouter.getText();
 
@@ -1058,7 +1033,9 @@ public class ActiveFrame extends javax.swing.JFrame implements ResetableFrame
         int autoNumTotes = (int) spinnerNumTotes.getValue();
         boolean autoTotesStacked = checkBoxTotesStacked.isSelected();
         boolean autoInAutoZone = checkBoxInAutoZone.isSelected();
-
+        
+        ActiveData activeData = new ActiveData(teamNum, scouter, robotShape, robotNumWheels, robotWheelType, robotComments, autoNumTotes, autoNumContainers, autoTotesStacked, autoInAutoZone, canGetTotes, totePickupOrientation, toteMaxStackHeight, feedLocation, canGetContainers, containersMustBeUpright, maxCappableStackHeight, canPushLitter, canPickupLitter, coopType, hpType);
+        
     }
 
     /**
@@ -1071,7 +1048,7 @@ public class ActiveFrame extends javax.swing.JFrame implements ResetableFrame
         boolean passed = true;
 
         //scouter info complete
-        if (fieldTeamNum.getText().equals("") || fieldMatchNum.getText().equals("") || fieldScouter.getText().equals(""))
+        if (fieldTeamNum.getText().equals("") || fieldScouter.getText().equals(""))
         {
             if (reportErrors)
             {
@@ -1189,13 +1166,11 @@ public class ActiveFrame extends javax.swing.JFrame implements ResetableFrame
     private javax.swing.JComboBox comboBoxRobotWheelType;
     private javax.swing.JComboBox comboBoxTeleopToteFeedLocation;
     private javax.swing.JComboBox comboBoxTeleopTotePickupOrientation;
-    private javax.swing.JTextField fieldMatchNum;
     private javax.swing.JTextField fieldScouter;
     private javax.swing.JTextField fieldTeamNum;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel labeCoopMaxStackHeight;
     private javax.swing.JLabel labelFeedLocation;
-    private javax.swing.JLabel labelMatchNum;
     private javax.swing.JLabel labelNumContainers;
     private javax.swing.JLabel labelNumTotes;
     private javax.swing.JLabel labelPickupOrintation;
