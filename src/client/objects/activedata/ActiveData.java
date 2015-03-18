@@ -15,9 +15,37 @@ import client.objects.matchdata.HumanPlayerType;
 public class ActiveData
 {
 
+    int matchTeamNumber = -1;
+    String matchRobotScouter = null;
+
+    RobotShape robotShape = null;
+    RobotNumWheels robotNumWheels = null;
+    RobotWheelType robotWheelType = null;
+    String robotComments = null;
+
+    int autoNumTotes = -1;
+    int autoNumContainers = 1;
+    boolean autoTotesStacked = false;
+    boolean autoInAutoZone = false;
+
+    boolean toteCanGetTotes = false;
+    TotePickupOrientation totePickupOrientation = null;
+    int toteMaxStackHeight = -1;
+    FeedLocation toteFeedLocation = null;
+
+    boolean containerCanGetContainers = false;
+    boolean containerMustBeUpright = false;
+    int containerMaxCappableStackHeight = -1;
+
+    boolean litterCanPushLitter = false;
+    boolean litterCanPickupLitter = false;
+    
+    CoOpType coopType = null;
+    HumanPlayerType humanPlayerType = null;
+
     /**
      * Holds all data about a paticular team from active scouting.
-     * @param matchMatchNumber
+     *
      * @param matchTeamNumber
      * @param matchScouter
      * @param robotShape
@@ -28,29 +56,52 @@ public class ActiveData
      * @param autoNumContainers
      * @param autoTotesStacked
      * @param autoInAutoZone
-     * @param canGetTotes
+     * @param toteCanGetTotes
      * @param totePickupOrientation
      * @param toteMaxStackHeight
-     * @param feedLocation
-     * @param canGetContainers
-     * @param containersMustBeUpright
-     * @param maxCappableStackHeight
-     * @param canPushLitter
-     * @param canPickupLitter
+     * @param toteFeedLocation
+     * @param containerCanGetContainers
+     * @param containerMustBeUpright
+     * @param containerMaxCappableStackHeight
+     * @param litterCanPushLitter
+     * @param litterCanPickupLitter
      * @param coopType
-     * @param humanPlayerType 
+     * @param humanPlayerType
      */
     public ActiveData(int matchTeamNumber, String matchScouter, //scouter info
             RobotShape robotShape, RobotNumWheels robotNumWheels, RobotWheelType robotWheelType, String robotComments,//robot type
             int autoNumTotes, int autoNumContainers, boolean autoTotesStacked, boolean autoInAutoZone,//auto info
-            boolean canGetTotes, TotePickupOrientation totePickupOrientation, int toteMaxStackHeight, FeedLocation feedLocation,//tote info 
-            boolean canGetContainers, boolean containersMustBeUpright, int maxCappableStackHeight, //container info
-            boolean canPushLitter, boolean canPickupLitter, //litter info
+            boolean toteCanGetTotes, TotePickupOrientation totePickupOrientation, int toteMaxStackHeight, FeedLocation toteFeedLocation,//tote info 
+            boolean containerCanGetContainers, boolean containerMustBeUpright, int containerMaxCappableStackHeight, //container info
+            boolean litterCanPushLitter, boolean litterCanPickupLitter, //litter info
             CoOpType coopType, //coop info
             HumanPlayerType humanPlayerType //human player info                      
     )
     {
+        this.matchTeamNumber = matchTeamNumber;
+        this.matchRobotScouter = matchScouter;
         
-    }
-
+        this.robotShape = robotShape;
+        this.robotNumWheels = robotNumWheels;
+        this.robotWheelType = robotWheelType;
+        this.robotComments = robotComments;
+        
+        this.autoInAutoZone = autoInAutoZone;
+        this.autoNumContainers = autoNumContainers;
+        this.autoTotesStacked = autoTotesStacked;
+        this.autoNumTotes = autoNumTotes;
+        
+        this.toteCanGetTotes = toteCanGetTotes;
+        this.toteFeedLocation = toteFeedLocation;
+        this.toteMaxStackHeight = toteMaxStackHeight;
+        this.totePickupOrientation = totePickupOrientation;
+        
+        this.containerCanGetContainers = containerCanGetContainers;
+        this.containerMaxCappableStackHeight = containerMaxCappableStackHeight;
+        this.containerMustBeUpright = containerMustBeUpright;
+        
+        this.coopType = coopType;
+        
+        this.humanPlayerType = humanPlayerType;
+    }    
 }
