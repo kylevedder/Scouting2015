@@ -65,7 +65,8 @@ public class SyncFilesServerThread implements Runnable
     {
         try
         {
-            //block for new connection
+            System.out.println("Awaiting connection...");
+            //block for new connection            
             Socket socket = serverSocket.accept();
             System.out.println("Connection Recieved!");
 
@@ -96,7 +97,7 @@ public class SyncFilesServerThread implements Runnable
                 jsonObjs[i] = new JSONObject(jsonString);
             }                            
             
-            System.out.println(recievedString);   //Prints the string content read from input stream
+            System.out.println("Server Recieved:\n" + recievedString);   //Prints the string content read from input stream
             
             
         }

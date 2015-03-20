@@ -5,6 +5,8 @@
  */
 package client.objects.activedata;
 
+import client.objects.ObjectInterface;
+import client.objects.ObjectType;
 import client.objects.matchdata.CoOpType;
 import client.objects.matchdata.HumanPlayerType;
 import client.objects.matchdata.MatchData;
@@ -16,7 +18,7 @@ import org.json.JSONObject;
  *
  * @author kyle
  */
-public class ActiveData
+public class ActiveData implements ObjectInterface
 {
 
     int matchTeamNumber = -1;
@@ -163,6 +165,8 @@ public class ActiveData
         map.put(coopTypeKey, coopType);
 
         map.put(humanPlayerTypeKey, humanPlayerType);
+        
+        map.put(KEY_TYPE, this.getType());
         JSONObject json = new JSONObject(map);
         return json.toString();
     }
@@ -301,6 +305,12 @@ public class ActiveData
     public boolean getToteCanGetTotes()
     {
         return toteCanGetTotes;
+    }
+
+    @Override
+    public ObjectType getType()
+    {
+        return ObjectType.ACTIVE;
     }
 
 }

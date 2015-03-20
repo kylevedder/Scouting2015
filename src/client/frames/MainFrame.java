@@ -5,12 +5,14 @@
  */
 package client.frames;
 
+import client.networking.SyncFilesClientThread;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import main.Globals;
 import utils.Utils;
 
 /**
@@ -233,8 +235,11 @@ public class MainFrame extends javax.swing.JFrame
     private void menuServerSyncActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_menuServerSyncActionPerformed
     {//GEN-HEADEREND:event_menuServerSyncActionPerformed
         System.out.println("sync...");
-        String ip = Utils.showInputBoxAndGetResponse("Enter Server IP", "Server IP");
+        String ip = Utils.showInputBoxAndGetResponse("Enter Server IP", "Server IP").trim();
         System.out.println(ip);
+        
+        Thread sendFilesThread = new Thread(new SyncFilesClientThread(ip, Globals.PORT, Globals.CONNECT_NUM_RETRIES));
+        sendFilesThread.start();
     }//GEN-LAST:event_menuServerSyncActionPerformed
 
     private void buttonScoutingNewActiveActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_buttonScoutingNewActiveActionPerformed

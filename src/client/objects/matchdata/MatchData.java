@@ -5,6 +5,8 @@
  */
 package client.objects.matchdata;
 
+import client.objects.ObjectInterface;
+import client.objects.ObjectType;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Level;
@@ -19,7 +21,7 @@ import org.json.JSONObject;
  *
  * @author Kyle
  */
-public class MatchData
+public class MatchData implements ObjectInterface
 {
 
     //match meta data
@@ -153,6 +155,8 @@ public class MatchData
         map.put(teleopToteStacksKey, toteArray);
 
         map.put(humanPlayerTypeKey, humanPlayerType.toString());
+        
+        map.put(KEY_TYPE, this.getType());
         JSONObject json = new JSONObject(map);
         return json.toString();
     }
@@ -272,5 +276,11 @@ public class MatchData
     public boolean isAutoTotesStacked()
     {
         return autoTotesStacked;
+    }
+
+    @Override
+    public ObjectType getType()
+    {
+        return ObjectType.MATCH;
     }
 }

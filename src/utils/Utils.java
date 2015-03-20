@@ -7,8 +7,12 @@ package utils;
 
 import java.awt.Font;
 import java.awt.FontFormatException;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -19,20 +23,38 @@ import javax.swing.JOptionPane;
  */
 public class Utils
 {
+
+    /**
+     * Appends two given file arrays.
+     *
+     * @param first
+     * @param second
+     * @return
+     */
+    public static File[] appendFileArrays(File[] first, File[] second)
+    {
+        List<File> both = new ArrayList<>(first.length + second.length);
+        Collections.addAll(both, first);
+        Collections.addAll(both, second);
+        return both.toArray(new File[both.size()]);
+    }
+
     /**
      * Removes all non-numeric chars from the string
+     *
      * @param s0
-     * @return 
+     * @return
      */
     public static String removeNonNumericChars(String s0)
     {
         return s0.replaceAll("[^0-9]", "");
     }
-    
+
     /**
      * Load a font from the fonts folder with the given path
+     *
      * @param path - path to the font
-     * @return 
+     * @return
      */
     public static Font loadFont(String path)
     {
@@ -49,53 +71,57 @@ public class Utils
         }
         catch (IOException ex)
         {
-            
+
         }
         return font;
     }
-        
+
     /**
      * Creates an OK/Cancel message with a custom body and title.
-     * 
+     *
      * @param title
      * @param contents
-     * @return 
+     * @return
      */
     public static boolean showOKCancelAndGetResponse(String title, String contents)
     {
         //0 is the OK response.
-        return JOptionPane.showConfirmDialog(null, contents, title, JOptionPane.OK_CANCEL_OPTION) == 0;        
+        return JOptionPane.showConfirmDialog(null, contents, title, JOptionPane.OK_CANCEL_OPTION) == 0;
     }
-    
+
     /**
-     * Creates a user input message with a custom body, title, and an empty default suggestion.
+     * Creates a user input message with a custom body, title, and an empty
+     * default suggestion.
+     *
      * @param title
      * @param body
-     * @return 
+     * @return
      */
     public static String showInputBoxAndGetResponse(String title, String body)
     {
         return showInputBoxAndGetResponse(title, body, "");
     }
-    
+
     /**
-     * Creates a user input message with a custom body, title, and default value.
+     * Creates a user input message with a custom body, title, and default
+     * value.
+     *
      * @param title
      * @param body
-     * @param defaultValue 
-     * @return 
+     * @param defaultValue
+     * @return
      */
     public static String showInputBoxAndGetResponse(String title, String body, String defaultValue)
     {
-        return (String)JOptionPane.showInputDialog(null,
-                            body,
-                            title,
-                            JOptionPane.PLAIN_MESSAGE,
-                            null, 
-                            null, 
-                            defaultValue);
+        return (String) JOptionPane.showInputDialog(null,
+                body,
+                title,
+                JOptionPane.PLAIN_MESSAGE,
+                null,
+                null,
+                defaultValue);
     }
-    
+
     /**
      * Creates an error message with a custom body.
      *
@@ -115,7 +141,7 @@ public class Utils
     {
         JOptionPane.showMessageDialog(null, bodyMessage, "Great Success!", JOptionPane.INFORMATION_MESSAGE);
     }
-    
+
     /**
      * Creates a Warning message with a custom body.
      *
@@ -124,5 +150,5 @@ public class Utils
     public static void showWarningBox(String bodyMessage)
     {
         JOptionPane.showMessageDialog(null, bodyMessage, "Warning!", JOptionPane.WARNING_MESSAGE);
-    }   
+    }
 }

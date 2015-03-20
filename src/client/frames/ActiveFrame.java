@@ -871,9 +871,8 @@ public class ActiveFrame extends javax.swing.JFrame implements ResetableFrame
 
         if (assessCompletion(true))
         {
-            scrapeData();
-//            MatchData matchData = scrapeData();
-//            Main.matchManager.addMatch(matchData);
+            ActiveData activeData = scrapeData();
+            Main.matchManager.addActive(activeData);
             //requests user input to reset the frame
             if (Utils.showOKCancelAndGetResponse("Reset frame?", "Reset the match frame?"))
             {
@@ -966,7 +965,7 @@ public class ActiveFrame extends javax.swing.JFrame implements ResetableFrame
      *
      * @return
      */
-    private void scrapeData()
+    private ActiveData scrapeData()
     {
         //GET HP data            
         HumanPlayerType hpType = HumanPlayerType.NO_THROW;
@@ -1034,7 +1033,7 @@ public class ActiveFrame extends javax.swing.JFrame implements ResetableFrame
         boolean autoTotesStacked = checkBoxTotesStacked.isSelected();
         boolean autoInAutoZone = checkBoxInAutoZone.isSelected();
         
-        ActiveData activeData = new ActiveData(teamNum, scouter, robotShape, robotNumWheels, robotWheelType, robotComments, autoNumTotes, autoNumContainers, autoTotesStacked, autoInAutoZone, canGetTotes, totePickupOrientation, toteMaxStackHeight, feedLocation, canGetContainers, containersMustBeUpright, maxCappableStackHeight, canPushLitter, canPickupLitter, coopType, hpType);
+        return new ActiveData(teamNum, scouter, robotShape, robotNumWheels, robotWheelType, robotComments, autoNumTotes, autoNumContainers, autoTotesStacked, autoInAutoZone, canGetTotes, totePickupOrientation, toteMaxStackHeight, feedLocation, canGetContainers, containersMustBeUpright, maxCappableStackHeight, canPushLitter, canPickupLitter, coopType, hpType);
         
     }
 

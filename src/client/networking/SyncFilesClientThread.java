@@ -5,25 +5,18 @@
  */
 package client.networking;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.Socket;
-import java.nio.charset.Charset;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import main.Main;
-import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
+import utils.Utils;
 
 /**
  *
@@ -37,7 +30,7 @@ public class SyncFilesClientThread implements Runnable
     private int numConnectRetries = 0;
 
     public static String KEY_FILE_NAME = "name";
-    public static String KEY_FILE_CONTENTS = "contents";
+    public static String KEY_FILE_CONTENTS = "contents";    
 
     /**
      * Attempts to connect to the server and, if successful, sends the contents
@@ -61,29 +54,28 @@ public class SyncFilesClientThread implements Runnable
     public void run()
     {
         System.out.println("Starting new Sync Files Thread...");
-        Socket connection = null;
-        int retryTimes = 0;
+        Socket connection = null;        
 
         //try to connect
-        while (connection == null)
+        for (int retries = 0; retries < this.numConnectRetries && connection == null; retries++)
         {
-            if (retryTimes < this.numConnectRetries)
+            try
             {
-                try
-                {
-                    connection = new Socket(this.address, this.port);
-                }
-                catch (IOException ex)
-                {
-                    //ignored
-                }
+                connection = new Socket(this.address, this.port);
+                System.out.println("Connected!");
             }
-            else
+            catch (IOException ex)
             {
-                System.err.println("Unable to connect to server...");
-                return;
+                ex.printStackTrace();
+                System.err.println("Connect exception, retrying...");
             }
-            retryTimes++;
+        }
+
+        if (connection == null)
+        {
+            Utils.showErrorBox("Unable to connect to server...");
+            System.err.println("Unable to connect to server...");
+            return;
         }
 
         File[] filesToSend = Main.matchManager.getFilesToSend();
@@ -111,7 +103,7 @@ public class SyncFilesClientThread implements Runnable
                     //create JSON object to send to server
                     JSONObject fileJSON = new JSONObject();
                     fileJSON.put(KEY_FILE_CONTENTS, fileContentsString);
-                    fileJSON.put(KEY_FILE_NAME, file.getName());
+                    fileJSON.put(KEY_FILE_NAME, file.getName());                    
 
                     //generate out String
                     String outToServerString = fileJSON.toString() + "\n";

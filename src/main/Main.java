@@ -6,7 +6,8 @@
 package main;
 
 import client.frames.MainFrame;
-import client.filemanager.MatchManager;
+import client.filemanager.ClientFileManager;
+import server.networking.SyncFilesServerThread;
 
 /**
  *
@@ -15,14 +16,16 @@ import client.filemanager.MatchManager;
 public class Main
 {
 
-    public static MatchManager matchManager = null;
+    public static ClientFileManager matchManager = null;
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args)
     {        
-        matchManager = MatchManager.getInstance();
+        matchManager = ClientFileManager.getInstance();
         MainFrame main = new MainFrame();
+        Thread serverThread = new Thread(new SyncFilesServerThread(Globals.PORT));
+        serverThread.start();
     }
     
 }
