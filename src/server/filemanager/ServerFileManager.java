@@ -69,6 +69,7 @@ public class ServerFileManager
         //leave unlocked, should be locked for pulling all files from the SyncFilesThread only
         blockAddingFilesToSendFlag.unlock();
     }
+    
 
     /**
      * Writes a file in the appropriate file directory.
@@ -123,7 +124,7 @@ public class ServerFileManager
 
     /**
      * Gets an File array from the local directory that need to be sent to the
-     * server.
+     * client.
      * <br/>
      * Locks the folder so that the files can be fetched without modification.
      *

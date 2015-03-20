@@ -5,7 +5,12 @@
  */
 package server.networking;
 
+import client.networking.SyncFilesClientThread;
+import static client.networking.SyncFilesClientThread.KEY_FILE_CONTENTS;
+import static client.networking.SyncFilesClientThread.KEY_FILE_NAME;
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -15,6 +20,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.json.JSONObject;
 import server.filemanager.ServerFileManager;
+import utils.Utils;
 
 /**
  *
@@ -26,7 +32,7 @@ public class SyncFilesServerThread implements Runnable
     private volatile boolean isRunning = true;
 
     private ServerFileManager fileManager = ServerFileManager.getInstance();
-    
+
     ServerSocket serverSocket = null;
     private int port;
 
@@ -75,38 +81,70 @@ public class SyncFilesServerThread implements Runnable
 
             //setup in and out
             InputStream ins = socket.getInputStream();
+            DataOutputStream outToServer = new DataOutputStream(socket.getOutputStream());
             BufferedReader reader = new BufferedReader(new InputStreamReader(ins));
-            StringBuilder out = new StringBuilder();
-            
+            StringBuilder stringBuffer = new StringBuilder();
+
             //read from the client
             String line;
             while ((line = reader.readLine()) != null)
             {
-                out.append(line);
-                out.append("\n");
+                stringBuffer.append(line);
+                stringBuffer.append("\n");
             }
-            
+
             //construct final string
-            String recievedString = out.toString();
-            
+            String recievedString = stringBuffer.toString();
+
             //split into individual JSON objects
             String[] jsonStrings = recievedString.split("\n");
             JSONObject[] jsonObjs = new JSONObject[jsonStrings.length];
-            
+
             //add each JSON string as JSONObject to array
             for (int i = 0; i < jsonStrings.length; i++)
             {
                 String jsonString = jsonStrings[i];
                 jsonObjs[i] = new JSONObject(jsonString);
-            }                            
-            
+            }
+
             System.out.println("Server Recieved:\n" + recievedString + "\nSaving files...");   //Prints the string content read from input stream
-            
-            for(JSONObject json: jsonObjs)
+
+            for (JSONObject json : jsonObjs)
             {
                 fileManager.writeFile(json);
             }
             System.out.println("All files written.");
+
+            for (File file : fileManager.getFilesToSend())
+            {
+                try
+                {
+
+                    String fileContentsString = Utils.readFile(file);
+                    if (fileContentsString != null)
+                    {
+                        //create JSON object to send to server
+                        JSONObject fileJSON = new JSONObject();
+                        fileJSON.put(KEY_FILE_CONTENTS, fileContentsString);
+                        fileJSON.put(KEY_FILE_NAME, file.getName());
+
+                        //generate out String
+                        String outToServerString = fileJSON.toString() + "\n";
+                        //writes the JSON for the file to the server
+                        outToServer.writeBytes(outToServerString);
+                        //print debug line
+                        System.out.println("Sent File: " + file.getName() + " \nWith data: " + outToServerString);
+                    }
+                    else
+                    {
+                        System.out.println("File " + file.getName() + " unable to be read...");
+                    }
+                }
+                catch (IOException ex)
+                {
+                    Logger.getLogger(SyncFilesClientThread.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
         catch (IOException ex)
         {

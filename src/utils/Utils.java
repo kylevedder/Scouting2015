@@ -11,7 +11,10 @@ import client.objects.ObjectInterface;
 import client.objects.ObjectType;
 import java.awt.Font;
 import java.awt.FontFormatException;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -28,6 +31,40 @@ import org.json.JSONObject;
  */
 public class Utils
 {
+    
+    /**
+     * Reads the contents of a file and assembles it into a string.
+     *
+     * @param f
+     * @return
+     */
+    public static String readFile(File f)
+    {
+        String contents = null;
+        try (BufferedReader br = new BufferedReader(new FileReader(f));)
+        {
+
+            StringBuilder sb = new StringBuilder();
+            String line = br.readLine();
+
+            while (line != null)
+            {
+                sb.append(line);
+                sb.append(System.lineSeparator());
+                line = br.readLine();
+            }
+            contents = sb.toString();
+        }
+        catch (FileNotFoundException ex)
+        {
+            Logger.getLogger(SyncFilesClientThread.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (IOException ex)
+        {
+            Logger.getLogger(SyncFilesClientThread.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return contents;
+    }
     
     /**
      * Converts jsonStr to JSON

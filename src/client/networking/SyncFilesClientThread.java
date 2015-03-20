@@ -97,7 +97,7 @@ public class SyncFilesClientThread implements Runnable
             try
             {
 
-                String fileContentsString = readFile(file);
+                String fileContentsString = Utils.readFile(file);
                 if (fileContentsString != null)
                 {
                     //create JSON object to send to server
@@ -122,6 +122,8 @@ public class SyncFilesClientThread implements Runnable
                 Logger.getLogger(SyncFilesClientThread.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        
+        System.out.println("Finised sending files. Now reading files");
 
         System.out.println("Exiting SyncFilesThread...");
         try
@@ -135,39 +137,5 @@ public class SyncFilesClientThread implements Runnable
             Logger.getLogger(SyncFilesClientThread.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-    }
-
-    /**
-     * Reads the contents of a file and assembles it into a string.
-     *
-     * @param f
-     * @return
-     */
-    private String readFile(File f)
-    {
-        String contents = null;
-        try (BufferedReader br = new BufferedReader(new FileReader(f));)
-        {
-
-            StringBuilder sb = new StringBuilder();
-            String line = br.readLine();
-
-            while (line != null)
-            {
-                sb.append(line);
-                sb.append(System.lineSeparator());
-                line = br.readLine();
-            }
-            contents = sb.toString();
-        }
-        catch (FileNotFoundException ex)
-        {
-            Logger.getLogger(SyncFilesClientThread.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        catch (IOException ex)
-        {
-            Logger.getLogger(SyncFilesClientThread.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return contents;
-    }
+    }    
 }
