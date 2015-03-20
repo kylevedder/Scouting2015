@@ -156,7 +156,7 @@ public class MatchData implements ObjectInterface
 
         map.put(humanPlayerTypeKey, humanPlayerType.toString());
         
-        map.put(KEY_TYPE, this.getType());
+        map.put(KEY_OBJECT_TYPE, this.getType().toString());
         JSONObject json = new JSONObject(map);
         return json.toString();
     }

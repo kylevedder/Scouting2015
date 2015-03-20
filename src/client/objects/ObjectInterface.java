@@ -11,7 +11,7 @@ package client.objects;
  */
 public interface ObjectInterface
 {
-    public static final String KEY_TYPE = "objType";
+    public static final String KEY_OBJECT_TYPE = "objType";
     
     public ObjectType getType();    
 }

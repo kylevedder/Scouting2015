@@ -14,6 +14,7 @@ import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.json.JSONObject;
+import server.filemanager.ServerFileManager;
 
 /**
  *
@@ -24,6 +25,8 @@ public class SyncFilesServerThread implements Runnable
 
     private volatile boolean isRunning = true;
 
+    private ServerFileManager fileManager = ServerFileManager.getInstance();
+    
     ServerSocket serverSocket = null;
     private int port;
 
@@ -97,9 +100,13 @@ public class SyncFilesServerThread implements Runnable
                 jsonObjs[i] = new JSONObject(jsonString);
             }                            
             
-            System.out.println("Server Recieved:\n" + recievedString);   //Prints the string content read from input stream
+            System.out.println("Server Recieved:\n" + recievedString + "\nSaving files...");   //Prints the string content read from input stream
             
-            
+            for(JSONObject json: jsonObjs)
+            {
+                fileManager.writeFile(json);
+            }
+            System.out.println("All files written.");
         }
         catch (IOException ex)
         {

@@ -5,6 +5,10 @@
  */
 package utils;
 
+import client.filemanager.ClientFileManager;
+import client.networking.SyncFilesClientThread;
+import client.objects.ObjectInterface;
+import client.objects.ObjectType;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.io.File;
@@ -16,6 +20,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import org.json.JSONObject;
 
 /**
  *
@@ -23,6 +28,18 @@ import javax.swing.JOptionPane;
  */
 public class Utils
 {
+    
+    /**
+     * Converts jsonStr to JSON
+     * @param jsonStr
+     * @return 
+     */
+    public static ObjectType getObjectType(String jsonStr)
+    {
+        JSONObject json = new JSONObject(jsonStr);
+        JSONObject jsonContent = new JSONObject(json.getString(SyncFilesClientThread.KEY_FILE_CONTENTS));
+        return ObjectType.valueOf(jsonContent.getString(ObjectInterface.KEY_OBJECT_TYPE));
+    }
 
     /**
      * Appends two given file arrays.
