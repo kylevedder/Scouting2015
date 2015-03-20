@@ -11,6 +11,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,7 +32,7 @@ public class SyncFilesClientThread implements Runnable
     private int numConnectRetries = 0;
 
     public static String KEY_FILE_NAME = "name";
-    public static String KEY_FILE_CONTENTS = "contents";    
+    public static String KEY_FILE_CONTENTS = "contents";
 
     /**
      * Attempts to connect to the server and, if successful, sends the contents
@@ -54,7 +56,7 @@ public class SyncFilesClientThread implements Runnable
     public void run()
     {
         System.out.println("Starting new Sync Files Thread...");
-        Socket connection = null;        
+        Socket connection = null;
 
         //try to connect
         for (int retries = 0; retries < this.numConnectRetries && connection == null; retries++)
@@ -82,8 +84,13 @@ public class SyncFilesClientThread implements Runnable
 
         //setup output stream
         DataOutputStream outToServer = null;
+        InputStream ins = null;
+        BufferedReader reader = null;
+
         try
         {
+            ins = connection.getInputStream();
+            reader = new BufferedReader(new InputStreamReader(ins));
             outToServer = new DataOutputStream(connection.getOutputStream());
         }
         catch (IOException ex)
@@ -103,7 +110,7 @@ public class SyncFilesClientThread implements Runnable
                     //create JSON object to send to server
                     JSONObject fileJSON = new JSONObject();
                     fileJSON.put(KEY_FILE_CONTENTS, fileContentsString);
-                    fileJSON.put(KEY_FILE_NAME, file.getName());                    
+                    fileJSON.put(KEY_FILE_NAME, file.getName());
 
                     //generate out String
                     String outToServerString = fileJSON.toString() + "\n";
@@ -122,8 +129,30 @@ public class SyncFilesClientThread implements Runnable
                 Logger.getLogger(SyncFilesClientThread.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
-        System.out.println("Finised sending files. Now reading files");
+
+        System.out.println("Finised sending files. \nNow reading files...");
+
+        try
+        {
+            //In from client buffer
+            StringBuilder stringBuffer = new StringBuilder();
+
+            //read from the client
+            String line;
+            while ((line = reader.readLine()) != null)
+            {
+                stringBuffer.append(line);
+                stringBuffer.append("\n");
+            }
+
+            //construct final string
+            String recievedString = stringBuffer.toString();                        
+        }
+        catch (IOException ex)
+        {
+            ex.printStackTrace();
+            System.err.println("Error reading from server!");
+        }
 
         System.out.println("Exiting SyncFilesThread...");
         try
@@ -137,5 +166,5 @@ public class SyncFilesClientThread implements Runnable
             Logger.getLogger(SyncFilesClientThread.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-    }    
+    }
 }

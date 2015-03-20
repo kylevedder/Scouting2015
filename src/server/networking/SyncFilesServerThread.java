@@ -81,8 +81,10 @@ public class SyncFilesServerThread implements Runnable
 
             //setup in and out
             InputStream ins = socket.getInputStream();
-            DataOutputStream outToServer = new DataOutputStream(socket.getOutputStream());
             BufferedReader reader = new BufferedReader(new InputStreamReader(ins));
+            DataOutputStream outToServer = new DataOutputStream(socket.getOutputStream());            
+            
+            //In from client buffer
             StringBuilder stringBuffer = new StringBuilder();
 
             //read from the client

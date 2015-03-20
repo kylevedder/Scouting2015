@@ -116,6 +116,15 @@ public class ClientFileManager
             }
         }
     }
+    
+    /**
+     * Takes one or several JSON strings and saves them as files in the server folder.
+     * @param jsonContents 
+     */
+    public void saveJSONData(String jsonContents)
+    {
+        
+    }
 
     /**
      * Gets an File array from the local directory that need to be sent to the
