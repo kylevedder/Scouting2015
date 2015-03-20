@@ -9,9 +9,14 @@ package client.objects;
  *
  * @author kyle
  */
-public interface ObjectInterface
+public interface UserDataInterface
 {
+
     public static final String KEY_OBJECT_TYPE = "objType";
-    
-    public ObjectType getType();    
+
+    public ObjectType getType();
+
+    public String serialize();
+
+    public String getFileName();
 }

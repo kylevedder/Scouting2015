@@ -5,7 +5,7 @@
  */
 package client.objects.matchdata;
 
-import client.objects.ObjectInterface;
+import client.objects.UserDataInterface;
 import client.objects.ObjectType;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,7 +21,7 @@ import org.json.JSONObject;
  *
  * @author Kyle
  */
-public class MatchData implements ObjectInterface
+public class MatchData implements UserDataInterface
 {
 
     //match meta data
@@ -109,7 +109,7 @@ public class MatchData implements ObjectInterface
         this.teleopContainerStacks = teleopContainerStacks;
 
         this.humanPlayerType = humanPlayerType;
-        
+
     }
 
     /**
@@ -155,7 +155,7 @@ public class MatchData implements ObjectInterface
         map.put(teleopToteStacksKey, toteArray);
 
         map.put(humanPlayerTypeKey, humanPlayerType.toString());
-        
+
         map.put(KEY_OBJECT_TYPE, this.getType().toString());
         JSONObject json = new JSONObject(map);
         return json.toString();
@@ -186,26 +186,26 @@ public class MatchData implements ObjectInterface
         boolean autoInAutoZone = json.getBoolean(autoInAutoZoneKey);
         //Coop data
         CoOpType coopType = CoOpType.valueOf(json.getString(coopTypeKey));
-        
+
         JSONArray teleopToteJSONArray = json.getJSONArray(teleopToteStacksKey);
-        JSONArray teleopContainerJSONArray = json.getJSONArray(teleopContainerStacksKey);        
+        JSONArray teleopContainerJSONArray = json.getJSONArray(teleopContainerStacksKey);
         //Teleop data
         StackTote[] teleopToteStacks = new StackTote[teleopToteJSONArray.length()];
         StackContainer[] teleopContainerStacks = new StackContainer[teleopContainerJSONArray.length()];
-        
-        for(int i = 0; i < teleopToteStacks.length; i++)
+
+        for (int i = 0; i < teleopToteStacks.length; i++)
         {
             teleopToteStacks[i] = StackTote.deserialize((JSONObject) teleopToteJSONArray.get(i));
         }
-        
-        for(int i = 0; i < teleopContainerStacks.length; i++)
+
+        for (int i = 0; i < teleopContainerStacks.length; i++)
         {
             teleopContainerStacks[i] = StackContainer.deserialize((JSONObject) teleopContainerJSONArray.get(i));
         }
         //Human Player data
         HumanPlayerType humanPlayerType = HumanPlayerType.valueOf(json.getString(humanPlayerTypeKey));
 
-        return new MatchData(matchMatchNumber, matchTeamNumber, matchScouter, autoNumberTotes, autoNumberContainers, autoTotesStacked, autoInAutoZone, teleopToteStacks, teleopContainerStacks, activityType, activityComment, coopType, humanPlayerType, matchFinalScore);                        
+        return new MatchData(matchMatchNumber, matchTeamNumber, matchScouter, autoNumberTotes, autoNumberContainers, autoTotesStacked, autoInAutoZone, teleopToteStacks, teleopContainerStacks, activityType, activityComment, coopType, humanPlayerType, matchFinalScore);
     }
 
     public String getActivityComment()
@@ -282,5 +282,15 @@ public class MatchData implements ObjectInterface
     public ObjectType getType()
     {
         return ObjectType.MATCH;
+    }
+
+    @Override
+    public String getFileName()
+    {
+        return String.valueOf(this.getType().toString()) + "_"
+                + String.valueOf(this.getMatchMatchNumber()) + "_"
+                + String.valueOf(this.getMatchTeamNumber() + "_"
+                        + String.valueOf(this.getMatchScouter().trim().replaceAll(" ", "_").replace("\\", "").replace("/", "").replace(".", ""))
+                        + "_" + String.valueOf(this.serialize().hashCode()) + ".json");
     }
 }

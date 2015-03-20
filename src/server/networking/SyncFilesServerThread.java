@@ -113,8 +113,9 @@ public class SyncFilesServerThread implements Runnable
             {
                 fileManager.writeFile(json);
             }
-            System.out.println("All files written.");
+            System.out.println("All files written.\n Now, sending all files to client...");
 
+            //get all files to send
             for (File file : fileManager.getFilesToSend())
             {
                 try

@@ -6,6 +6,7 @@
 package client.filemanager;
 
 import client.networking.SyncFilesClientThread;
+import client.objects.UserDataInterface;
 import client.objects.activedata.ActiveData;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -29,21 +30,15 @@ public class ClientFileManager
 {
 
     //singleton object
-    private static ClientFileManager matchManager = null;    
+    private static ClientFileManager matchManager = null;
 
     private Flag blockAddingFilesToSendFlag = new Flag(false);
 
-    private static final String MATCH_LOCAL_FOLDER_PATH = "./saves/match/local";
-    private static final String MATCH_SERVER_FOLDER_PATH = "./saves/match/server";
-    
-    private static final String ACTIVE_LOCAL_FOLDER_PATH = "./saves/active/local";
-    private static final String ACTIVE_SERVER_FOLDER_PATH = "./saves/active/server";
+    private static final String ACTIVE_LOCAL_FOLDER_PATH = "./saves/local";
+    private static final String ACTIVE_SERVER_FOLDER_PATH = "./saves/server";
 
-    private File localMatchFolder = null;
-    private File serverMatchFolder = null;
-    
-    private File localActiveFolder = null;
-    private File serverActiveFolder = null;
+    private File localFolder = null;
+    private File serverFolder = null;
 
     /**
      * Gets the singleton instance of this class.
@@ -61,31 +56,19 @@ public class ClientFileManager
 
     private ClientFileManager()
     {
-        localMatchFolder = new File(MATCH_LOCAL_FOLDER_PATH);
-        serverMatchFolder = new File(MATCH_SERVER_FOLDER_PATH);
-        
-        localActiveFolder = new File(ACTIVE_LOCAL_FOLDER_PATH);
-        serverActiveFolder = new File(ACTIVE_SERVER_FOLDER_PATH);
+
+        localFolder = new File(ACTIVE_LOCAL_FOLDER_PATH);
+        serverFolder = new File(ACTIVE_SERVER_FOLDER_PATH);
 
         //create local folder, if doesn't exist
-        if (!localMatchFolder.exists())
+        if (!localFolder.exists())
         {
-            localMatchFolder.mkdirs();
+            localFolder.mkdirs();
         }
         //create server folder, if doesn't exist
-        if (!serverMatchFolder.exists())
+        if (!serverFolder.exists())
         {
-            serverMatchFolder.mkdirs();
-        }        
-        //create local folder, if doesn't exist
-        if (!localActiveFolder.exists())
-        {
-            localActiveFolder.mkdirs();
-        }
-        //create server folder, if doesn't exist
-        if (!serverActiveFolder.exists())
-        {
-            serverActiveFolder.mkdirs();
+            serverFolder.mkdirs();
         }
 
         //leave unlocked, should be locked for pulling all files from the SyncFilesThread only
@@ -93,60 +76,18 @@ public class ClientFileManager
     }
 
     /**
-     * Adds a completed match to the queue.
-     *
-     * @param match
-     */
-    public void addMatch(MatchData match)
-    {
-        //block until clear to add match data
-        blockAddingFilesToSendFlag.await();
-        FileWriter fw = null;
-        String fileName = getFileNameFromMatchData(match);
-        File localFile = new File(localMatchFolder, fileName);
-        String content = match.serialize();
-        try
-        {
-            System.out.println("Writing File: " + localFile.getCanonicalPath() + "\n"
-                    + "Content: " + content);
-            fw = new FileWriter(localFile.getAbsoluteFile());
-            BufferedWriter bw = new BufferedWriter(fw);
-            bw.write(content);
-            bw.close();
-        }
-        catch (IOException ex)
-        {
-            Logger.getLogger(ClientFileManager.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        finally
-        {
-            try
-            {
-                if (fw != null)
-                {
-                    fw.close();
-                }
-            }
-            catch (IOException ex)
-            {
-                Logger.getLogger(ClientFileManager.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }        
-    }
-    
-    /**
-     * Adds a completed match to the queue.
+     * Saves user data in the appropriate folder.
      * 
-     * @param active 
+     * @param parentFolder
+     * @param fileName
+     * @param userData 
      */
-    public void addActive(ActiveData active)
+    public void saveData(UserDataInterface userData)
     {
-        //block until clear to add match data
-        blockAddingFilesToSendFlag.await();
+        String fileName = userData.getFileName();
         FileWriter fw = null;
-        String fileName = getFileNameFromActiveData(active);
-        File localFile = new File(localActiveFolder, fileName);
-        String content = active.serialize();
+        File localFile = new File(localFolder, fileName);
+        String content = userData.serialize();
         try
         {
             System.out.println("Writing File: " + localFile.getCanonicalPath() + "\n"
@@ -173,7 +114,7 @@ public class ClientFileManager
             {
                 Logger.getLogger(ClientFileManager.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }        
+        }
     }
 
     /**
@@ -186,40 +127,9 @@ public class ClientFileManager
      */
     public File[] getFilesToSend()
     {
-        this.blockAddingFilesToSendFlag.lock();
-        File[] matchFiles = localMatchFolder.listFiles();
-        File[] activeFiles = localActiveFolder.listFiles();        
-        this.blockAddingFilesToSendFlag.unlock();
-        File[] files = Utils.appendFileArrays(matchFiles, activeFiles);
+        this.blockAddingFilesToSendFlag.lock();        
+        File[] files = localFolder.listFiles();
+        this.blockAddingFilesToSendFlag.unlock();        
         return files;
-    }
-
-    /**
-     * Retrieves the String for the file name from the Match Data object.
-     *
-     * @param match
-     * @return
-     */
-    public static String getFileNameFromMatchData(MatchData match)
-    {
-        return String.valueOf(match.getType().toString()) + "_" 
-                + String.valueOf(match.getMatchMatchNumber()) + "_"
-                + String.valueOf(match.getMatchTeamNumber() + "_"
-                        + String.valueOf(match.getMatchScouter().trim().replaceAll(" ", "_").replace("\\", "").replace("/", "").replace(".", ""))
-                        + "_" + String.valueOf(match.serialize().hashCode()) + ".json");
-    }
-    
-    /**
-     * Retrieves the String for the file name from the Match Data object.
-     *
-     * @param match
-     * @return
-     */
-    public static String getFileNameFromActiveData(ActiveData active)
-    {
-        return String.valueOf(active.getType().toString()) + "_" 
-                + String.valueOf(String.valueOf(active.getMatchTeamNumber() + "_"
-                        + String.valueOf(active.getMatchRobotScouter().trim().replaceAll(" ", "_").replace("\\", "").replace("/", "").replace(".", ""))
-                        + "_" + String.valueOf(active.serialize().hashCode()) + ".json"));
     }
 }

@@ -31,11 +31,9 @@ public class ServerFileManager
 
     private Flag blockAddingFilesToSendFlag = new Flag(false);
 
-    private static final String ACTIVE_FOLDER_PATH = "./serverSaves/active";
-    private static final String MATCH_FOLDER_PATH = "./serverSaves/match";
+    private static final String SAVES_FOLDER_PATH = "./serverSaves";    
 
-    private File matchFolder = null;
-    private File activeFolder = null;
+    private File savesFolder = null;    
 
     /**
      * Gets the singleton instance of this class.
@@ -52,20 +50,14 @@ public class ServerFileManager
     }
 
     private ServerFileManager()
-    {
-        activeFolder = new File(ACTIVE_FOLDER_PATH);
-        matchFolder = new File(MATCH_FOLDER_PATH);
+    {        
+        savesFolder = new File(SAVES_FOLDER_PATH);
 
         //create local folder, if doesn't exist
-        if (!matchFolder.exists())
+        if (!savesFolder.exists())
         {
-            matchFolder.mkdirs();
-        }
-        //create local folder, if doesn't exist
-        if (!activeFolder.exists())
-        {
-            activeFolder.mkdirs();
-        }
+            savesFolder.mkdirs();
+        }        
         //leave unlocked, should be locked for pulling all files from the SyncFilesThread only
         blockAddingFilesToSendFlag.unlock();
     }
@@ -85,13 +77,8 @@ public class ServerFileManager
 
         //extract file name from the JSON
         String fileName = json.getString(SyncFilesClientThread.KEY_FILE_NAME);
-
-        //extract object type from JSON
-        ObjectType objType = Utils.getObjectType(json.toString());
-
-        //determine base folder based on obj type
-        File baseFolder = (objType == ObjectType.MATCH) ? matchFolder : activeFolder;
-        File localFile = new File(baseFolder, fileName);
+                        
+        File localFile = new File(savesFolder, fileName);
         String content = json.toString();
         try
         {
@@ -133,37 +120,8 @@ public class ServerFileManager
     public File[] getFilesToSend()
     {
         this.blockAddingFilesToSendFlag.lock();
-        File[] matchFiles = matchFolder.listFiles();
-        File[] activeFiles = activeFolder.listFiles();
-        this.blockAddingFilesToSendFlag.unlock();
-        File[] files = Utils.appendFileArrays(matchFiles, activeFiles);
+        File[] files = savesFolder.listFiles();        
+        this.blockAddingFilesToSendFlag.unlock();        
         return files;
-    }
-
-    /**
-     * Retrieves the String for the file name from the Match Data object.
-     *
-     * @param match
-     * @return
-     */
-    public static String getFileNameFromMatchData(MatchData match)
-    {
-        return String.valueOf(match.getMatchMatchNumber()) + "_"
-                + String.valueOf(match.getMatchTeamNumber() + "_"
-                        + String.valueOf(match.getMatchScouter().trim().replaceAll(" ", "_").replace("\\", "").replace("/", "").replace(".", ""))
-                        + "_" + String.valueOf(match.serialize().hashCode()) + ".json");
-    }
-
-    /**
-     * Retrieves the String for the file name from the Match Data object.
-     *
-     * @param match
-     * @return
-     */
-    public static String getFileNameFromActiveData(ActiveData active)
-    {
-        return String.valueOf(String.valueOf(active.getMatchTeamNumber() + "_"
-                + String.valueOf(active.getMatchRobotScouter().trim().replaceAll(" ", "_").replace("\\", "").replace("/", "").replace(".", ""))
-                + "_" + String.valueOf(active.serialize().hashCode()) + ".json"));
-    }
+    }    
 }

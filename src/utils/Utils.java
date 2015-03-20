@@ -7,7 +7,7 @@ package utils;
 
 import client.filemanager.ClientFileManager;
 import client.networking.SyncFilesClientThread;
-import client.objects.ObjectInterface;
+import client.objects.UserDataInterface;
 import client.objects.ObjectType;
 import java.awt.Font;
 import java.awt.FontFormatException;
@@ -64,19 +64,7 @@ public class Utils
             Logger.getLogger(SyncFilesClientThread.class.getName()).log(Level.SEVERE, null, ex);
         }
         return contents;
-    }
-    
-    /**
-     * Converts jsonStr to JSON
-     * @param jsonStr
-     * @return 
-     */
-    public static ObjectType getObjectType(String jsonStr)
-    {
-        JSONObject json = new JSONObject(jsonStr);
-        JSONObject jsonContent = new JSONObject(json.getString(SyncFilesClientThread.KEY_FILE_CONTENTS));
-        return ObjectType.valueOf(jsonContent.getString(ObjectInterface.KEY_OBJECT_TYPE));
-    }
+    }       
 
     /**
      * Appends two given file arrays.

@@ -864,7 +864,7 @@ public class MatchFrame extends javax.swing.JFrame implements ResetableFrame
         if (assessCompletion(true))
         {
             MatchData matchData = scrapeData();
-            Main.matchManager.addMatch(matchData);
+            Main.matchManager.saveData(matchData);
             //requests user input to reset the frame
             if(Utils.showOKCancelAndGetResponse("Reset frame?", "Reset the match frame?"))
             {

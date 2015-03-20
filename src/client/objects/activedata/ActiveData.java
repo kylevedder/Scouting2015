@@ -5,7 +5,7 @@
  */
 package client.objects.activedata;
 
-import client.objects.ObjectInterface;
+import client.objects.UserDataInterface;
 import client.objects.ObjectType;
 import client.objects.matchdata.CoOpType;
 import client.objects.matchdata.HumanPlayerType;
@@ -18,7 +18,7 @@ import org.json.JSONObject;
  *
  * @author kyle
  */
-public class ActiveData implements ObjectInterface
+public class ActiveData implements UserDataInterface
 {
 
     int matchTeamNumber = -1;
@@ -165,8 +165,8 @@ public class ActiveData implements ObjectInterface
         map.put(coopTypeKey, coopType);
 
         map.put(humanPlayerTypeKey, humanPlayerType);
-        
-        map.put(KEY_OBJECT_TYPE, this.getType().toString());
+
+        map.put(this.KEY_OBJECT_TYPE, this.getType().toString());
         JSONObject json = new JSONObject(map);
         return json.toString();
     }
@@ -195,7 +195,7 @@ public class ActiveData implements ObjectInterface
         boolean containerCanGetContainers = json.getBoolean(containerCanGetContainersKey);
         boolean containerMustBeUpright = json.getBoolean(containerMustBeUprightKey);
         int containerMaxCappableStackHeight = json.getInt(containerMaxCappableStackHeightKey);
-        boolean litterCanPushLitter = json.getBoolean(litterCanPushLitterKey);        
+        boolean litterCanPushLitter = json.getBoolean(litterCanPushLitterKey);
         boolean litterCanPickupLitter = json.getBoolean(litterCanPickupLitterKey);
         CoOpType coopType = CoOpType.valueOf(json.getString(coopTypeKey));
         HumanPlayerType humanPlayerType = HumanPlayerType.valueOf(json.getString(humanPlayerTypeKey));
@@ -307,10 +307,17 @@ public class ActiveData implements ObjectInterface
         return toteCanGetTotes;
     }
 
-    @Override
     public ObjectType getType()
     {
         return ObjectType.ACTIVE;
+    }
+
+    public String getFileName()
+    {
+        return String.valueOf(this.getType().toString()) + "_"
+                + String.valueOf(String.valueOf(this.getMatchTeamNumber() + "_"
+                                + String.valueOf(this.getMatchRobotScouter().trim().replaceAll(" ", "_").replace("\\", "").replace("/", "").replace(".", ""))
+                                + "_" + String.valueOf(this.serialize().hashCode()) + ".json"));
     }
 
 }
