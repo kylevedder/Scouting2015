@@ -123,7 +123,7 @@ public class SyncFilesServerThread implements Runnable
                 try
                 {
 
-                    String fileContentsString = Utils.readFile(file);
+                    String fileContentsString = Utils.readFileContents(file);
                     if (fileContentsString != null)
                     {
                         //create JSON object to send to server

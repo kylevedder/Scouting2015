@@ -104,7 +104,7 @@ public class SyncFilesClientThread implements Runnable
             try
             {
 
-                String fileContentsString = Utils.readFile(file);
+                String fileContentsString = Utils.readFileContents(file);
                 if (fileContentsString != null)
                 {
                     //create JSON object to send to server
@@ -146,7 +146,9 @@ public class SyncFilesClientThread implements Runnable
             }
 
             //construct final string
-            String recievedString = stringBuffer.toString();                        
+            String recievedString = stringBuffer.toString();
+            
+//            Main.matchManager
         }
         catch (IOException ex)
         {

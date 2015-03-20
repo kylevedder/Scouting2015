@@ -19,6 +19,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import client.objects.matchdata.MatchData;
+import main.Globals;
+import org.json.JSONObject;
 import utils.Flag;
 import utils.Utils;
 
@@ -82,48 +84,21 @@ public class ClientFileManager
      * @param fileName
      * @param userData 
      */
-    public void saveData(UserDataInterface userData)
+    public void saveUserDataAsFile(UserDataInterface userData)
     {
-        String fileName = userData.getFileName();
-        FileWriter fw = null;
+        String fileName = userData.getFileName();        
         File localFile = new File(localFolder, fileName);
-        String content = userData.serialize();
-        try
-        {
-            System.out.println("Writing File: " + localFile.getCanonicalPath() + "\n"
-                    + "Content: " + content);
-            fw = new FileWriter(localFile.getAbsoluteFile());
-            BufferedWriter bw = new BufferedWriter(fw);
-            bw.write(content);
-            bw.close();
-        }
-        catch (IOException ex)
-        {
-            Logger.getLogger(ClientFileManager.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        finally
-        {
-            try
-            {
-                if (fw != null)
-                {
-                    fw.close();
-                }
-            }
-            catch (IOException ex)
-            {
-                Logger.getLogger(ClientFileManager.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
+        Utils.writeToFile(localFile, userData.serialize());
+        
     }
     
     /**
      * Takes one or several JSON strings and saves them as files in the server folder.
      * @param jsonContents 
      */
-    public void saveJSONData(String jsonContents)
+    public void saveData(String jsonContents)
     {
-        
+        JSONObject json = new JSONObject(jsonContents);        
     }
 
     /**

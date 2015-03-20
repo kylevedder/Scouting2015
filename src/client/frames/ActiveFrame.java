@@ -872,7 +872,7 @@ public class ActiveFrame extends javax.swing.JFrame implements ResetableFrame
         if (assessCompletion(true))
         {
             ActiveData activeData = scrapeData();
-            Main.matchManager.saveData(activeData);
+            Main.matchManager.saveUserDataAsFile(activeData);
             //requests user input to reset the frame
             if (Utils.showOKCancelAndGetResponse("Reset frame?", "Reset the match frame?"))
             {
