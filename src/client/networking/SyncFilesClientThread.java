@@ -19,7 +19,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import main.Main;
 import org.json.JSONObject;
-import transmission.FileTransmitter;
+import transmission.TransmittedJSONHandler;
 import utils.Utils;
 
 /**
@@ -36,8 +36,8 @@ public class SyncFilesClientThread implements Runnable
     public static String KEY_FILE_NAME = "name";
     public static String KEY_FILE_CONTENTS = "contents";
     
-    private FileTransmitter fileTransmitter = null;
-    private ClientFileManager clientFileManager = null;
+    private TransmittedJSONHandler transmittedJSONHandler = TransmittedJSONHandler.getInstance();
+    private ClientFileManager clientFileManager = ClientFileManager.getInstance();
 
     /**
      * Attempts to connect to the server and, if successful, sends the contents
@@ -54,9 +54,7 @@ public class SyncFilesClientThread implements Runnable
     {
         this.port = port;
         this.address = address;
-        this.numConnectRetries = numConnectRetries;
-        this.fileTransmitter = FileTransmitter.getInstance();
-        this.clientFileManager = ClientFileManager.getInstance();
+        this.numConnectRetries = numConnectRetries;        
     }
 
     @Override
@@ -74,8 +72,7 @@ public class SyncFilesClientThread implements Runnable
                 System.out.println("CLIENT: Connected!");
             }
             catch (IOException ex)
-            {
-                ex.printStackTrace();
+            {                
                 System.err.println("CLIENT: Connect exception, retrying...");
             }
         }
@@ -87,7 +84,7 @@ public class SyncFilesClientThread implements Runnable
             return;
         }        
 
-        //setup output stream
+        //setup IOs
         DataOutputStream outToServer = null;
         InputStream ins = null;
         BufferedReader reader = null;                
@@ -100,9 +97,19 @@ public class SyncFilesClientThread implements Runnable
             outToServer = new DataOutputStream(connection.getOutputStream());      
             
             //get files to send
-            File[] filesToSend = clientFileManager.getFilesToSend();            
+            File[] filesToSend = clientFileManager.getFilesToSend();
             //send files
-            fileTransmitter.sendFiles(filesToSend, outToServer);                        
+            transmittedJSONHandler.sendFiles(filesToSend, outToServer);
+            
+            JSONObject[] jsonObjs = transmittedJSONHandler.recieveSentJSON(reader);
+            
+            //save each JSON object
+            for(JSONObject json: jsonObjs)
+            {
+                clientFileManager.writeServerFile(json);
+            }
+            
+            
         }
         catch (IOException ex)
         {
@@ -112,74 +119,3 @@ public class SyncFilesClientThread implements Runnable
 
     }
 }
-/*
-File[] filesToSend = Main.matchManager.getFilesToSend();
-        
-        for (File file : filesToSend)
-        {
-            try
-            {
-
-                String fileContentsString = Utils.readFileContents(file);
-                if (fileContentsString != null)
-                {
-                    //create JSON object to send to server
-                    JSONObject fileJSON = new JSONObject();
-                    fileJSON.put(KEY_FILE_CONTENTS, fileContentsString);
-                    fileJSON.put(KEY_FILE_NAME, file.getName());
-
-                    //generate out String
-                    String outToServerString = fileJSON.toString() + "\n";
-                    //writes the JSON for the file to the server
-                    outToServer.writeBytes(outToServerString);
-                    //print debug line
-                    System.out.println("CLIENT: Sent File: " + file.getName() + " \nCLIENT: With data: " + outToServerString);
-                }
-                else
-                {
-                    System.out.println("CLIENT: File " + file.getName() + " unable to be read...");
-                }
-            }
-            catch (IOException ex)
-            {
-                Logger.getLogger(SyncFilesClientThread.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }        
-        System.out.println("CLIENT: Finised sending files. \nCLIENT: Now reading files...");
-
-        try
-        {
-            //In from client buffer
-            StringBuilder stringBuffer = new StringBuilder();
-
-            //read from the client
-            String line;
-            while ((line = reader.readLine()) != null)
-            {
-                stringBuffer.append(line);
-                stringBuffer.append("\n");
-            }
-
-            //construct final string
-            String recievedString = stringBuffer.toString();
-            System.out.println("CLIENT: Recieved: " + recievedString);
-//            Main.matchManager
-        }
-        catch (IOException ex)
-        {
-            ex.printStackTrace();
-            System.err.println("Error reading from server!");
-        }
-
-        System.out.println("Exiting SyncFilesThread...");
-        try
-        {
-            outToServer.flush();
-            outToServer.close();
-            connection.close();
-        }
-        catch (IOException ex)
-        {
-            Logger.getLogger(SyncFilesClientThread.class.getName()).log(Level.SEVERE, null, ex);
-        }
-*/

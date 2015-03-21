@@ -5,24 +5,12 @@
  */
 package client.filemanager;
 
-import client.networking.SyncFilesClientThread;
 import client.objects.UserDataInterface;
-import client.objects.activedata.ActiveData;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import client.objects.matchdata.MatchData;
-import main.Globals;
 import org.json.JSONObject;
+import transmission.TransmittedJSONHandler;
+import utils.FileUtils;
 import utils.Flag;
-import utils.Utils;
 
 /**
  *
@@ -33,6 +21,8 @@ public class ClientFileManager
 
     //singleton object
     private static ClientFileManager matchManager = null;
+    
+    private TransmittedJSONHandler transmittedJSONHandler = TransmittedJSONHandler.getInstance();
 
     private Flag blockAddingFilesToSendFlag = new Flag(false);
 
@@ -75,10 +65,10 @@ public class ClientFileManager
 
         //leave unlocked, should be locked for pulling all files from the SyncFilesThread only
         blockAddingFilesToSendFlag.unlock();
-    }
-
+    }    
+    
     /**
-     * Saves user data in the appropriate folder.
+     * Saves user data in the local folder.
      * 
      * @param parentFolder
      * @param fileName
@@ -88,18 +78,19 @@ public class ClientFileManager
     {
         String fileName = userData.getFileName();        
         File localFile = new File(localFolder, fileName);
-        Utils.writeToFile(localFile, userData.serialize());
-        
+        FileUtils.writeToFile(localFile, userData.serialize());        
     }
     
     /**
-     * Takes one or several JSON strings and saves them as files in the server folder.
-     * @param jsonContents 
+     * Writes a file in the server file directory.
+     * @param json 
      */
-    public void saveData(String jsonContents)
+    public void writeServerFile(JSONObject json)
     {
-        JSONObject json = new JSONObject(jsonContents);        
-    }
+        //block until clear to add match data
+        blockAddingFilesToSendFlag.await();
+        transmittedJSONHandler.saveAsFile(this.serverFolder, json);
+    }    
 
     /**
      * Gets an File array from the local directory that need to be sent to the

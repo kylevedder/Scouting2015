@@ -16,6 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import client.objects.matchdata.MatchData;
 import org.json.JSONObject;
+import transmission.TransmittedJSONHandler;
 import utils.Flag;
 import utils.Utils;
 
@@ -28,6 +29,8 @@ public class ServerFileManager
 
     //singleton object
     private static ServerFileManager matchManager = null;
+    
+    private TransmittedJSONHandler fileTransmitter = TransmittedJSONHandler.getInstance();
 
     private Flag blockAddingFilesToSendFlag = new Flag(false);
 
@@ -71,42 +74,7 @@ public class ServerFileManager
     {
         //block until clear to add match data
         blockAddingFilesToSendFlag.await();
-
-        //setup file writer
-        FileWriter fw = null;
-
-        //extract file name from the JSON
-        String fileName = json.getString(SyncFilesClientThread.KEY_FILE_NAME);
-                        
-        File localFile = new File(savesFolder, fileName);
-        String content = json.toString();
-        try
-        {
-            System.out.println("Writing Server File: " + localFile.getCanonicalPath() + "\n"
-                    + "Content: " + content);
-            fw = new FileWriter(localFile.getAbsoluteFile());
-            BufferedWriter bw = new BufferedWriter(fw);
-            bw.write(content);
-            bw.close();
-        }
-        catch (IOException ex)
-        {
-            Logger.getLogger(ServerFileManager.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        finally
-        {
-            try
-            {
-                if (fw != null)
-                {
-                    fw.close();
-                }
-            }
-            catch (IOException ex)
-            {
-                Logger.getLogger(ServerFileManager.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
+        fileTransmitter.saveAsFile(savesFolder, json);
     }    
 
     /**

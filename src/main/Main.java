@@ -8,7 +8,7 @@ package main;
 import client.frames.MainFrame;
 import client.filemanager.ClientFileManager;
 import server.networking.SyncFilesServerThread;
-import transmission.FileTransmitter;
+import transmission.TransmittedJSONHandler;
 
 /**
  *
