@@ -5,6 +5,7 @@
  */
 package client.frames;
 
+import client.filemanager.ClientFileManager;
 import client.objects.activedata.ActiveData;
 import client.objects.activedata.FeedLocation;
 import client.objects.activedata.RobotNumWheels;
@@ -872,7 +873,7 @@ public class ActiveFrame extends javax.swing.JFrame implements ResetableFrame
         if (assessCompletion(true))
         {
             ActiveData activeData = scrapeData();
-            Main.matchManager.saveUserDataAsFile(activeData);
+            ClientFileManager.getInstance().saveUserDataAsFile(activeData);
             //requests user input to reset the frame
             if (Utils.showOKCancelAndGetResponse("Reset frame?", "Reset the match frame?"))
             {

@@ -5,6 +5,7 @@
  */
 package client.frames;
 
+import client.filemanager.ClientFileManager;
 import java.util.Enumeration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -864,7 +865,7 @@ public class MatchFrame extends javax.swing.JFrame implements ResetableFrame
         if (assessCompletion(true))
         {
             MatchData matchData = scrapeData();
-            Main.matchManager.saveUserDataAsFile(matchData);
+            ClientFileManager.getInstance().saveUserDataAsFile(matchData);
             //requests user input to reset the frame
             if(Utils.showOKCancelAndGetResponse("Reset frame?", "Reset the match frame?"))
             {

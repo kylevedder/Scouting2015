@@ -18,8 +18,10 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import server.filemanager.ServerFileManager;
+import transmission.FileTransmitter;
 import utils.Utils;
 
 /**
@@ -31,7 +33,7 @@ public class SyncFilesServerThread implements Runnable
 
     private volatile boolean isRunning = true;
 
-    private ServerFileManager fileManager = ServerFileManager.getInstance();
+    private ServerFileManager serverFileManager = ServerFileManager.getInstance();
 
     ServerSocket serverSocket = null;
     private int port;
@@ -74,51 +76,54 @@ public class SyncFilesServerThread implements Runnable
     {
         try
         {
-            System.out.println("Awaiting connection...");
+            System.out.println("SERVER: Awaiting connection...");
             //block for new connection            
             Socket socket = serverSocket.accept();
-            System.out.println("Connection Recieved!");
+            System.out.println("SERVER: Connection Recieved!");
 
             //setup in and out
             InputStream ins = socket.getInputStream();
             BufferedReader reader = new BufferedReader(new InputStreamReader(ins));
-            DataOutputStream outToServer = new DataOutputStream(socket.getOutputStream());            
-            
+            DataOutputStream outToServer = new DataOutputStream(socket.getOutputStream());
+
             //In from client buffer
             StringBuilder stringBuffer = new StringBuilder();
 
+            System.out.println("SERVER: Reading from client...");
+
             //read from the client
             String line;
-            while ((line = reader.readLine()) != null)
+
+            //while not end transmission
+            while (!(line = reader.readLine().trim()).equals(FileTransmitter.getEndTransmissionString()))
             {
+                System.out.println("SERVER: RECIEVED: " + line);
+                System.out.println("'" + FileTransmitter.getEndTransmissionString() + "'" + "=?=" + "'" + line + "'");
                 stringBuffer.append(line);
                 stringBuffer.append("\n");
             }
 
+            System.out.println("SERVER: Finised reading...");
+
             //construct final string
             String recievedString = stringBuffer.toString();
 
-            //split into individual JSON objects
-            String[] jsonStrings = recievedString.split("\n");
-            JSONObject[] jsonObjs = new JSONObject[jsonStrings.length];
+            System.out.println("SERVER: Server Recieved:\n" + recievedString + "\nSERVER: Converting to JSON...");   //Prints the string content read from input stream
 
-            //add each JSON string as JSONObject to array
-            for (int i = 0; i < jsonStrings.length; i++)
+            JSONArray jsonArray = new JSONArray(stringBuffer.toString());
+            
+            System.out.println("SERVER: JSON Saved, writing to files...");
+            
+            for (int i = 0; i < jsonArray.length(); i++)
             {
-                String jsonString = jsonStrings[i];
-                jsonObjs[i] = new JSONObject(jsonString);
+                JSONObject jsonOfFile = jsonArray.getJSONObject(i);
+                serverFileManager.writeFile(jsonOfFile);
             }
-
-            System.out.println("Server Recieved:\n" + recievedString + "\nSaving files...");   //Prints the string content read from input stream
-
-            for (JSONObject json : jsonObjs)
-            {
-                fileManager.writeFile(json);
-            }
-            System.out.println("All files written.\n Now, sending all files to client...");
+                                    
+            System.out.println("SERVER: All files written.\n Now, sending all files to client...");
 
             //get all files to send
-            for (File file : fileManager.getFilesToSend())
+            for (File file : serverFileManager.getFilesToSend())
             {
                 try
                 {
@@ -136,7 +141,7 @@ public class SyncFilesServerThread implements Runnable
                         //writes the JSON for the file to the server
                         outToServer.writeBytes(outToServerString);
                         //print debug line
-                        System.out.println("Sent File: " + file.getName() + " \nWith data: " + outToServerString);
+                        System.out.println("SERVER: Sent File: " + file.getName() + " \nSERVER: With data: " + outToServerString);
                     }
                     else
                     {
