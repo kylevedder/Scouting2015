@@ -39,7 +39,7 @@ public class ActiveTableModel extends AbstractTableModel
             objArray[i][0] = ad.getMatchTeamNumber();
             objArray[i][1] = ad.getMatchRobotScouter();            
         }
-    }    
+    }            
     
     @Override
     public int getRowCount()

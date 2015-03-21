@@ -124,7 +124,7 @@ public class SyncFilesServerThread extends Thread
             }
             catch (IOException | NullPointerException ex)
             {
-                Logger.getLogger(SyncFilesServerThread.class.getName()).log(Level.SEVERE, null, ex);
+                System.err.println("SyncFilesServer exception...");
             }
         }
     }

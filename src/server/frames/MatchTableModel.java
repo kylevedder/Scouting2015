@@ -19,7 +19,7 @@ import utils.FileUtils;
 public class MatchTableModel extends AbstractTableModel
 {
 
-    private int NUM_COLS = 4;
+    private int NUM_COLS = 5;
 
     private ArrayList<File> filesToPopulateWith = null;
     private Object[][] objArray = null;
@@ -40,6 +40,7 @@ public class MatchTableModel extends AbstractTableModel
             objArray[i][1] = md.getMatchMatchNumber();
             objArray[i][2] = md.getMatchScouter();
             objArray[i][3] = md.getMatchFinalScore();
+            objArray[i][4] = f.getName();
         }
     }
 
@@ -57,13 +58,20 @@ public class MatchTableModel extends AbstractTableModel
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex)
-    {
-        return objArray[rowIndex][columnIndex];
+    {        
+        if (objArray.length > rowIndex && objArray[0].length > columnIndex)
+        {
+            return objArray[rowIndex][columnIndex];
+        }
+        else
+        {
+            return null;
+        }
     }
 
     String[] columnNames =
     {
-        "Team #", "Match #", "Scouter", "Match Score"
+        "Team #", "Match #", "Scouter", "Match Score", "File Name"
     };
 
     @Override

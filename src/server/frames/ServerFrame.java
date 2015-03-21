@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.table.TableRowSorter;
 import main.Globals;
 import main.Main;
 import server.filemanager.ServerFileManager;
@@ -26,7 +27,7 @@ public class ServerFrame extends javax.swing.JFrame
 {
 
     private SyncFilesServerThread syncFilesServerThread = null;
-    
+
     private ServerFileManager serverFileManager = ServerFileManager.getInstance();
 
     /**
@@ -35,7 +36,6 @@ public class ServerFrame extends javax.swing.JFrame
     public ServerFrame()
     {
         initComponents();
-        
         try
         {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -49,7 +49,7 @@ public class ServerFrame extends javax.swing.JFrame
         }
         populateTables();
     }
-    
+
     /**
      * Pulls all data from the server saves files and populates the tables.
      */
@@ -59,6 +59,14 @@ public class ServerFrame extends javax.swing.JFrame
         ArrayList<File> activeFiles = this.serverFileManager.getActiveFiles();
         this.tableMatch.setModel(new MatchTableModel(matchFiles));
         this.tableActive.setModel(new ActiveTableModel(activeFiles));
+        TableRowSorter mySorter = new TableRowSorter(tableMatch.getModel());
+        mySorter.setComparator(0, new NumericComparator());
+        mySorter.setComparator(1, new NumericComparator());
+        mySorter.setComparator(2, new StringComparator());
+        mySorter.setComparator(3, new NumericComparator());
+        mySorter.setComparator(4, new StringComparator());
+        tableMatch.setRowSorter(mySorter);
+        tableMatch.getSelectionModel().addListSelectionListener(new MatchTableListSelectionListener(tableMatch));
     }
 
     /**
@@ -128,12 +136,9 @@ public class ServerFrame extends javax.swing.JFrame
             panelMainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelMainPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(panelMainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelMainPanelLayout.createSequentialGroup()
-                        .addComponent(labelTitle)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane3))
-                .addContainerGap())
+                .addComponent(labelTitle)
+                .addContainerGap(260, Short.MAX_VALUE))
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING)
         );
         panelMainPanelLayout.setVerticalGroup(
             panelMainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -141,8 +146,7 @@ public class ServerFrame extends javax.swing.JFrame
                 .addContainerGap()
                 .addComponent(labelTitle)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 182, Short.MAX_VALUE)
-                .addGap(350, 350, 350))
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 424, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -153,7 +157,9 @@ public class ServerFrame extends javax.swing.JFrame
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelMainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(panelMainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
