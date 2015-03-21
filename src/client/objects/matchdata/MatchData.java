@@ -293,4 +293,33 @@ public class MatchData implements UserDataInterface
                         + String.valueOf(this.getMatchScouter().trim().replaceAll(" ", "_").replace("\\", "").replace("/", "").replace(".", ""))
                         + "_" + String.valueOf(this.serialize().hashCode()) + ".json");
     }
+
+    @Override
+    public int getNumParams()
+    {
+        return getAllParams().length;
+    }
+
+    @Override
+    public Object[] getAllParams()
+    {
+        Object[] objs = new Object[]
+        {
+            matchMatchNumber,
+            matchTeamNumber,
+            matchScouter,
+            matchFinalScore,
+            activityType,
+            activityComment,
+            autoNumberTotes,
+            autoNumberContainers,
+            autoTotesStacked,
+            autoInAutoZone,
+            coopType,
+            teleopToteStacks,
+            teleopContainerStacks,
+            humanPlayerType,
+        };
+        return objs;
+    }
 }

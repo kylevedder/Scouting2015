@@ -8,11 +8,11 @@ package client.frames;
 import client.networking.SyncFilesClientThread;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import main.Globals;
+import main.Main;
 import utils.Utils;
 
 /**
@@ -20,7 +20,7 @@ import utils.Utils;
  * @author kyle
  */
 public class MainFrame extends javax.swing.JFrame
-{
+{   
 
     /**
      * Creates form MainFrame
@@ -76,6 +76,7 @@ public class MainFrame extends javax.swing.JFrame
         labelDataDisplayActiveServer = new javax.swing.JLabel();
         menuBarTop = new javax.swing.JMenuBar();
         menuServer = new javax.swing.JMenu();
+        menuStartServer = new javax.swing.JMenuItem();
         menuServerSync = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -175,7 +176,18 @@ public class MainFrame extends javax.swing.JFrame
 
         menuServer.setText("Server");
 
-        menuServerSync.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        menuStartServer.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        menuStartServer.setText("Start Server");
+        menuStartServer.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                menuStartServerActionPerformed(evt);
+            }
+        });
+        menuServer.add(menuStartServer);
+
+        menuServerSync.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Y, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         menuServerSync.setText("Sync Files");
         menuServerSync.setBorder(null);
         menuServerSync.setBorderPainted(true);
@@ -229,7 +241,7 @@ public class MainFrame extends javax.swing.JFrame
 
     private void buttonScoutingNewMatchActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_buttonScoutingNewMatchActionPerformed
     {//GEN-HEADEREND:event_buttonScoutingNewMatchActionPerformed
-        MatchFrame match = new MatchFrame();
+        Main.matchFrame.setVisible(true);
     }//GEN-LAST:event_buttonScoutingNewMatchActionPerformed
 
     private void menuServerSyncActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_menuServerSyncActionPerformed
@@ -237,17 +249,39 @@ public class MainFrame extends javax.swing.JFrame
         System.out.println("sync...");
         String ip = Utils.showInputBoxAndGetResponse("Enter Server IP", "Server IP").trim();
         System.out.println(ip);
-        
+
         Thread sendFilesThread = new Thread(new SyncFilesClientThread(ip, Globals.PORT, Globals.CONNECT_NUM_RETRIES));
         sendFilesThread.start();
     }//GEN-LAST:event_menuServerSyncActionPerformed
 
     private void buttonScoutingNewActiveActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_buttonScoutingNewActiveActionPerformed
     {//GEN-HEADEREND:event_buttonScoutingNewActiveActionPerformed
-        ActiveFrame activeFrame = new ActiveFrame();
-        activeFrame.setVisible(true);
+        Main.activeFrame.setVisible(true);
     }//GEN-LAST:event_buttonScoutingNewActiveActionPerformed
 
+    private void menuStartServerActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_menuStartServerActionPerformed
+    {//GEN-HEADEREND:event_menuStartServerActionPerformed
+        if (!Main.serverFrame.isVisible())
+        {
+            Main.serverFrame.setVisible(true);
+            menuStartServer.setText(Globals.STOP_SERVER_STRING);
+        }
+        else
+        {
+            Main.serverFrame.setVisible(false);            
+            menuStartServer.setText(Globals.START_SERVER_STRING);
+        }
+    }//GEN-LAST:event_menuStartServerActionPerformed
+
+    /**
+     * Sets the text of the start server menu button.
+     * @param text 
+     */
+    public void setMenuStartServerText(String text)
+    {
+        menuStartServer.setText(text);
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -308,6 +342,7 @@ public class MainFrame extends javax.swing.JFrame
     private javax.swing.JMenuBar menuBarTop;
     private javax.swing.JMenu menuServer;
     private javax.swing.JMenuItem menuServerSync;
+    private javax.swing.JMenuItem menuStartServer;
     private javax.swing.JPanel panelDataDisplayActive;
     private javax.swing.JPanel panelDataDisplayMatch;
     private javax.swing.JPanel panelScoutingDeploy;

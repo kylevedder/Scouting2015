@@ -13,4 +13,7 @@ public class Globals
 {
     public static final int CONNECT_NUM_RETRIES = 5;
     public static final int PORT = 6789;
+    
+    public static final String START_SERVER_STRING = "Start Server";
+    public static final String STOP_SERVER_STRING = "Stop Server";
 }

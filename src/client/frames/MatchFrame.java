@@ -48,23 +48,10 @@ public class MatchFrame extends javax.swing.JFrame implements ResetableFrame
             this.setLocationRelativeTo(null);
             this.pack();
         }
-        catch (ClassNotFoundException ex)
+        catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex)
         {
             Logger.getLogger(MatchFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        catch (InstantiationException ex)
-        {
-            Logger.getLogger(MatchFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        catch (IllegalAccessException ex)
-        {
-            Logger.getLogger(MatchFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        catch (UnsupportedLookAndFeelException ex)
-        {
-            Logger.getLogger(MatchFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        this.setVisible(true);
+        }        
     }
 
     /**

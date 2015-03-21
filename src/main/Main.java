@@ -6,25 +6,31 @@
 package main;
 
 import client.frames.MainFrame;
-import client.filemanager.ClientFileManager;
-import server.networking.SyncFilesServerThread;
-import transmission.TransmittedJSONHandler;
+import client.frames.ActiveFrame;
+import client.frames.MatchFrame;
+import server.frames.ServerFrame;
 
 /**
  *
  * @author kyle
  */
 public class Main
-{   
+{
+
+    public static MainFrame main = null;
+    public static ServerFrame serverFrame = null;
+    public static ActiveFrame activeFrame = null;
+    public static MatchFrame matchFrame = null;
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args)
-    {        
-        MainFrame main = new MainFrame();
-        Thread serverThread = new Thread(new SyncFilesServerThread(Globals.PORT));
-        serverThread.start();
+    {
+        serverFrame = new ServerFrame();
+        activeFrame = new ActiveFrame();
+        matchFrame = new MatchFrame();
+        main = new MainFrame();
     }
 
 }

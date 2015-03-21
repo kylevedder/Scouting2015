@@ -11,5 +11,5 @@ package client.objects.activedata;
  */
 public enum RobotNumWheels
 {
-    WHEEL_4_WHEEL, WHEEL_6_WHEEL, WHEEL_8_WHEEL,
+    WHEEL_4_WHEEL, WHEEL_6_WHEEL, WHEEL_8_WHEEL        
 }

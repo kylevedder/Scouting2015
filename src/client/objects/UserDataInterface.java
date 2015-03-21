@@ -19,4 +19,8 @@ public interface UserDataInterface
     public String serialize();
 
     public String getFileName();
+    
+    public int getNumParams();
+    
+    public Object[] getAllParams();
 }

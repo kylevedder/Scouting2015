@@ -69,8 +69,7 @@ public class ActiveFrame extends javax.swing.JFrame implements ResetableFrame
         catch (UnsupportedLookAndFeelException ex)
         {
             Logger.getLogger(ActiveFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        this.setVisible(true);
+        }        
     }
 
     /**

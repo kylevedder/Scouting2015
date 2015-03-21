@@ -149,22 +149,25 @@ public class ActiveData implements UserDataInterface
         map.put(autoTotesStackedKey, autoTotesStacked);
 
         map.put(toteCanGetTotesKey, toteCanGetTotes);
-        map.put(toteFeedLocationKey, toteFeedLocation);
+        map.put(toteFeedLocationKey, toteFeedLocation.toString());
         map.put(toteMaxStackHeightKey, toteMaxStackHeight);
-        map.put(totePickupOrientationKey, totePickupOrientation);
+        map.put(totePickupOrientationKey, totePickupOrientation.toString());
 
         map.put(containerCanGetContainersKey, containerCanGetContainers);
         map.put(containerMaxCappableStackHeightKey, containerMaxCappableStackHeight);
         map.put(containerMustBeUprightKey, containerMustBeUpright);
 
-        map.put(robotShapeKey, robotShape);
-        map.put(robotWheelTypeKey, robotWheelType);
-        map.put(robotNumWheelsKey, robotNumWheels);
+        map.put(robotShapeKey, robotShape.toString());
+        map.put(robotWheelTypeKey, robotWheelType.toString());
+        map.put(robotNumWheelsKey, robotNumWheels.toString());
         map.put(robotCommentsKey, robotComments);
 
-        map.put(coopTypeKey, coopType);
+        map.put(litterCanPickupLitterKey, litterCanPickupLitter);
+        map.put(litterCanPushLitterKey, litterCanPushLitter);
 
-        map.put(humanPlayerTypeKey, humanPlayerType);
+        map.put(coopTypeKey, coopType.toString());
+
+        map.put(humanPlayerTypeKey, humanPlayerType.toString());
 
         map.put(this.KEY_OBJECT_TYPE, this.getType().toString());
         JSONObject json = new JSONObject(map);
@@ -181,9 +184,11 @@ public class ActiveData implements UserDataInterface
     {
         JSONObject json = new JSONObject(jsonStr);
         int matchTeamNumber = json.getInt(matchTeamNumberKey);
+        String matchScouter = json.getString(matchRobotScouterKey);
+        String robotComments = json.getString(robotCommentsKey);
         RobotShape robotShape = RobotShape.valueOf(json.getString(robotShapeKey));
         RobotNumWheels robotNumWheels = RobotNumWheels.valueOf(json.getString(robotNumWheelsKey));
-        RobotWheelType robotWheelType = RobotWheelType.valueOf(json.getString(json.getString(robotWheelTypeKey)));
+        RobotWheelType robotWheelType = RobotWheelType.valueOf(json.getString(robotWheelTypeKey));
         int autoNumTotes = json.getInt(autoNumTotesKey);
         int autoNumContainers = json.getInt(autoNumContainersKey);
         boolean autoTotesStacked = json.getBoolean(autoTotesStackedKey);
@@ -199,7 +204,7 @@ public class ActiveData implements UserDataInterface
         boolean litterCanPickupLitter = json.getBoolean(litterCanPickupLitterKey);
         CoOpType coopType = CoOpType.valueOf(json.getString(coopTypeKey));
         HumanPlayerType humanPlayerType = HumanPlayerType.valueOf(json.getString(humanPlayerTypeKey));
-        return new ActiveData(matchTeamNumber, matchRobotScouterKey, robotShape, robotNumWheels, robotWheelType, robotCommentsKey, autoNumTotes, autoNumContainers, autoTotesStacked, autoInAutoZone, toteCanGetTotes, totePickupOrientation, toteMaxStackHeight, toteFeedLocation, containerCanGetContainers, containerMustBeUpright, containerMaxCappableStackHeight, litterCanPushLitter, litterCanPickupLitter, coopType, humanPlayerType);
+        return new ActiveData(matchTeamNumber, matchScouter, robotShape, robotNumWheels, robotWheelType, robotComments, autoNumTotes, autoNumContainers, autoTotesStacked, autoInAutoZone, toteCanGetTotes, totePickupOrientation, toteMaxStackHeight, toteFeedLocation, containerCanGetContainers, containerMustBeUpright, containerMaxCappableStackHeight, litterCanPushLitter, litterCanPickupLitter, coopType, humanPlayerType);
     }
 
     public int getAutoNumContainers()
@@ -318,6 +323,40 @@ public class ActiveData implements UserDataInterface
                 + String.valueOf(String.valueOf(this.getMatchTeamNumber() + "_"
                                 + String.valueOf(this.getMatchRobotScouter().trim().replaceAll(" ", "_").replace("\\", "").replace("/", "").replace(".", ""))
                                 + "_" + String.valueOf(this.serialize().hashCode()) + ".json"));
+    }
+
+    @Override
+    public int getNumParams()
+    {
+        return getAllParams().length;
+    }
+
+    @Override
+    public Object[] getAllParams()
+    {
+        Object[] objs = new Object[]
+        {
+            matchTeamNumber,
+            matchRobotScouter,
+            robotShape,
+            robotNumWheels,
+            robotWheelType,
+            robotComments,
+            autoInAutoZone,
+            autoNumContainers,
+            autoTotesStacked,
+            autoNumTotes,
+            toteCanGetTotes,
+            toteFeedLocation,
+            toteMaxStackHeight,
+            totePickupOrientation,
+            containerCanGetContainers,
+            containerMaxCappableStackHeight,
+            containerMustBeUpright,
+            coopType,
+            humanPlayerType
+        };
+        return objs;
     }
 
 }
