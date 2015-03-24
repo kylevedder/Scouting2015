@@ -11,7 +11,14 @@ import client.objects.matchdata.MatchData;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.InterfaceAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.SwingUtilities;
@@ -88,7 +95,7 @@ public class ServerFrame extends javax.swing.JFrame
             public void mouseClicked(MouseEvent e)
             {
                 if (e.getClickCount() == 1)
-                {                    
+                {
                     String fileName = (String) tableMatch.getValueAt(tableMatch.getSelectedRow(), 4);
                     System.out.println("File: " + fileName);
                     String fileContents = serverFileManager.readFile(fileName);
@@ -118,7 +125,7 @@ public class ServerFrame extends javax.swing.JFrame
             public void mouseClicked(MouseEvent e)
             {
                 if (e.getClickCount() == 1)
-                {                                        
+                {
                     String fileName = (String) tableActive.getValueAt(tableActive.getSelectedRow(), 2);
                     System.out.println("File: " + fileName);
                     String fileContents = serverFileManager.readFile(fileName);
@@ -127,7 +134,7 @@ public class ServerFrame extends javax.swing.JFrame
                     activeViewerFrame.resetFrame(activeData);
                 }
             }
-        });        
+        });
     }
 
     /**
@@ -148,6 +155,7 @@ public class ServerFrame extends javax.swing.JFrame
         tableMatch = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
         tableActive = new javax.swing.JTable();
+        labelIP = new javax.swing.JLabel();
 
         setTitle("Team 467 Scouting Server");
 
@@ -191,6 +199,8 @@ public class ServerFrame extends javax.swing.JFrame
 
         jScrollPane3.setViewportView(tabbedPane);
 
+        labelIP.setText("IP:");
+
         javax.swing.GroupLayout panelMainPanelLayout = new javax.swing.GroupLayout(panelMainPanel);
         panelMainPanel.setLayout(panelMainPanelLayout);
         panelMainPanelLayout.setHorizontalGroup(
@@ -198,14 +208,18 @@ public class ServerFrame extends javax.swing.JFrame
             .addGroup(panelMainPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(labelTitle)
-                .addContainerGap(260, Short.MAX_VALUE))
-            .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGap(18, 18, 18)
+                .addComponent(labelIP, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 486, Short.MAX_VALUE)
         );
         panelMainPanelLayout.setVerticalGroup(
             panelMainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelMainPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(labelTitle)
+                .addGroup(panelMainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labelTitle)
+                    .addComponent(labelIP))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 424, Short.MAX_VALUE))
         );
@@ -231,6 +245,7 @@ public class ServerFrame extends javax.swing.JFrame
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JLabel labelIP;
     private javax.swing.JLabel labelTitle;
     private javax.swing.JPanel panelMainPanel;
     private javax.swing.JTabbedPane tabbedPane;
@@ -247,6 +262,42 @@ public class ServerFrame extends javax.swing.JFrame
             if (this.syncFilesServerThread == null)
             {
                 System.out.println("Starting server...");
+                ipTryCatch:
+                try
+                {
+                    for (final Enumeration< NetworkInterface> interfaces
+                            = NetworkInterface.getNetworkInterfaces();
+                            interfaces.hasMoreElements();)
+                    {
+                        final NetworkInterface cur = interfaces.nextElement();
+
+                        if (cur.isLoopback())
+                        {
+                            continue;
+                        }
+
+                        System.out.println("interface " + cur.getName());
+
+                        for (final InterfaceAddress addr : cur.getInterfaceAddresses())
+                        {
+                            final InetAddress inet_addr = addr.getAddress();
+
+                            if (!(inet_addr instanceof Inet4Address))
+                            {
+                                continue;
+                            }
+                            
+                            labelIP.setText("IP: " + inet_addr.getHostAddress());
+                            break ipTryCatch;
+                        }
+                    }       
+                    //ip not found
+                    labelIP.setText("IP: Unknown");
+                }                
+                catch (SocketException ex)
+                {
+                    Logger.getLogger(ServerFrame.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 syncFilesServerThread = new SyncFilesServerThread(Globals.PORT);
                 syncFilesServerThread.start();
                 Main.main.setMenuStartServerText(Globals.STOP_SERVER_STRING);
