@@ -1013,7 +1013,7 @@ public class ActiveFrame extends javax.swing.JFrame implements ResetableFrame
         TotePickupOrientation totePickupOrientation = TotePickupOrientation.NONE;
         if(canGetTotes)
         {
-            totePickupOrientation = TotePickupOrientation.valueOf(comboBoxTeleopTotePickupOrientation.getSelectedItem().toString());
+            totePickupOrientation = TotePickupOrientation.valueOf(comboBoxTeleopTotePickupOrientation.getSelectedItem().toString().toUpperCase().replace(" ", "_"));
         }
         int toteMaxStackHeight = (Integer) spinnerMaxNumTotes.getValue();
         FeedLocation feedLocation = FeedLocation.valueOf(comboBoxTeleopToteFeedLocation.getSelectedItem().toString().toUpperCase().replaceAll(" ", "_"));

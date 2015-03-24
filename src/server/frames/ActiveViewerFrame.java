@@ -85,8 +85,7 @@ public class ActiveViewerFrame extends javax.swing.JFrame
     public void resetFrame(ActiveData activeData)
     {
         fieldScouter.setText(activeData.getMatchRobotScouter());
-        fieldTeamNum.setText(String.valueOf(activeData.getMatchTeamNumber()));
-        buttonGroupCoop.clearSelection();
+        fieldTeamNum.setText(String.valueOf(activeData.getMatchTeamNumber()));        
 
         CoOpType coopType = activeData.getCoopType();
 
@@ -108,8 +107,7 @@ public class ActiveViewerFrame extends javax.swing.JFrame
                 radioCoopStacked.setSelected(false);
                 break;
         }
-
-        buttonGroupHumanPlayer.clearSelection();
+        
 
         HumanPlayerType humanPlayerType = activeData.getHumanPlayerType();
 
@@ -143,17 +141,31 @@ public class ActiveViewerFrame extends javax.swing.JFrame
                 radioHPPoor.setSelected(false);
                 break;
         }
-
-        textAreaRobotConfigComments.setText("");
-        spinnerNumContainers.setValue(0);
-        spinnerNumTotes.setValue(0);
-        checkBoxInAutoZone.setSelected(false);
-        checkBoxTotesStacked.setEnabled(true);
-        checkBoxTotesStacked.setSelected(false);
-        checkBoxHPThrewNoodles.setSelected(false);
-        radioHPExcellent.setEnabled(true);
-        radioHPMediocre.setEnabled(true);
-        radioHPPoor.setEnabled(true);
+        
+        spinnerNumContainers.setValue(activeData.getAutoNumContainers());
+        spinnerNumTotes.setValue(activeData.getAutoNumTotes());
+        checkBoxInAutoZone.setSelected(activeData.getAutoInAutoZone());
+        checkBoxTotesStacked.setEnabled(activeData.getAutoTotesStacked());                
+                
+        textBoxRobotShape.setText(activeData.getRobotShape().toString());        
+        textBoxRobotDriveTrain.setText(activeData.getRobotNumWheels().toString().replaceFirst("WHEEL_", ""));
+        textBoxRobotWheelType.setText(activeData.getRobotWheelType().toString());
+        textAreaRobotConfigComments.setText(activeData.getRobotComments());
+        
+        textBoxTeleopToteFeedLocation.setText(activeData.getToteFeedLocation().toString());        
+        textBoxTeleopTotePickupOrientation.setText(activeData.getTotePickupOrientation().toString());
+        spinnerMaxHeightContainer.setValue(activeData.getContainerMaxCappableStackHeight());
+        spinnerMaxNumTotes.setValue(activeData.getToteMaxStackHeight());
+        
+        checkBoxTeleopLitterPickupLitter.setSelected(activeData.getLitterCanPickupLitter());
+        checkBoxTeleopLitterPickupLitter.setEnabled(true);
+        checkBoxTeleopLitterPushLitter.setSelected(activeData.getLitterCanPushLitter());
+        checkBoxTeleopLitterPushLitter.setEnabled(true);
+        
+        checkBoxTeleopTotesCanPickup.setSelected(activeData.getToteCanGetTotes());
+        
+        checkBoxTeleopContainersUpright.setSelected(activeData.getContainerMustBeUpright());
+        checkBoxTeleopContainersPickup.setSelected(activeData.getContainerCanGetContainers());
     }
 
     /**
@@ -178,14 +190,14 @@ public class ActiveViewerFrame extends javax.swing.JFrame
         fieldScouter = new javax.swing.JTextField();
         panelRobotConfig = new javax.swing.JPanel();
         panelRobotShape = new javax.swing.JPanel();
-        comboBoxRobotShape = new javax.swing.JComboBox();
+        textBoxRobotShape = new javax.swing.JTextField();
         panelRobotActivityComments = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         textAreaRobotConfigComments = new javax.swing.JTextArea();
         panelRobotDriveTrain = new javax.swing.JPanel();
-        comboBoxRobotDriveTrain = new javax.swing.JComboBox();
+        textBoxRobotDriveTrain = new javax.swing.JTextField();
         panelRobotWheelType = new javax.swing.JPanel();
-        comboBoxRobotWheelType = new javax.swing.JComboBox();
+        textBoxRobotWheelType = new javax.swing.JTextField();
         panelScoring = new javax.swing.JPanel();
         panelAutonomous = new javax.swing.JPanel();
         panelAutoScoredTotes = new javax.swing.JPanel();
@@ -205,10 +217,10 @@ public class ActiveViewerFrame extends javax.swing.JFrame
         labelTeleopTotesMaxHeight = new javax.swing.JLabel();
         spinnerMaxNumTotes = new javax.swing.JSpinner();
         checkBoxTeleopTotesCanPickup = new javax.swing.JCheckBox();
-        comboBoxTeleopTotePickupOrientation = new javax.swing.JComboBox();
         labelPickupOrintation = new javax.swing.JLabel();
         labelFeedLocation = new javax.swing.JLabel();
-        comboBoxTeleopToteFeedLocation = new javax.swing.JComboBox();
+        textBoxTeleopTotePickupOrientation = new javax.swing.JTextField();
+        textBoxTeleopToteFeedLocation = new javax.swing.JTextField();
         panelTeleopContainer = new javax.swing.JPanel();
         checkBoxTeleopContainersPickup = new javax.swing.JCheckBox();
         checkBoxTeleopContainersUpright = new javax.swing.JCheckBox();
@@ -277,19 +289,17 @@ public class ActiveViewerFrame extends javax.swing.JFrame
 
         panelRobotShape.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Robot Shape", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11))); // NOI18N
 
-        comboBoxRobotShape.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Wide", "Long", "Square", "Round", "Hex", "Triangle", "Other" }));
-
         javax.swing.GroupLayout panelRobotShapeLayout = new javax.swing.GroupLayout(panelRobotShape);
         panelRobotShape.setLayout(panelRobotShapeLayout);
         panelRobotShapeLayout.setHorizontalGroup(
             panelRobotShapeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(comboBoxRobotShape, 0, 420, Short.MAX_VALUE)
+            .addComponent(textBoxRobotShape)
         );
         panelRobotShapeLayout.setVerticalGroup(
             panelRobotShapeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelRobotShapeLayout.createSequentialGroup()
-                .addComponent(comboBoxRobotShape, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(textBoxRobotShape, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 12, Short.MAX_VALUE))
         );
 
         panelRobotActivityComments.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Comments (Optional)", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11))); // NOI18N
@@ -311,36 +321,28 @@ public class ActiveViewerFrame extends javax.swing.JFrame
 
         panelRobotDriveTrain.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Robot Drive Train", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11))); // NOI18N
 
-        comboBoxRobotDriveTrain.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "4 Wheel", "6 Wheel", "8 Wheel" }));
-
         javax.swing.GroupLayout panelRobotDriveTrainLayout = new javax.swing.GroupLayout(panelRobotDriveTrain);
         panelRobotDriveTrain.setLayout(panelRobotDriveTrainLayout);
         panelRobotDriveTrainLayout.setHorizontalGroup(
             panelRobotDriveTrainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(comboBoxRobotDriveTrain, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(textBoxRobotDriveTrain, javax.swing.GroupLayout.DEFAULT_SIZE, 420, Short.MAX_VALUE)
         );
         panelRobotDriveTrainLayout.setVerticalGroup(
             panelRobotDriveTrainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelRobotDriveTrainLayout.createSequentialGroup()
-                .addComponent(comboBoxRobotDriveTrain, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(textBoxRobotDriveTrain, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         panelRobotWheelType.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Robot Wheel Type", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11))); // NOI18N
-
-        comboBoxRobotWheelType.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Standard", "Omni", "Mecanum", "Swerve", "Pnumatic", "Custom" }));
 
         javax.swing.GroupLayout panelRobotWheelTypeLayout = new javax.swing.GroupLayout(panelRobotWheelType);
         panelRobotWheelType.setLayout(panelRobotWheelTypeLayout);
         panelRobotWheelTypeLayout.setHorizontalGroup(
             panelRobotWheelTypeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(comboBoxRobotWheelType, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(textBoxRobotWheelType)
         );
         panelRobotWheelTypeLayout.setVerticalGroup(
             panelRobotWheelTypeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelRobotWheelTypeLayout.createSequentialGroup()
-                .addComponent(comboBoxRobotWheelType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(textBoxRobotWheelType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         javax.swing.GroupLayout panelRobotConfigLayout = new javax.swing.GroupLayout(panelRobotConfig);
@@ -361,12 +363,12 @@ public class ActiveViewerFrame extends javax.swing.JFrame
             .addGroup(panelRobotConfigLayout.createSequentialGroup()
                 .addGroup(panelRobotConfigLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(panelRobotActivityComments, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(panelRobotShape, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(panelRobotShape, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(panelRobotConfigLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panelRobotDriveTrain, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(panelRobotWheelType, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                .addGroup(panelRobotConfigLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(panelRobotWheelType, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(panelRobotDriveTrain, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(34, 34, 34))
         );
 
         panelScoring.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Scoring", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 18))); // NOI18N
@@ -519,7 +521,6 @@ public class ActiveViewerFrame extends javax.swing.JFrame
 
         labelTeleopTotesMaxHeight.setText("Max Stack Height:");
 
-        spinnerMaxNumTotes.setEnabled(false);
         spinnerMaxNumTotes.addChangeListener(new javax.swing.event.ChangeListener()
         {
             public void stateChanged(javax.swing.event.ChangeEvent evt)
@@ -544,33 +545,31 @@ public class ActiveViewerFrame extends javax.swing.JFrame
             }
         });
 
-        comboBoxTeleopTotePickupOrientation.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Large", "Small", "Both" }));
-        comboBoxTeleopTotePickupOrientation.setEnabled(false);
-
         labelPickupOrintation.setText("Pickup Orientation:");
 
         labelFeedLocation.setText("Feed Location:");
-
-        comboBoxTeleopToteFeedLocation.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "HP Station", "Landfill", "Both" }));
-        comboBoxTeleopToteFeedLocation.setEnabled(false);
 
         javax.swing.GroupLayout panelTeleopTotesLayout = new javax.swing.GroupLayout(panelTeleopTotes);
         panelTeleopTotes.setLayout(panelTeleopTotesLayout);
         panelTeleopTotesLayout.setHorizontalGroup(
             panelTeleopTotesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(labelTeleopTotesMaxHeight)
-            .addComponent(checkBoxTeleopTotesCanPickup)
-            .addGroup(panelTeleopTotesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelTeleopTotesLayout.createSequentialGroup()
-                    .addComponent(labelPickupOrintation)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(comboBoxTeleopTotePickupOrientation, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelTeleopTotesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(spinnerMaxNumTotes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(panelTeleopTotesLayout.createSequentialGroup()
+                .addGroup(panelTeleopTotesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelTeleopTotesLayout.createSequentialGroup()
-                        .addComponent(labelFeedLocation)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(comboBoxTeleopToteFeedLocation, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(labelPickupOrintation)
+                        .addGap(18, 18, 18)
+                        .addComponent(textBoxTeleopTotePickupOrientation, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(labelTeleopTotesMaxHeight)
+                    .addComponent(checkBoxTeleopTotesCanPickup)
+                    .addGroup(panelTeleopTotesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(panelTeleopTotesLayout.createSequentialGroup()
+                            .addGap(0, 0, Short.MAX_VALUE)
+                            .addComponent(spinnerMaxNumTotes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(panelTeleopTotesLayout.createSequentialGroup()
+                            .addComponent(labelFeedLocation)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(textBoxTeleopToteFeedLocation))))
+                .addGap(12, 12, 12))
         );
         panelTeleopTotesLayout.setVerticalGroup(
             panelTeleopTotesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -579,16 +578,16 @@ public class ActiveViewerFrame extends javax.swing.JFrame
                 .addGap(1, 1, 1)
                 .addGroup(panelTeleopTotesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelPickupOrintation)
-                    .addComponent(comboBoxTeleopTotePickupOrientation, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(textBoxTeleopTotePickupOrientation, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelTeleopTotesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelTeleopTotesMaxHeight)
                     .addComponent(spinnerMaxNumTotes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panelTeleopTotesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(panelTeleopTotesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(labelFeedLocation)
-                    .addComponent(comboBoxTeleopToteFeedLocation, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 50, Short.MAX_VALUE))
+                    .addComponent(textBoxTeleopToteFeedLocation, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 45, Short.MAX_VALUE))
         );
 
         panelTeleopContainer.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Containers", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11))); // NOI18N
@@ -603,9 +602,7 @@ public class ActiveViewerFrame extends javax.swing.JFrame
         });
 
         checkBoxTeleopContainersUpright.setText("Must To Be Upright?");
-        checkBoxTeleopContainersUpright.setEnabled(false);
 
-        spinnerMaxHeightContainer.setEnabled(false);
         spinnerMaxHeightContainer.addChangeListener(new javax.swing.event.ChangeListener()
         {
             public void stateChanged(javax.swing.event.ChangeEvent evt)
@@ -749,26 +746,16 @@ public class ActiveViewerFrame extends javax.swing.JFrame
         buttonGroupHumanPlayer.add(radioHPPoor);
         radioHPPoor.setSelected(true);
         radioHPPoor.setText("Poor (0 scored noodles per match)");
-        radioHPPoor.setEnabled(false);
 
         buttonGroupHumanPlayer.add(radioHPMediocre);
         radioHPMediocre.setText("Mediocre (1 to 2 scored noodles per match)");
         radioHPMediocre.setToolTipText("");
-        radioHPMediocre.setEnabled(false);
 
         buttonGroupHumanPlayer.add(radioHPExcellent);
         radioHPExcellent.setText("Excellent (3+ scored noodles per match)");
         radioHPExcellent.setActionCommand("Excellent");
-        radioHPExcellent.setEnabled(false);
 
         checkBoxHPThrewNoodles.setText("HP Throws Noodles");
-        checkBoxHPThrewNoodles.addChangeListener(new javax.swing.event.ChangeListener()
-        {
-            public void stateChanged(javax.swing.event.ChangeEvent evt)
-            {
-                checkBoxHPThrewNoodlesStateChanged(evt);
-            }
-        });
 
         javax.swing.GroupLayout panelHumanPlayerLayout = new javax.swing.GroupLayout(panelHumanPlayer);
         panelHumanPlayer.setLayout(panelHumanPlayerLayout);
@@ -859,274 +846,59 @@ public class ActiveViewerFrame extends javax.swing.JFrame
 
     private void spinnerNumTotesStateChanged(javax.swing.event.ChangeEvent evt)//GEN-FIRST:event_spinnerNumTotesStateChanged
     {//GEN-HEADEREND:event_spinnerNumTotesStateChanged
-        int value = (Integer) spinnerNumTotes.getValue();
-        int newValue = value;
-
-        //clamp value
-        if (value < 0)
-        {
-            newValue = 0;
-        }
-        else if (value > 3)
-        {
-            newValue = 3;
-        }
-        //set clamped value
-        spinnerNumTotes.setValue(newValue);
-
-        //allow for enabling/disabling of stack check
-        checkBoxTotesStacked.setEnabled((newValue > 1));
-        //removes checkmark if disabled
-        checkBoxTotesStacked.setSelected((newValue > 1) ? checkBoxTotesStacked.isSelected() : false);
 
     }//GEN-LAST:event_spinnerNumTotesStateChanged
 
     private void spinnerNumContainersStateChanged(javax.swing.event.ChangeEvent evt)//GEN-FIRST:event_spinnerNumContainersStateChanged
     {//GEN-HEADEREND:event_spinnerNumContainersStateChanged
-        int value = (Integer) spinnerNumContainers.getValue();
-        int newValue = value;
 
-        //clamp value
-        if (value < 0)
-        {
-            newValue = 0;
-        }
-        else if (value > 3)
-        {
-            newValue = 3;
-        }
-        //set clamped value
-        spinnerNumContainers.setValue(newValue);
     }//GEN-LAST:event_spinnerNumContainersStateChanged
-
-    private void checkBoxHPThrewNoodlesStateChanged(javax.swing.event.ChangeEvent evt)//GEN-FIRST:event_checkBoxHPThrewNoodlesStateChanged
-    {//GEN-HEADEREND:event_checkBoxHPThrewNoodlesStateChanged
-        boolean threw = checkBoxHPThrewNoodles.isSelected();
-        radioHPPoor.setEnabled(threw);
-        radioHPMediocre.setEnabled(threw);
-        radioHPExcellent.setEnabled(threw);
-        if (!threw)
-        {
-            buttonGroupHumanPlayer.clearSelection();
-        }
-    }//GEN-LAST:event_checkBoxHPThrewNoodlesStateChanged
 
     private void fieldTeamNumKeyReleased(java.awt.event.KeyEvent evt)//GEN-FIRST:event_fieldTeamNumKeyReleased
     {//GEN-HEADEREND:event_fieldTeamNumKeyReleased
-        fieldTeamNum.setText(utils.Utils.removeNonNumericChars(fieldTeamNum.getText()));
+
     }//GEN-LAST:event_fieldTeamNumKeyReleased
 
     private void spinnerMaxNumTotesStateChanged(javax.swing.event.ChangeEvent evt)//GEN-FIRST:event_spinnerMaxNumTotesStateChanged
     {//GEN-HEADEREND:event_spinnerMaxNumTotesStateChanged
-        int val = (Integer) spinnerMaxNumTotes.getValue();
-        if (val > 6)
-        {
-            val = 6;
-        }
-        else if (val < 0)
-        {
-            val = 0;
-        }
-        spinnerMaxNumTotes.setValue(val);
+
     }//GEN-LAST:event_spinnerMaxNumTotesStateChanged
 
     private void spinnerMaxNumTotesPropertyChange(java.beans.PropertyChangeEvent evt)//GEN-FIRST:event_spinnerMaxNumTotesPropertyChange
     {//GEN-HEADEREND:event_spinnerMaxNumTotesPropertyChange
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_spinnerMaxNumTotesPropertyChange
 
     private void spinnerMaxHeightContainerStateChanged(javax.swing.event.ChangeEvent evt)//GEN-FIRST:event_spinnerMaxHeightContainerStateChanged
     {//GEN-HEADEREND:event_spinnerMaxHeightContainerStateChanged
 
-        int val = (Integer) spinnerMaxHeightContainer.getValue();
-        if (val > 6)
-        {
-            val = 6;
-        }
-        else if (val < 0)
-        {
-            val = 0;
-        }
-        spinnerMaxHeightContainer.setValue(val);
     }//GEN-LAST:event_spinnerMaxHeightContainerStateChanged
 
     private void spinnerMaxHeightContainerPropertyChange(java.beans.PropertyChangeEvent evt)//GEN-FIRST:event_spinnerMaxHeightContainerPropertyChange
     {//GEN-HEADEREND:event_spinnerMaxHeightContainerPropertyChange
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_spinnerMaxHeightContainerPropertyChange
 
     private void spinnerMaxCoopStackStateChanged(javax.swing.event.ChangeEvent evt)//GEN-FIRST:event_spinnerMaxCoopStackStateChanged
     {//GEN-HEADEREND:event_spinnerMaxCoopStackStateChanged
-        int value = (Integer) spinnerMaxCoopStack.getValue();
-        if (value > 4)
-        {
-            value = 4;
-        }
-        else if (value < 0)
-        {
-            value = 0;
-        }
-        spinnerMaxCoopStack.setValue(value);
+
     }//GEN-LAST:event_spinnerMaxCoopStackStateChanged
 
     private void spinnerMaxCoopStackPropertyChange(java.beans.PropertyChangeEvent evt)//GEN-FIRST:event_spinnerMaxCoopStackPropertyChange
     {//GEN-HEADEREND:event_spinnerMaxCoopStackPropertyChange
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_spinnerMaxCoopStackPropertyChange
 
     private void checkBoxTeleopTotesCanPickupActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_checkBoxTeleopTotesCanPickupActionPerformed
     {//GEN-HEADEREND:event_checkBoxTeleopTotesCanPickupActionPerformed
-        comboBoxTeleopTotePickupOrientation.setEnabled(!comboBoxTeleopTotePickupOrientation.isEnabled());
-        spinnerMaxNumTotes.setEnabled(!spinnerMaxNumTotes.isEnabled());
-        spinnerMaxNumTotes.setValue(0);
-        comboBoxTeleopToteFeedLocation.setEnabled(!comboBoxTeleopToteFeedLocation.isEnabled());
+
     }//GEN-LAST:event_checkBoxTeleopTotesCanPickupActionPerformed
 
     private void checkBoxTeleopContainersPickupActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_checkBoxTeleopContainersPickupActionPerformed
     {//GEN-HEADEREND:event_checkBoxTeleopContainersPickupActionPerformed
-        checkBoxTeleopContainersUpright.setEnabled(!checkBoxTeleopContainersUpright.isEnabled());
-        checkBoxTeleopContainersUpright.setSelected(false);
-        spinnerMaxHeightContainer.setEnabled(!spinnerMaxHeightContainer.isEnabled());
-        spinnerMaxHeightContainer.setValue(0);
+
     }//GEN-LAST:event_checkBoxTeleopContainersPickupActionPerformed
 
-    /**
-     * Pulls all data from the form and sticks it in a match data object.
-     *
-     * @return
-     */
-    private ActiveData scrapeData()
-    {
-        //GET HP data            
-        HumanPlayerType hpType = HumanPlayerType.NO_THROW;
-        if (checkBoxHPThrewNoodles.isSelected())
-        {
-            try
-            {
-                hpType = HumanPlayerType.valueOf(getSelectedButtonActionCommandOrDefault(buttonGroupHumanPlayer, HumanPlayerType.NO_THROW.toString()));
-            }
-            catch (Exception ex)
-            {
-                hpType = HumanPlayerType.NO_THROW;
-            }
-        }
-
-        //GET COOP data   
-        CoOpType coopType;
-        try
-        {
-            coopType = CoOpType.valueOf(getSelectedButtonActionCommandOrDefault(buttonGroupCoop, CoOpType.NONE.toString()));
-        }
-        catch (Exception ex)
-        {
-            coopType = CoOpType.NONE;
-        }
-
-        //GET Scouter data
-        int teamNum = Integer.valueOf(fieldTeamNum.getText());
-        String scouter = fieldScouter.getText();
-
-        //GET Robot Shape                
-        RobotShape robotShape = RobotShape.valueOf(comboBoxRobotShape.getSelectedItem().toString().toUpperCase());
-
-        //GET NUM Robot wheels
-        RobotNumWheels robotNumWheels = RobotNumWheels.valueOf("WHEEL_" + comboBoxRobotDriveTrain.getSelectedItem().toString().toUpperCase().replaceAll(" ", "_"));
-
-        //GET Robot Wheel type
-        RobotWheelType robotWheelType = RobotWheelType.valueOf(comboBoxRobotWheelType.getSelectedItem().toString().toUpperCase());
-
-        //GET Robot cnfig comments
-        String robotComments = textAreaRobotConfigComments.getText();
-
-        //GET totes data
-        boolean canGetTotes = checkBoxTeleopTotesCanPickup.isSelected();
-        TotePickupOrientation totePickupOrientation = TotePickupOrientation.NONE;
-        if (canGetTotes)
-        {
-            totePickupOrientation = TotePickupOrientation.valueOf(comboBoxTeleopTotePickupOrientation.getSelectedItem().toString());
-        }
-        int toteMaxStackHeight = (Integer) spinnerMaxNumTotes.getValue();
-        FeedLocation feedLocation = FeedLocation.valueOf(comboBoxTeleopToteFeedLocation.getSelectedItem().toString().toUpperCase().replaceAll(" ", "_"));
-
-        //GET container data
-        boolean canGetContainers = checkBoxTeleopContainersPickup.isSelected();
-        boolean containersMustBeUpright = checkBoxTeleopContainersUpright.isSelected();
-        int maxCappableStackHeight = (Integer) spinnerMaxHeightContainer.getValue();
-
-        //GET Litter info
-        boolean canPushLitter = checkBoxTeleopLitterPushLitter.isSelected();
-        boolean canPickupLitter = checkBoxTeleopLitterPickupLitter.isSelected();
-
-        //GET Auto data
-        int autoNumContainers = (int) spinnerNumContainers.getValue();
-        int autoNumTotes = (int) spinnerNumTotes.getValue();
-        boolean autoTotesStacked = checkBoxTotesStacked.isSelected();
-        boolean autoInAutoZone = checkBoxInAutoZone.isSelected();
-
-        return new ActiveData(teamNum, scouter, robotShape, robotNumWheels, robotWheelType, robotComments, autoNumTotes, autoNumContainers, autoTotesStacked, autoInAutoZone, canGetTotes, totePickupOrientation, toteMaxStackHeight, feedLocation, canGetContainers, containersMustBeUpright, maxCappableStackHeight, canPushLitter, canPickupLitter, coopType, hpType);
-
-    }
-
-    /**
-     * Checks to see if all fields are completed
-     *
-     * @return passed - if passed completion inspection
-     */
-    private boolean assessCompletion(boolean reportErrors)
-    {
-        boolean passed = true;
-
-        //scouter info complete
-        if (fieldTeamNum.getText().equals("") || fieldScouter.getText().equals(""))
-        {
-            if (reportErrors)
-            {
-                Utils.showErrorBox("Scouter section not filled out!");
-            }
-            passed = false;
-        }
-        //coop unfilled out
-        else if (!radioCoopNone.isSelected() && !radioCoopStacked.isSelected() && !radioCoopUnstacked.isSelected())
-        {
-            if (reportErrors)
-            {
-                Utils.showErrorBox("Coop section not filled out!");
-            }
-            passed = false;
-        }
-        //HP throws but radio unselected
-        else if (checkBoxHPThrewNoodles.isSelected() && !radioHPPoor.isSelected() && !radioHPMediocre.isSelected() && !radioHPExcellent.isSelected())
-        {
-            if (reportErrors)
-            {
-                Utils.showErrorBox("Human Player section not filled out!");
-            }
-            passed = false;
-        }
-        return passed;
-    }
-
-    /**
-     * Gets the AbstractButton's action command for the selected button, or
-     * returns the default value if none selected
-     *
-     * @param buttonGroup
-     * @return
-     */
-    public String getSelectedButtonActionCommandOrDefault(ButtonGroup buttonGroup, String defaultValue)
-    {
-        for (Enumeration<AbstractButton> buttons = buttonGroup.getElements(); buttons.hasMoreElements();)
-        {
-            AbstractButton button = buttons.nextElement();
-
-            if (button.isSelected())
-            {
-                return button.getActionCommand().toUpperCase();
-            }
-        }
-
-        return defaultValue;
-    }    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroupCoop;
@@ -1139,11 +911,6 @@ public class ActiveViewerFrame extends javax.swing.JFrame
     private javax.swing.JCheckBox checkBoxTeleopLitterPushLitter;
     private javax.swing.JCheckBox checkBoxTeleopTotesCanPickup;
     private javax.swing.JCheckBox checkBoxTotesStacked;
-    private javax.swing.JComboBox comboBoxRobotDriveTrain;
-    private javax.swing.JComboBox comboBoxRobotShape;
-    private javax.swing.JComboBox comboBoxRobotWheelType;
-    private javax.swing.JComboBox comboBoxTeleopToteFeedLocation;
-    private javax.swing.JComboBox comboBoxTeleopTotePickupOrientation;
     private javax.swing.JTextField fieldScouter;
     private javax.swing.JTextField fieldTeamNum;
     private javax.swing.JScrollPane jScrollPane1;
@@ -1188,5 +955,10 @@ public class ActiveViewerFrame extends javax.swing.JFrame
     private javax.swing.JSpinner spinnerNumContainers;
     private javax.swing.JSpinner spinnerNumTotes;
     private javax.swing.JTextArea textAreaRobotConfigComments;
+    private javax.swing.JTextField textBoxRobotDriveTrain;
+    private javax.swing.JTextField textBoxRobotShape;
+    private javax.swing.JTextField textBoxRobotWheelType;
+    private javax.swing.JTextField textBoxTeleopToteFeedLocation;
+    private javax.swing.JTextField textBoxTeleopTotePickupOrientation;
     // End of variables declaration//GEN-END:variables
 }
