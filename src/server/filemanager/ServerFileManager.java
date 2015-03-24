@@ -18,6 +18,7 @@ import client.objects.matchdata.MatchData;
 import java.util.ArrayList;
 import org.json.JSONObject;
 import transmission.TransmittedJSONHandler;
+import utils.FileUtils;
 import utils.Flag;
 import utils.Utils;
 
@@ -65,6 +66,16 @@ public class ServerFileManager
         //leave unlocked, should be locked for pulling all files from the SyncFilesThread only
         blockAddingFilesToSendFlag.unlock();
     }
+    
+    /**
+     * Reads a file from save file.
+     * @param fileName
+     * @return 
+     */
+    public String readFile(String fileName)
+    {
+        return FileUtils.readFileContents(new File(savesFolder, fileName));
+    }
 
     /**
      * Writes a file in the appropriate file directory.
@@ -76,7 +87,7 @@ public class ServerFileManager
         //block until clear to add match data
         blockAddingFilesToSendFlag.await();
         fileTransmitter.saveAsFile(savesFolder, json);
-    }
+    }        
 
     /**
      * Gets an File array from the local directory that need to be sent to the

@@ -2,8 +2,6 @@
 
 <Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <NonVisualComponents>
-    <Component class="javax.swing.ButtonGroup" name="buttonGroupRobotActive">
-    </Component>
     <Component class="javax.swing.ButtonGroup" name="buttonGroupCoop">
     </Component>
     <Component class="javax.swing.ButtonGroup" name="buttonGroupHumanPlayer">
@@ -11,7 +9,7 @@
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="2"/>
-    <Property name="title" type="java.lang.String" value="Match Viewer"/>
+    <Property name="title" type="java.lang.String" value="Active Viewer"/>
     <Property name="resizable" type="boolean" value="false"/>
   </Properties>
   <AccessibilityProperties>
@@ -36,12 +34,15 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="mainPanelScroll" alignment="1" min="-2" pref="876" max="-2" attributes="0"/>
+          <Component id="mainPanelScroll" alignment="0" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="mainPanelScroll" min="-2" pref="530" max="-2" attributes="0"/>
+          <Group type="102" alignment="0" attributes="0">
+              <Component id="mainPanelScroll" min="-2" pref="588" max="-2" attributes="0"/>
+              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+          </Group>
       </Group>
     </DimensionLayout>
   </Layout>
@@ -64,25 +65,19 @@
                   <Group type="102" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="labelTitle" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                          </Group>
-                          <Group type="102" attributes="0">
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="panelTeamInfo" alignment="1" max="32767" attributes="0"/>
-                                  <Component id="panelRobotActivity" alignment="1" max="32767" attributes="0"/>
-                                  <Component id="panelScoring" alignment="0" max="32767" attributes="0"/>
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Component id="panelCoop" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="panelHumanPlayer" max="32767" attributes="0"/>
-                                  </Group>
-                                  <Component id="panelOutcome" alignment="0" max="32767" attributes="0"/>
+                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                              <Component id="panelScoring" alignment="0" max="32767" attributes="0"/>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="panelCoop" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="panelHumanPlayer" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="panelTeamInfo" max="32767" attributes="0"/>
+                              <Component id="panelRobotConfig" alignment="0" max="32767" attributes="0"/>
                           </Group>
+                          <Component id="labelTitle" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -93,17 +88,15 @@
                       <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
                       <Component id="panelTeamInfo" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="panelRobotActivity" min="-2" max="-2" attributes="0"/>
+                      <Component id="panelRobotConfig" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="panelScoring" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="panelCoop" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Component id="panelCoop" min="-2" max="-2" attributes="0"/>
                           <Component id="panelHumanPlayer" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="panelOutcome" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="0" pref="11" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -114,7 +107,7 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Tahoma" size="24" style="1"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Match Viewer"/>
+                <Property name="text" type="java.lang.String" value="Active Viewer"/>
               </Properties>
             </Component>
             <Container class="javax.swing.JPanel" name="panelTeamInfo">
@@ -139,11 +132,7 @@
                           <Component id="labelTeamNum" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="fieldTeamNum" min="-2" pref="48" max="-2" attributes="0"/>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="labelMatchNum" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="fieldMatchNum" min="-2" pref="48" max="-2" attributes="0"/>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="labelScouter" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="fieldScouter" min="-2" pref="129" max="-2" attributes="0"/>
@@ -154,14 +143,10 @@
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="1" attributes="0">
                       <Group type="103" alignment="0" groupAlignment="3" attributes="0">
-                          <Component id="labelScouter" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="fieldScouter" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="103" alignment="0" groupAlignment="3" attributes="0">
                           <Component id="fieldTeamNum" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="labelTeamNum" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="labelMatchNum" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="fieldMatchNum" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="labelScouter" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="fieldScouter" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -177,16 +162,6 @@
                     <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="fieldTeamNumKeyReleased"/>
                   </Events>
                 </Component>
-                <Component class="javax.swing.JLabel" name="labelMatchNum">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="Match #:"/>
-                  </Properties>
-                </Component>
-                <Component class="javax.swing.JTextField" name="fieldMatchNum">
-                  <Events>
-                    <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="fieldMatchNumKeyReleased"/>
-                  </Events>
-                </Component>
                 <Component class="javax.swing.JLabel" name="labelScouter">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Scouter:"/>
@@ -196,11 +171,11 @@
                 </Component>
               </SubComponents>
             </Container>
-            <Container class="javax.swing.JPanel" name="panelRobotActivity">
+            <Container class="javax.swing.JPanel" name="panelRobotConfig">
               <Properties>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                    <TitledBorder title="Robot Activity">
+                    <TitledBorder title="Robot Configuration">
                       <Border PropertyName="innerBorder" info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
                         <EtchetBorder/>
                       </Border>
@@ -214,25 +189,41 @@
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
-                          <Component id="panelRobotActivityRadio" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                              <Component id="panelRobotDriveTrain" alignment="0" max="32767" attributes="0"/>
+                              <Component id="panelRobotShape" alignment="0" max="32767" attributes="0"/>
+                          </Group>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="panelRobotActivityComments" max="32767" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="panelRobotActivityComments" max="32767" attributes="0"/>
+                              <Component id="panelRobotWheelType" max="32767" attributes="0"/>
+                          </Group>
                       </Group>
                   </Group>
                 </DimensionLayout>
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="panelRobotActivityRadio" max="32767" attributes="0"/>
-                      <Component id="panelRobotActivityComments" max="32767" attributes="0"/>
+                      <Group type="102" alignment="0" attributes="0">
+                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                              <Component id="panelRobotActivityComments" alignment="0" max="32767" attributes="0"/>
+                              <Component id="panelRobotShape" min="-2" pref="51" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="32767" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="panelRobotDriveTrain" min="-2" pref="51" max="-2" attributes="0"/>
+                              <Component id="panelRobotWheelType" min="-2" pref="51" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                      </Group>
                   </Group>
                 </DimensionLayout>
               </Layout>
               <SubComponents>
-                <Container class="javax.swing.JPanel" name="panelRobotActivityRadio">
+                <Container class="javax.swing.JPanel" name="panelRobotShape">
                   <Properties>
                     <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                       <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                        <TitledBorder title="Active?">
+                        <TitledBorder title="Robot Shape">
                           <Border PropertyName="innerBorder" info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
                             <EtchetBorder/>
                           </Border>
@@ -245,52 +236,32 @@
                   <Layout>
                     <DimensionLayout dim="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="radioActiveYes" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="radioActiveNo" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="radioActivePartial" alignment="0" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace pref="126" max="32767" attributes="0"/>
-                          </Group>
+                          <Component id="comboBoxRobotShape" alignment="0" pref="420" max="32767" attributes="0"/>
                       </Group>
                     </DimensionLayout>
                     <DimensionLayout dim="1">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="radioActiveYes" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="radioActiveNo" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="radioActivePartial" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Component id="comboBoxRobotShape" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
                   </Layout>
                   <SubComponents>
-                    <Component class="javax.swing.JRadioButton" name="radioActiveYes">
+                    <Component class="javax.swing.JComboBox" name="comboBoxRobotShape">
                       <Properties>
-                        <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-                          <ComponentRef name="buttonGroupRobotActive"/>
+                        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+                          <StringArray count="7">
+                            <StringItem index="0" value="Wide"/>
+                            <StringItem index="1" value="Long"/>
+                            <StringItem index="2" value="Square"/>
+                            <StringItem index="3" value="Round"/>
+                            <StringItem index="4" value="Hex"/>
+                            <StringItem index="5" value="Triangle"/>
+                            <StringItem index="6" value="Other"/>
+                          </StringArray>
                         </Property>
-                        <Property name="text" type="java.lang.String" value="Yes"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JRadioButton" name="radioActiveNo">
-                      <Properties>
-                        <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-                          <ComponentRef name="buttonGroupRobotActive"/>
-                        </Property>
-                        <Property name="text" type="java.lang.String" value="No"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JRadioButton" name="radioActivePartial">
-                      <Properties>
-                        <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-                          <ComponentRef name="buttonGroupRobotActive"/>
-                        </Property>
-                        <Property name="text" type="java.lang.String" value="Partially"/>
                       </Properties>
                     </Component>
                   </SubComponents>
@@ -329,7 +300,7 @@
 
                       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                       <SubComponents>
-                        <Component class="javax.swing.JTextArea" name="textAreaRobotActivityComments">
+                        <Component class="javax.swing.JTextArea" name="textAreaRobotConfigComments">
                           <Properties>
                             <Property name="columns" type="int" value="20"/>
                             <Property name="rows" type="int" value="1"/>
@@ -337,6 +308,95 @@
                         </Component>
                       </SubComponents>
                     </Container>
+                  </SubComponents>
+                </Container>
+                <Container class="javax.swing.JPanel" name="panelRobotDriveTrain">
+                  <Properties>
+                    <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                      <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
+                        <TitledBorder title="Robot Drive Train">
+                          <Border PropertyName="innerBorder" info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
+                            <EtchetBorder/>
+                          </Border>
+                          <Font PropertyName="font" name="Tahoma" size="11" style="1"/>
+                        </TitledBorder>
+                      </Border>
+                    </Property>
+                  </Properties>
+
+                  <Layout>
+                    <DimensionLayout dim="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="comboBoxRobotDriveTrain" alignment="0" max="32767" attributes="0"/>
+                      </Group>
+                    </DimensionLayout>
+                    <DimensionLayout dim="1">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="comboBoxRobotDriveTrain" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
+                          </Group>
+                      </Group>
+                    </DimensionLayout>
+                  </Layout>
+                  <SubComponents>
+                    <Component class="javax.swing.JComboBox" name="comboBoxRobotDriveTrain">
+                      <Properties>
+                        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+                          <StringArray count="3">
+                            <StringItem index="0" value="4 Wheel"/>
+                            <StringItem index="1" value="6 Wheel"/>
+                            <StringItem index="2" value="8 Wheel"/>
+                          </StringArray>
+                        </Property>
+                      </Properties>
+                    </Component>
+                  </SubComponents>
+                </Container>
+                <Container class="javax.swing.JPanel" name="panelRobotWheelType">
+                  <Properties>
+                    <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                      <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
+                        <TitledBorder title="Robot Wheel Type">
+                          <Border PropertyName="innerBorder" info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
+                            <EtchetBorder/>
+                          </Border>
+                          <Font PropertyName="font" name="Tahoma" size="11" style="1"/>
+                        </TitledBorder>
+                      </Border>
+                    </Property>
+                  </Properties>
+
+                  <Layout>
+                    <DimensionLayout dim="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="comboBoxRobotWheelType" alignment="0" max="32767" attributes="0"/>
+                      </Group>
+                    </DimensionLayout>
+                    <DimensionLayout dim="1">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="comboBoxRobotWheelType" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
+                          </Group>
+                      </Group>
+                    </DimensionLayout>
+                  </Layout>
+                  <SubComponents>
+                    <Component class="javax.swing.JComboBox" name="comboBoxRobotWheelType">
+                      <Properties>
+                        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+                          <StringArray count="6">
+                            <StringItem index="0" value="Standard"/>
+                            <StringItem index="1" value="Omni"/>
+                            <StringItem index="2" value="Mecanum"/>
+                            <StringItem index="3" value="Swerve"/>
+                            <StringItem index="4" value="Pnumatic"/>
+                            <StringItem index="5" value="Custom"/>
+                          </StringArray>
+                        </Property>
+                      </Properties>
+                    </Component>
                   </SubComponents>
                 </Container>
               </SubComponents>
@@ -584,25 +644,28 @@
                     <DimensionLayout dim="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
-                              <Component id="panelTeleopToteStacks" min="-2" max="-2" attributes="0"/>
+                              <Component id="panelTeleopTotes" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="panelTeleopContainerStacks" max="32767" attributes="0"/>
+                              <Component id="panelTeleopContainer" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="panelTeleopLitter" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
                     <DimensionLayout dim="1">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="panelTeleopToteStacks" max="32767" attributes="0"/>
-                          <Component id="panelTeleopContainerStacks" alignment="0" max="32767" attributes="0"/>
+                          <Component id="panelTeleopTotes" max="32767" attributes="0"/>
+                          <Component id="panelTeleopLitter" max="32767" attributes="0"/>
+                          <Component id="panelTeleopContainer" alignment="0" max="32767" attributes="0"/>
                       </Group>
                     </DimensionLayout>
                   </Layout>
                   <SubComponents>
-                    <Container class="javax.swing.JPanel" name="panelTeleopToteStacks">
+                    <Container class="javax.swing.JPanel" name="panelTeleopLitter">
                       <Properties>
                         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                            <TitledBorder title="Tote Stacks">
+                            <TitledBorder title="Litter">
                               <Border PropertyName="innerBorder" info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
                                 <EtchetBorder/>
                               </Border>
@@ -615,44 +678,44 @@
                       <Layout>
                         <DimensionLayout dim="0">
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jScrollPane3" pref="312" max="32767" attributes="0"/>
+                              <Group type="102" attributes="0">
+                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                      <Component id="checkBoxTeleopLitterPickupLitter" max="32767" attributes="0"/>
+                                      <Component id="checkBoxTeleopLitterPushLitter" max="32767" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              </Group>
                           </Group>
                         </DimensionLayout>
                         <DimensionLayout dim="1">
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jScrollPane3" alignment="1" pref="143" max="32767" attributes="0"/>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="checkBoxTeleopLitterPushLitter" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="checkBoxTeleopLitterPickupLitter" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              </Group>
                           </Group>
                         </DimensionLayout>
                       </Layout>
                       <SubComponents>
-                        <Container class="javax.swing.JScrollPane" name="jScrollPane3">
-                          <AuxValues>
-                            <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
-                          </AuxValues>
-
-                          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
-                          <SubComponents>
-                            <Component class="javax.swing.JList" name="listToteStack">
-                              <Properties>
-                                <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
-                                  <StringArray count="0"/>
-                                </Property>
-                                <Property name="doubleBuffered" type="boolean" value="true"/>
-                              </Properties>
-                              <AuxValues>
-                                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JList&lt;StackBase&gt;()"/>
-                                <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;StackBase&gt;"/>
-                              </AuxValues>
-                            </Component>
-                          </SubComponents>
-                        </Container>
+                        <Component class="javax.swing.JCheckBox" name="checkBoxTeleopLitterPushLitter">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="Can Push Litter?"/>
+                          </Properties>
+                        </Component>
+                        <Component class="javax.swing.JCheckBox" name="checkBoxTeleopLitterPickupLitter">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="Can Pick Up Litter?"/>
+                          </Properties>
+                        </Component>
                       </SubComponents>
                     </Container>
-                    <Container class="javax.swing.JPanel" name="panelTeleopContainerStacks">
+                    <Container class="javax.swing.JPanel" name="panelTeleopTotes">
                       <Properties>
                         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                            <TitledBorder title="Container Stacks">
+                            <TitledBorder title="Totes">
                               <Border PropertyName="innerBorder" info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
                                 <EtchetBorder/>
                               </Border>
@@ -665,36 +728,182 @@
                       <Layout>
                         <DimensionLayout dim="0">
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jScrollPane2" pref="471" max="32767" attributes="0"/>
+                              <Component id="labelTeleopTotesMaxHeight" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="checkBoxTeleopTotesCanPickup" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="labelPickupOrintation" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="comboBoxTeleopTotePickupOrientation" max="32767" attributes="0"/>
+                                  </Group>
+                                  <Group type="103" alignment="0" groupAlignment="1" attributes="0">
+                                      <Component id="spinnerMaxNumTotes" min="-2" max="-2" attributes="0"/>
+                                      <Group type="102" attributes="0">
+                                          <Component id="labelFeedLocation" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="comboBoxTeleopToteFeedLocation" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                              </Group>
                           </Group>
                         </DimensionLayout>
                         <DimensionLayout dim="1">
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jScrollPane2" alignment="1" max="32767" attributes="0"/>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="checkBoxTeleopTotesCanPickup" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="labelPickupOrintation" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="comboBoxTeleopTotePickupOrientation" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="labelTeleopTotesMaxHeight" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="spinnerMaxNumTotes" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="labelFeedLocation" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="comboBoxTeleopToteFeedLocation" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace min="0" pref="50" max="32767" attributes="0"/>
+                              </Group>
                           </Group>
                         </DimensionLayout>
                       </Layout>
                       <SubComponents>
-                        <Container class="javax.swing.JScrollPane" name="jScrollPane2">
-                          <AuxValues>
-                            <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
-                          </AuxValues>
+                        <Component class="javax.swing.JLabel" name="labelTeleopTotesMaxHeight">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="Max Stack Height:"/>
+                          </Properties>
+                        </Component>
+                        <Component class="javax.swing.JSpinner" name="spinnerMaxNumTotes">
+                          <Properties>
+                            <Property name="enabled" type="boolean" value="false"/>
+                          </Properties>
+                          <Events>
+                            <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="spinnerMaxNumTotesStateChanged"/>
+                            <EventHandler event="propertyChange" listener="java.beans.PropertyChangeListener" parameters="java.beans.PropertyChangeEvent" handler="spinnerMaxNumTotesPropertyChange"/>
+                          </Events>
+                        </Component>
+                        <Component class="javax.swing.JCheckBox" name="checkBoxTeleopTotesCanPickup">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="Can Pick Up Totes?"/>
+                          </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="checkBoxTeleopTotesCanPickupActionPerformed"/>
+                          </Events>
+                        </Component>
+                        <Component class="javax.swing.JComboBox" name="comboBoxTeleopTotePickupOrientation">
+                          <Properties>
+                            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+                              <StringArray count="3">
+                                <StringItem index="0" value="Large"/>
+                                <StringItem index="1" value="Small"/>
+                                <StringItem index="2" value="Both"/>
+                              </StringArray>
+                            </Property>
+                            <Property name="enabled" type="boolean" value="false"/>
+                          </Properties>
+                        </Component>
+                        <Component class="javax.swing.JLabel" name="labelPickupOrintation">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="Pickup Orientation:"/>
+                          </Properties>
+                        </Component>
+                        <Component class="javax.swing.JLabel" name="labelFeedLocation">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="Feed Location:"/>
+                          </Properties>
+                        </Component>
+                        <Component class="javax.swing.JComboBox" name="comboBoxTeleopToteFeedLocation">
+                          <Properties>
+                            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+                              <StringArray count="3">
+                                <StringItem index="0" value="HP Station"/>
+                                <StringItem index="1" value="Landfill"/>
+                                <StringItem index="2" value="Both"/>
+                              </StringArray>
+                            </Property>
+                            <Property name="enabled" type="boolean" value="false"/>
+                          </Properties>
+                        </Component>
+                      </SubComponents>
+                    </Container>
+                    <Container class="javax.swing.JPanel" name="panelTeleopContainer">
+                      <Properties>
+                        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                          <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
+                            <TitledBorder title="Containers">
+                              <Border PropertyName="innerBorder" info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
+                                <EtchetBorder/>
+                              </Border>
+                              <Font PropertyName="font" name="Tahoma" size="11" style="1"/>
+                            </TitledBorder>
+                          </Border>
+                        </Property>
+                      </Properties>
 
-                          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
-                          <SubComponents>
-                            <Component class="javax.swing.JList" name="listContainerStack">
-                              <Properties>
-                                <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
-                                  <StringArray count="0"/>
-                                </Property>
-                              </Properties>
-                              <AuxValues>
-                                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JList&lt;StackBase&gt;()"/>
-                                <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;StackBase&gt;"/>
-                              </AuxValues>
-                            </Component>
-                          </SubComponents>
-                        </Container>
+                      <Layout>
+                        <DimensionLayout dim="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="checkBoxTeleopContainersPickup" max="32767" attributes="0"/>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="labelTeleopContainersMaxHeight" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="spinnerMaxHeightContainer" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" attributes="0">
+                                  <EmptySpace min="21" pref="21" max="-2" attributes="0"/>
+                                  <Component id="checkBoxTeleopContainersUpright" max="32767" attributes="0"/>
+                              </Group>
+                          </Group>
+                        </DimensionLayout>
+                        <DimensionLayout dim="1">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="checkBoxTeleopContainersPickup" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <Component id="checkBoxTeleopContainersUpright" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="labelTeleopContainersMaxHeight" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="spinnerMaxHeightContainer" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              </Group>
+                          </Group>
+                        </DimensionLayout>
+                      </Layout>
+                      <SubComponents>
+                        <Component class="javax.swing.JCheckBox" name="checkBoxTeleopContainersPickup">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="Can Pick Up Containers?"/>
+                          </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="checkBoxTeleopContainersPickupActionPerformed"/>
+                          </Events>
+                        </Component>
+                        <Component class="javax.swing.JCheckBox" name="checkBoxTeleopContainersUpright">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="Must To Be Upright?"/>
+                            <Property name="enabled" type="boolean" value="false"/>
+                          </Properties>
+                        </Component>
+                        <Component class="javax.swing.JSpinner" name="spinnerMaxHeightContainer">
+                          <Properties>
+                            <Property name="enabled" type="boolean" value="false"/>
+                          </Properties>
+                          <Events>
+                            <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="spinnerMaxHeightContainerStateChanged"/>
+                            <EventHandler event="propertyChange" listener="java.beans.PropertyChangeListener" parameters="java.beans.PropertyChangeEvent" handler="spinnerMaxHeightContainerPropertyChange"/>
+                          </Events>
+                        </Component>
+                        <Component class="javax.swing.JLabel" name="labelTeleopContainersMaxHeight">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="Max Capable Stack Height:"/>
+                          </Properties>
+                        </Component>
                       </SubComponents>
                     </Container>
                   </SubComponents>
@@ -721,11 +930,22 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="radioCoopNone" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="radioCoopUnstacked" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="radioCoopStacked" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="radioCoopUnstacked" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="32767" attributes="0"/>
+                                  <Component id="labeCoopMaxStackHeight" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="spinnerMaxCoopStack" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" attributes="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="radioCoopNone" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="radioCoopStacked" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              </Group>
                           </Group>
-                          <EmptySpace pref="242" max="32767" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -734,7 +954,11 @@
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="radioCoopNone" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="radioCoopUnstacked" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="radioCoopUnstacked" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="spinnerMaxCoopStack" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="labeCoopMaxStackHeight" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="radioCoopStacked" min="-2" max="-2" attributes="0"/>
                       </Group>
@@ -766,6 +990,17 @@
                     <Property name="text" type="java.lang.String" value="Stacked"/>
                   </Properties>
                 </Component>
+                <Component class="javax.swing.JSpinner" name="spinnerMaxCoopStack">
+                  <Events>
+                    <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="spinnerMaxCoopStackStateChanged"/>
+                    <EventHandler event="propertyChange" listener="java.beans.PropertyChangeListener" parameters="java.beans.PropertyChangeEvent" handler="spinnerMaxCoopStackPropertyChange"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JLabel" name="labeCoopMaxStackHeight">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Max Stack Height:"/>
+                  </Properties>
+                </Component>
               </SubComponents>
             </Container>
             <Container class="javax.swing.JPanel" name="panelHumanPlayer">
@@ -786,7 +1021,7 @@
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
                           <Component id="checkBoxHPThrewNoodles" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
@@ -794,7 +1029,6 @@
                               <Component id="radioHPMediocre" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="radioHPExcellent" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -820,7 +1054,7 @@
                       <ComponentRef name="buttonGroupHumanPlayer"/>
                     </Property>
                     <Property name="selected" type="boolean" value="true"/>
-                    <Property name="text" type="java.lang.String" value="Attempted (0 scored noodles)"/>
+                    <Property name="text" type="java.lang.String" value="Poor (0 scored noodles per match)"/>
                     <Property name="enabled" type="boolean" value="false"/>
                   </Properties>
                 </Component>
@@ -829,7 +1063,7 @@
                     <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
                       <ComponentRef name="buttonGroupHumanPlayer"/>
                     </Property>
-                    <Property name="text" type="java.lang.String" value="Mediocre (1 to 2 scored noodles)"/>
+                    <Property name="text" type="java.lang.String" value="Mediocre (1 to 2 scored noodles per match)"/>
                     <Property name="toolTipText" type="java.lang.String" value=""/>
                     <Property name="enabled" type="boolean" value="false"/>
                   </Properties>
@@ -839,67 +1073,17 @@
                     <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
                       <ComponentRef name="buttonGroupHumanPlayer"/>
                     </Property>
-                    <Property name="text" type="java.lang.String" value="Excellent (3+ scored noodles)"/>
+                    <Property name="text" type="java.lang.String" value="Excellent (3+ scored noodles per match)"/>
                     <Property name="actionCommand" type="java.lang.String" value="Excellent"/>
                     <Property name="enabled" type="boolean" value="false"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JCheckBox" name="checkBoxHPThrewNoodles">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="HP Threw Noodles"/>
+                    <Property name="text" type="java.lang.String" value="HP Throws Noodles"/>
                   </Properties>
                   <Events>
                     <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="checkBoxHPThrewNoodlesStateChanged"/>
-                  </Events>
-                </Component>
-              </SubComponents>
-            </Container>
-            <Container class="javax.swing.JPanel" name="panelOutcome">
-              <Properties>
-                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-                  <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                    <TitledBorder title="Outcome">
-                      <Border PropertyName="innerBorder" info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
-                        <EtchetBorder/>
-                      </Border>
-                      <Font PropertyName="font" name="Tahoma" size="14" style="1"/>
-                    </TitledBorder>
-                  </Border>
-                </Property>
-              </Properties>
-
-              <Layout>
-                <DimensionLayout dim="0">
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="labelMatchScore" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="fieldMatchScore" min="-2" pref="90" max="-2" attributes="0"/>
-                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                      </Group>
-                  </Group>
-                </DimensionLayout>
-                <DimensionLayout dim="1">
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="labelMatchScore" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="fieldMatchScore" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                  </Group>
-                </DimensionLayout>
-              </Layout>
-              <SubComponents>
-                <Component class="javax.swing.JLabel" name="labelMatchScore">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="Match Total Score:"/>
-                  </Properties>
-                </Component>
-                <Component class="javax.swing.JTextField" name="fieldMatchScore">
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="fieldMatchScoreActionPerformed"/>
-                    <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="fieldMatchScoreKeyPressed"/>
-                    <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="fieldMatchScoreKeyReleased"/>
-                    <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="fieldMatchScoreKeyTyped"/>
                   </Events>
                 </Component>
               </SubComponents>

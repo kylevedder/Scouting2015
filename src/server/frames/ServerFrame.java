@@ -6,6 +6,10 @@
 package server.frames;
 
 import client.frames.MatchFrame;
+import client.objects.activedata.ActiveData;
+import client.objects.matchdata.MatchData;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -29,6 +33,8 @@ public class ServerFrame extends javax.swing.JFrame
     private SyncFilesServerThread syncFilesServerThread = null;
 
     private ServerFileManager serverFileManager = ServerFileManager.getInstance();
+    public MatchViewerFrame matchViewerFrame = new MatchViewerFrame(null);
+    public ActiveViewerFrame activeViewerFrame = new ActiveViewerFrame(null);
 
     /**
      * Creates new form ServerFrame
@@ -55,10 +61,20 @@ public class ServerFrame extends javax.swing.JFrame
      */
     public void populateTables()
     {
+        setupActiveTable();
+        setupMatchTable();
+        this.matchViewerFrame.setVisible(false);
+
+    }
+
+    /**
+     * Sets up the params of the table for display.
+     */
+    private void setupMatchTable()
+    {
+
         ArrayList<File> matchFiles = this.serverFileManager.getMatchFiles();
-        ArrayList<File> activeFiles = this.serverFileManager.getActiveFiles();
         this.tableMatch.setModel(new MatchTableModel(matchFiles));
-        this.tableActive.setModel(new ActiveTableModel(activeFiles));
         TableRowSorter mySorter = new TableRowSorter(tableMatch.getModel());
         mySorter.setComparator(0, new NumericComparator());
         mySorter.setComparator(1, new NumericComparator());
@@ -66,7 +82,52 @@ public class ServerFrame extends javax.swing.JFrame
         mySorter.setComparator(3, new NumericComparator());
         mySorter.setComparator(4, new StringComparator());
         tableMatch.setRowSorter(mySorter);
-        tableMatch.getSelectionModel().addListSelectionListener(new MatchTableListSelectionListener(tableMatch));
+        tableMatch.addMouseListener(new MouseAdapter()
+        {
+            @Override
+            public void mouseClicked(MouseEvent e)
+            {
+                if (e.getClickCount() == 1)
+                {                    
+                    String fileName = (String) tableMatch.getValueAt(tableMatch.getSelectedRow(), 4);
+                    System.out.println("File: " + fileName);
+                    String fileContents = serverFileManager.readFile(fileName);
+                    MatchData matchData = MatchData.deserialize(fileContents);
+                    matchViewerFrame.setVisible(true);
+                    matchViewerFrame.resetFrame(matchData);
+                }
+            }
+        });
+    }
+
+    /**
+     * Sets up the params of the table for display.
+     */
+    private void setupActiveTable()
+    {
+        ArrayList<File> activeFiles = this.serverFileManager.getActiveFiles();
+        this.tableActive.setModel(new ActiveTableModel(activeFiles));
+        TableRowSorter mySorter = new TableRowSorter(tableActive.getModel());
+        mySorter.setComparator(0, new NumericComparator());
+        mySorter.setComparator(1, new StringComparator());
+        mySorter.setComparator(2, new StringComparator());
+        tableActive.setRowSorter(mySorter);
+        tableActive.addMouseListener(new MouseAdapter()
+        {
+            @Override
+            public void mouseClicked(MouseEvent e)
+            {
+                if (e.getClickCount() == 1)
+                {                                        
+                    String fileName = (String) tableActive.getValueAt(tableActive.getSelectedRow(), 2);
+                    System.out.println("File: " + fileName);
+                    String fileContents = serverFileManager.readFile(fileName);
+                    ActiveData activeData = ActiveData.deserialize(fileContents);
+                    activeViewerFrame.setVisible(true);
+                    activeViewerFrame.resetFrame(activeData);
+                }
+            }
+        });        
     }
 
     /**
@@ -88,7 +149,7 @@ public class ServerFrame extends javax.swing.JFrame
         jScrollPane2 = new javax.swing.JScrollPane();
         tableActive = new javax.swing.JTable();
 
-        setTitle("Team 467 Match Scouting Server");
+        setTitle("Team 467 Scouting Server");
 
         labelTitle.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         labelTitle.setText("Scouting Server");

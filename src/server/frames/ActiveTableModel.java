@@ -19,7 +19,7 @@ import utils.FileUtils;
 public class ActiveTableModel extends AbstractTableModel
 {
 
-    private int NUM_COLS = 2;
+    private int NUM_COLS = 3;
 
     private ArrayList<File> filesToPopulateWith = null;
     private Object[][] objArray = null;
@@ -37,7 +37,8 @@ public class ActiveTableModel extends AbstractTableModel
             JSONObject json = new JSONObject(FileUtils.readFileContents(f));
             ActiveData ad = ActiveData.deserialize(json.toString());
             objArray[i][0] = ad.getMatchTeamNumber();
-            objArray[i][1] = ad.getMatchRobotScouter();            
+            objArray[i][1] = ad.getMatchRobotScouter();
+            objArray[i][2] = f.getName();            
         }
     }            
     
@@ -55,13 +56,13 @@ public class ActiveTableModel extends AbstractTableModel
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex)
-    {        
+    {           
         return objArray[rowIndex][columnIndex];
     }
     
     String[] columnNames =
     {
-        "Team #", "Scouter"
+        "Team #", "Scouter", "File Name"
     };
 
     @Override

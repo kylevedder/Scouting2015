@@ -54,7 +54,10 @@ public class MatchViewerFrame extends javax.swing.JFrame
         {
             Logger.getLogger(MatchViewerFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
-        resetFrame(matchData);
+        if (matchData != null)
+        {
+            resetFrame(matchData);
+        }
     }
 
     public void resetFrame(MatchData matchData)
@@ -72,14 +75,12 @@ public class MatchViewerFrame extends javax.swing.JFrame
         fieldMatchScore.setEditable(false);
         textAreaRobotActivityComments.setText(matchData.getActivityComment());
         textAreaRobotActivityComments.setEditable(false);
-        spinnerNumContainers.setValue(matchData.getAutoNumberContainers());
-        spinnerNumContainers.setEnabled(false);
-        spinnerNumTotes.setValue(matchData.getAutoNumberTotes());
-        spinnerNumTotes.setEnabled(false);
-        checkBoxInAutoZone.setSelected(matchData.isAutoInAutoZone());
-        checkBoxInAutoZone.setEnabled(false);
-        checkBoxTotesStacked.setEnabled(false);
-        checkBoxTotesStacked.setSelected(matchData.isAutoTotesStacked());       
+        spinnerNumContainers.setValue(matchData.getAutoNumberContainers());        
+        spinnerNumTotes.setValue(matchData.getAutoNumberTotes());        
+        checkBoxInAutoZone.setSelected(matchData.isAutoInAutoZone());                
+        checkBoxTotesStacked.setSelected(matchData.isAutoTotesStacked());
+        checkBoxTotesStacked.setEnabled(true);
+        buttonGroupHumanPlayer.clearSelection();
         HumanPlayerType hpType = matchData.getHumanPlayerType();
         switch (hpType)
         {
@@ -88,43 +89,102 @@ public class MatchViewerFrame extends javax.swing.JFrame
                 radioHPExcellent.setEnabled(false);
                 radioHPMediocre.setEnabled(false);
                 radioHPPoor.setEnabled(false);
+                
+                radioHPExcellent.setSelected(false);
+                radioHPMediocre.setSelected(false);
+                radioHPPoor.setSelected(false);
                 break;
 
             case POOR:
-                checkBoxHPThrewNoodles.setSelected(true);
-                radioHPExcellent.setEnabled(false);
-                radioHPMediocre.setEnabled(false);
+                checkBoxHPThrewNoodles.setSelected(false);
+                radioHPExcellent.setEnabled(true);
+                radioHPMediocre.setEnabled(true);
                 radioHPPoor.setEnabled(true);
+                
+                radioHPExcellent.setSelected(false);
+                radioHPMediocre.setSelected(false);
+                radioHPPoor.setSelected(true);
                 break;
 
             case MEDIOCRE:
-                checkBoxHPThrewNoodles.setSelected(true);
-                radioHPExcellent.setEnabled(false);
+                checkBoxHPThrewNoodles.setSelected(false);
+                radioHPExcellent.setEnabled(true);
                 radioHPMediocre.setEnabled(true);
-                radioHPPoor.setEnabled(false);
+                radioHPPoor.setEnabled(true);
+                
+                radioHPExcellent.setSelected(false);
+                radioHPMediocre.setSelected(true);
+                radioHPPoor.setSelected(false);
                 break;
 
             case EXCELLENT:
-                checkBoxHPThrewNoodles.setSelected(true);
+                checkBoxHPThrewNoodles.setSelected(false);
                 radioHPExcellent.setEnabled(true);
-                radioHPMediocre.setEnabled(false);
-                radioHPPoor.setEnabled(false);
+                radioHPMediocre.setEnabled(true);
+                radioHPPoor.setEnabled(true);
+                
+                radioHPExcellent.setSelected(true);
+                radioHPMediocre.setSelected(false);
+                radioHPPoor.setSelected(false);
                 break;
 
         }
-        listContainerStack.setModel(new DefaultListModel<StackBase>());
-        for(StackContainer container: matchData.getTeleopContainerStacks())
+
+        CoOpType coopType = matchData.getCoopType();
+        switch (coopType)
         {
-            this.addItemToList(listToteStack, container);
-        }        
-                
+            case NONE:
+                radioCoopNone.setSelected(true);
+                radioCoopUnstacked.setSelected(false);
+                radioCoopStacked.setSelected(false);
+                break;
+            case STACKED:
+                radioCoopNone.setSelected(false);
+                radioCoopUnstacked.setSelected(false);
+                radioCoopStacked.setSelected(true);
+                break;
+            case UNSTACKED:
+                radioCoopNone.setSelected(false);
+                radioCoopUnstacked.setSelected(true);
+                radioCoopStacked.setSelected(false);
+                break;
+        }
+
+        RobotActivityType robotActivityType = matchData.getActivityType();
+        switch (robotActivityType)
+        {
+            case ACTIVE:
+                radioActiveNo.setSelected(false);
+                radioActivePartial.setSelected(false);
+                radioActiveYes.setSelected(true);
+                break;
+            case INACTIVE:
+                radioActiveNo.setSelected(true);
+                radioActivePartial.setSelected(false);
+                radioActiveYes.setSelected(false);
+                break;
+            case PARTIALLY:
+                radioActiveNo.setSelected(false);
+                radioActivePartial.setSelected(true);
+                radioActiveYes.setSelected(false);
+                break;
+        }
+        
+        
+
+        listContainerStack.setModel(new DefaultListModel<StackBase>());
+        for (StackContainer container : matchData.getTeleopContainerStacks())
+        {
+            this.addItemToList(listContainerStack, container);
+        }
+
         listToteStack.setModel(new DefaultListModel<StackBase>());
-        for(StackTote tote: matchData.getTeleopToteStacks())
+        for (StackTote tote : matchData.getTeleopToteStacks())
         {
             this.addItemToList(listToteStack, tote);
         }
     }
-    
+
     /**
      * Adds an object to the given list
      *
@@ -209,7 +269,7 @@ public class MatchViewerFrame extends javax.swing.JFrame
         fieldMatchScore = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Match Recorder");
+        setTitle("Match Viewer");
         setResizable(false);
 
         mainPanelScroll.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);

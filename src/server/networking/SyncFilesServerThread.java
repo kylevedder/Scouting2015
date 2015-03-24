@@ -121,6 +121,7 @@ public class SyncFilesServerThread extends Thread
                 fileTransmitter.sendFiles(serverFileManager.getAllFiles(), outToClient);
                 System.out.println("SERVER: All Files sent!");
                 Main.serverFrame.populateTables();
+                
             }
             catch (IOException | NullPointerException ex)
             {
