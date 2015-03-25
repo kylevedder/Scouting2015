@@ -71,9 +71,18 @@ public class ServerFrame extends javax.swing.JFrame
         setupActiveTable();
         setupMatchTable();
         this.matchViewerFrame.setVisible(false);
+        this.activeViewerFrame.setVisible(false);
 
     }
 
+    /**
+     * Sets up team viewer table.
+     */
+    private void setupTeamViewer()
+    {
+        
+    }
+    
     /**
      * Sets up the params of the table for display.
      */
@@ -155,6 +164,8 @@ public class ServerFrame extends javax.swing.JFrame
         tableMatch = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
         tableActive = new javax.swing.JTable();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        tableTeamViewer = new javax.swing.JTable();
         labelIP = new javax.swing.JLabel();
         buttonRefrest = new javax.swing.JButton();
 
@@ -197,6 +208,23 @@ public class ServerFrame extends javax.swing.JFrame
         jScrollPane2.setViewportView(tableActive);
 
         tabbedPane.addTab("Active", jScrollPane2);
+
+        tableTeamViewer.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][]
+            {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String []
+            {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane4.setViewportView(tableTeamViewer);
+
+        tabbedPane.addTab("Team Viewer", jScrollPane4);
 
         jScrollPane3.setViewportView(tabbedPane);
 
@@ -264,12 +292,14 @@ public class ServerFrame extends javax.swing.JFrame
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JLabel labelIP;
     private javax.swing.JLabel labelTitle;
     private javax.swing.JPanel panelMainPanel;
     private javax.swing.JTabbedPane tabbedPane;
     private javax.swing.JTable tableActive;
     private javax.swing.JTable tableMatch;
+    private javax.swing.JTable tableTeamViewer;
     // End of variables declaration//GEN-END:variables
     @Override
     public void setVisible(boolean b)

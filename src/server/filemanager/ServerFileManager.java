@@ -140,4 +140,33 @@ public class ServerFileManager
         }        
         return filesToSend;
     }
+    
+    public ArrayList<Integer> getAllTeamMatchFiles()
+    {
+        ArrayList<Integer> teamNums = new ArrayList<>();
+        File[] allFiles = this.getAllFiles();
+        for(File f: allFiles)
+        {
+            
+        }
+        return teamNums;
+    }
+    
+    /**
+     * Gets all match files for a specific team number.
+     * @return 
+     */
+    public ArrayList<File> getTeamMatchFiles(int teamNum)
+    {
+        File[] allFiles = this.getAllFiles();
+        ArrayList<File> filesToSend = new ArrayList<File>();
+        for (File f : allFiles)
+        {
+            if (f.getName().toLowerCase().startsWith(ObjectType.MATCH.toString().toLowerCase()))
+            {
+                filesToSend.add(f);
+            }
+        }        
+        return filesToSend;
+    }
 }
