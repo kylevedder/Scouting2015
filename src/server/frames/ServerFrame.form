@@ -45,7 +45,9 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="labelTitle" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Component id="labelIP" max="32767" attributes="0"/>
+                  <Component id="labelIP" min="-2" pref="128" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="buttonRefrest" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
               <Component id="jScrollPane3" alignment="1" pref="486" max="32767" attributes="0"/>
@@ -58,6 +60,7 @@
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="labelTitle" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="labelIP" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="buttonRefrest" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jScrollPane3" pref="424" max="32767" attributes="0"/>
@@ -143,6 +146,14 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="IP:"/>
           </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="buttonRefrest">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Refresh"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonRefrestActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

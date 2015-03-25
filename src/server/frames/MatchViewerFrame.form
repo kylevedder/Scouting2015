@@ -821,7 +821,7 @@
                     </Property>
                     <Property name="selected" type="boolean" value="true"/>
                     <Property name="text" type="java.lang.String" value="Attempted (0 scored noodles)"/>
-                    <Property name="enabled" type="boolean" value="false"/>
+                    <Property name="actionCommand" type="java.lang.String" value="POOR"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JRadioButton" name="radioHPMediocre">
@@ -831,7 +831,7 @@
                     </Property>
                     <Property name="text" type="java.lang.String" value="Mediocre (1 to 2 scored noodles)"/>
                     <Property name="toolTipText" type="java.lang.String" value=""/>
-                    <Property name="enabled" type="boolean" value="false"/>
+                    <Property name="actionCommand" type="java.lang.String" value="MEDIOCRE"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JRadioButton" name="radioHPExcellent">
@@ -841,7 +841,6 @@
                     </Property>
                     <Property name="text" type="java.lang.String" value="Excellent (3+ scored noodles)"/>
                     <Property name="actionCommand" type="java.lang.String" value="Excellent"/>
-                    <Property name="enabled" type="boolean" value="false"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JCheckBox" name="checkBoxHPThrewNoodles">

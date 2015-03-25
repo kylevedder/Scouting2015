@@ -79,8 +79,7 @@ public class MatchViewerFrame extends javax.swing.JFrame
         spinnerNumTotes.setValue(matchData.getAutoNumberTotes());        
         checkBoxInAutoZone.setSelected(matchData.isAutoInAutoZone());                
         checkBoxTotesStacked.setSelected(matchData.isAutoTotesStacked());
-        checkBoxTotesStacked.setEnabled(true);
-        buttonGroupHumanPlayer.clearSelection();
+        checkBoxTotesStacked.setEnabled(true);        
         HumanPlayerType hpType = matchData.getHumanPlayerType();
         switch (hpType)
         {
@@ -620,17 +619,16 @@ public class MatchViewerFrame extends javax.swing.JFrame
         buttonGroupHumanPlayer.add(radioHPPoor);
         radioHPPoor.setSelected(true);
         radioHPPoor.setText("Attempted (0 scored noodles)");
-        radioHPPoor.setEnabled(false);
+        radioHPPoor.setActionCommand("POOR");
 
         buttonGroupHumanPlayer.add(radioHPMediocre);
         radioHPMediocre.setText("Mediocre (1 to 2 scored noodles)");
         radioHPMediocre.setToolTipText("");
-        radioHPMediocre.setEnabled(false);
+        radioHPMediocre.setActionCommand("MEDIOCRE");
 
         buttonGroupHumanPlayer.add(radioHPExcellent);
         radioHPExcellent.setText("Excellent (3+ scored noodles)");
         radioHPExcellent.setActionCommand("Excellent");
-        radioHPExcellent.setEnabled(false);
 
         checkBoxHPThrewNoodles.setText("HP Threw Noodles");
         checkBoxHPThrewNoodles.addChangeListener(new javax.swing.event.ChangeListener()

@@ -850,6 +850,9 @@
                     </Property>
                     <Property name="text" type="java.lang.String" value="Stacked"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="radioCoopStackedActionPerformed"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>
@@ -906,6 +909,7 @@
                     </Property>
                     <Property name="selected" type="boolean" value="true"/>
                     <Property name="text" type="java.lang.String" value="Attempted (0 scored noodles)"/>
+                    <Property name="actionCommand" type="java.lang.String" value="POOR"/>
                     <Property name="enabled" type="boolean" value="false"/>
                   </Properties>
                 </Component>
@@ -916,6 +920,7 @@
                     </Property>
                     <Property name="text" type="java.lang.String" value="Mediocre (1 to 2 scored noodles)"/>
                     <Property name="toolTipText" type="java.lang.String" value=""/>
+                    <Property name="actionCommand" type="java.lang.String" value="Mediocre"/>
                     <Property name="enabled" type="boolean" value="false"/>
                   </Properties>
                 </Component>

@@ -568,6 +568,13 @@ public class MatchFrame extends javax.swing.JFrame implements ResetableFrame
 
         buttonGroupCoop.add(radioCoopStacked);
         radioCoopStacked.setText("Stacked");
+        radioCoopStacked.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                radioCoopStackedActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelCoopLayout = new javax.swing.GroupLayout(panelCoop);
         panelCoop.setLayout(panelCoopLayout);
@@ -596,11 +603,13 @@ public class MatchFrame extends javax.swing.JFrame implements ResetableFrame
         buttonGroupHumanPlayer.add(radioHPPoor);
         radioHPPoor.setSelected(true);
         radioHPPoor.setText("Attempted (0 scored noodles)");
+        radioHPPoor.setActionCommand("POOR");
         radioHPPoor.setEnabled(false);
 
         buttonGroupHumanPlayer.add(radioHPMediocre);
         radioHPMediocre.setText("Mediocre (1 to 2 scored noodles)");
         radioHPMediocre.setToolTipText("");
+        radioHPMediocre.setActionCommand("Mediocre");
         radioHPMediocre.setEnabled(false);
 
         buttonGroupHumanPlayer.add(radioHPExcellent);
@@ -898,6 +907,11 @@ public class MatchFrame extends javax.swing.JFrame implements ResetableFrame
 
     }//GEN-LAST:event_buttonRemoveToteStackMouseClicked
 
+    private void radioCoopStackedActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_radioCoopStackedActionPerformed
+    {//GEN-HEADEREND:event_radioCoopStackedActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_radioCoopStackedActionPerformed
+
     /**
      * Pulls all data from the form and sticks it in a match data object.
      *
@@ -909,14 +923,19 @@ public class MatchFrame extends javax.swing.JFrame implements ResetableFrame
         HumanPlayerType hpType = HumanPlayerType.NO_THROW;
         if (checkBoxHPThrewNoodles.isSelected())
         {
+            System.out.println("HP Checked");
             try
-            {
+            {                
                 hpType = HumanPlayerType.valueOf(getSelectedButtonActionCommandOrDefault(buttonGroupHumanPlayer, HumanPlayerType.NO_THROW.toString()));
             }
             catch (Exception ex)
             {
                 hpType = HumanPlayerType.NO_THROW;
             }
+        }
+        else
+        {
+            System.out.println("HP Not checked.");
         }
 
         //GET COOP data   

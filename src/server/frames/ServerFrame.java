@@ -156,6 +156,7 @@ public class ServerFrame extends javax.swing.JFrame
         jScrollPane2 = new javax.swing.JScrollPane();
         tableActive = new javax.swing.JTable();
         labelIP = new javax.swing.JLabel();
+        buttonRefrest = new javax.swing.JButton();
 
         setTitle("Team 467 Scouting Server");
 
@@ -201,6 +202,15 @@ public class ServerFrame extends javax.swing.JFrame
 
         labelIP.setText("IP:");
 
+        buttonRefrest.setText("Refresh");
+        buttonRefrest.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                buttonRefrestActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelMainPanelLayout = new javax.swing.GroupLayout(panelMainPanel);
         panelMainPanel.setLayout(panelMainPanelLayout);
         panelMainPanelLayout.setHorizontalGroup(
@@ -209,7 +219,9 @@ public class ServerFrame extends javax.swing.JFrame
                 .addContainerGap()
                 .addComponent(labelTitle)
                 .addGap(18, 18, 18)
-                .addComponent(labelIP, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(labelIP, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(buttonRefrest, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
             .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 486, Short.MAX_VALUE)
         );
@@ -219,7 +231,8 @@ public class ServerFrame extends javax.swing.JFrame
                 .addContainerGap()
                 .addGroup(panelMainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelTitle)
-                    .addComponent(labelIP))
+                    .addComponent(labelIP)
+                    .addComponent(buttonRefrest))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 424, Short.MAX_VALUE))
         );
@@ -240,8 +253,14 @@ public class ServerFrame extends javax.swing.JFrame
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void buttonRefrestActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_buttonRefrestActionPerformed
+    {//GEN-HEADEREND:event_buttonRefrestActionPerformed
+        this.populateTables();
+    }//GEN-LAST:event_buttonRefrestActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton buttonRefrest;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
