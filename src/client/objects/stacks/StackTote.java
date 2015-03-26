@@ -51,6 +51,17 @@ public class StackTote implements StackBase
     }
 
     /**
+     * Gets the height of the stack.
+     * @return 
+     */
+    public int getHeight()
+    {
+        return stackHeight;
+    }
+
+    
+    
+    /**
      * Gets the point value of the tote stack
      *
      * @return
@@ -63,7 +74,7 @@ public class StackTote implements StackBase
     @Override
     public String toString()
     {
-        return "Height: " + stackHeight;
+        return "Height: " + getHeight();
     }
 
     @Override

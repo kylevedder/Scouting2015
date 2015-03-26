@@ -16,9 +16,9 @@ import java.net.InetAddress;
 import java.net.InterfaceAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.SwingUtilities;
@@ -29,6 +29,7 @@ import main.Globals;
 import main.Main;
 import server.filemanager.ServerFileManager;
 import server.networking.SyncFilesServerThread;
+import utils.FileUtils;
 
 /**
  *
@@ -70,6 +71,7 @@ public class ServerFrame extends javax.swing.JFrame
     {
         setupActiveTable();
         setupMatchTable();
+        setupTeamViewer();
         this.matchViewerFrame.setVisible(false);
         this.activeViewerFrame.setVisible(false);
 
@@ -80,9 +82,28 @@ public class ServerFrame extends javax.swing.JFrame
      */
     private void setupTeamViewer()
     {
-        
+        ArrayList<File> files = this.serverFileManager.getMatchFiles();
+        HashMap<Integer, ArrayList<MatchData>> mapHash = new HashMap<>();
+        for (File f : files)
+        {
+            MatchData matchData = MatchData.deserialize(FileUtils.readFileContents(f));
+
+            ArrayList<MatchData> matchDataList = mapHash.getOrDefault(matchData.getMatchTeamNumber(), null);
+            if (matchDataList != null)
+            {
+                matchDataList.add(matchData);
+                mapHash.replace(matchData.getMatchTeamNumber(), matchDataList);
+            }
+            else
+            {
+                matchDataList = new ArrayList<MatchData>();
+                matchDataList.add(matchData);
+                mapHash.put(matchData.getMatchTeamNumber(), matchDataList);
+            }
+        }
+        this.tableTeamViewer.setModel(new TeamViewerTableModel(files));
     }
-    
+
     /**
      * Sets up the params of the table for display.
      */
@@ -335,14 +356,14 @@ public class ServerFrame extends javax.swing.JFrame
                             {
                                 continue;
                             }
-                            
+
                             labelIP.setText("IP: " + inet_addr.getHostAddress());
                             break ipTryCatch;
                         }
-                    }       
+                    }
                     //ip not found
                     labelIP.setText("IP: Unknown");
-                }                
+                }
                 catch (SocketException ex)
                 {
                     Logger.getLogger(ServerFrame.class.getName()).log(Level.SEVERE, null, ex);

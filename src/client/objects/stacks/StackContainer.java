@@ -65,6 +65,15 @@ public class StackContainer implements StackBase
     {
         return POINTS_PER_LEVEL * stackHeight + ((hasNoodle)? POINTS_FOR_NOODLE : 0);
     }
+    
+    /**
+     * Gets the height of the stack that was capped.
+     * @return 
+     */
+    public int getHeight()
+    {
+        return stackHeight;
+    }
 
     @Override
     public String toString()
