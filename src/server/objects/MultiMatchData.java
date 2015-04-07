@@ -9,6 +9,7 @@ import client.objects.matchdata.MatchData;
 import client.objects.stacks.StackContainer;
 import client.objects.stacks.StackTote;
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  *
@@ -37,119 +38,130 @@ public class MultiMatchData
 
     public MultiMatchData(ArrayList<MatchData> matchDataSet, int teamNumber)
     {
-        this.matchDataSet = matchDataSet;
+        this.matchDataSet = new ArrayList<>();
         this.teamNumber = teamNumber;
-
-        for (MatchData matchData : matchDataSet)
+        if (matchDataSet != null)
         {
-            //
-            //score
-            //
-            avgMatchScore += matchData.getMatchFinalScore();
-
-            //
-            //totes
-            //
-            avgTeleopNumToteStacks += matchData.getTeleopToteStacks().length;
-
-            double localAvgTeleopToteStackHeight = 0;
-            for (StackTote toteStack : matchData.getTeleopToteStacks())
+            for (MatchData matchData : matchDataSet)
             {
-                localAvgTeleopToteStackHeight += toteStack.getHeight();
+                this.addMatchData(matchData);
+                numDataPoints ++;
             }
-            avgTeleopToteStackHeight += (localAvgTeleopToteStackHeight / matchData.getTeleopToteStacks().length);
-
-            //
-            //container
-            //
-            avgTeleopNumContainerCappedStacks += matchData.getTeleopContainerStacks().length;
-
-            double localAvgTeleopContainerCappedStackHeight = 0;
-            for (StackContainer containerStack : matchData.getTeleopContainerStacks())
-            {
-                localAvgTeleopContainerCappedStackHeight += containerStack.getHeight();
-            }
-            avgTeleopContainerCappedStackHeight += localAvgTeleopContainerCappedStackHeight;
-
-            //
-            //Auto
-            //
-            avgAutoTotesScored += matchData.getAutoNumberTotes();
-            avgAutoContainersScored += matchData.getAutoNumberContainers();
-            avgAutoRobotInAutoZone += (matchData.isAutoInAutoZone() ? 100 : 0);
-            avgAutoRobotTotesStacked += (matchData.isAutoTotesStacked() ? 100 : 0);
-
-            numDataPoints++;
         }
+    }
+
+    /**
+     * Gets the number of matches for the match data.
+     *
+     * @return
+     */
+    public int getNumMatches()
+    {
+        return numDataPoints;
+    }
+
+    /**
+     * Adds a match data object.
+     *
+     * @param matchData
+     */
+    public void addMatchData(MatchData matchData)
+    {
+        matchDataSet.add(matchData);
         //
         //score
         //
-        avgMatchScore /= numDataPoints;
+        avgMatchScore += matchData.getMatchFinalScore();
 
         //
         //totes
         //
-        avgTeleopNumToteStacks /= numDataPoints;
-        avgTeleopToteStackHeight /= numDataPoints;
+        avgTeleopNumToteStacks += matchData.getTeleopToteStacks().length;
+
+        double localAvgTeleopToteStackHeight = 0;
+        for (StackTote toteStack : matchData.getTeleopToteStacks())
+        {
+            localAvgTeleopToteStackHeight += toteStack.getHeight();
+        }
+        avgTeleopToteStackHeight += (localAvgTeleopToteStackHeight / matchData.getTeleopToteStacks().length);
 
         //
         //container
         //
-        avgTeleopNumContainerCappedStacks /= numDataPoints;
-        avgTeleopContainerCappedStackHeight /= numDataPoints;
+        avgTeleopNumContainerCappedStacks += matchData.getTeleopContainerStacks().length;
+
+        double localAvgTeleopContainerCappedStackHeight = 0;
+        for (StackContainer containerStack : matchData.getTeleopContainerStacks())
+        {
+            localAvgTeleopContainerCappedStackHeight += containerStack.getHeight();
+        }
+        avgTeleopContainerCappedStackHeight += localAvgTeleopContainerCappedStackHeight / matchData.getTeleopContainerStacks().length;
 
         //
         //Auto
         //
-        avgAutoTotesScored /= numDataPoints;
-        avgAutoContainersScored /= numDataPoints;
-        avgAutoRobotInAutoZone /= numDataPoints;
-        avgAutoRobotTotesStacked /= numDataPoints;
+        avgAutoTotesScored += matchData.getAutoNumberTotes();
+        avgAutoContainersScored += matchData.getAutoNumberContainers();
+        avgAutoRobotInAutoZone += (matchData.isAutoInAutoZone() ? 100 : 0);
+        avgAutoRobotTotesStacked += (matchData.isAutoTotesStacked() ? 100 : 0);
+
+        numDataPoints++;
+    }
+
+    /**
+     * Gets a match data set sorted by match number.
+     *
+     * @return
+     */
+    public ArrayList<MatchData> getSortedMatchDataSet()
+    {
+        Collections.sort(matchDataSet);
+        return matchDataSet;
     }
 
     public double getAvgAutoContainersScored()
     {
-        return avgAutoContainersScored;
+        return avgAutoContainersScored / numDataPoints;
     }
 
     public double getAvgAutoRobotInAutoZone()
     {
-        return avgAutoRobotInAutoZone;
+        return avgAutoRobotInAutoZone / numDataPoints;
     }
 
     public double getAvgAutoRobotTotesStacked()
     {
-        return avgAutoRobotTotesStacked;
+        return avgAutoRobotTotesStacked / numDataPoints;
     }
 
     public double getAvgAutoTotesScored()
     {
-        return avgAutoTotesScored;
+        return avgAutoTotesScored / numDataPoints;
     }
 
     public double getAvgMatchScore()
     {
-        return avgMatchScore;
+        return avgMatchScore / numDataPoints;
     }
 
     public double getAvgTeleopContainerCappedStackHeight()
     {
-        return avgTeleopContainerCappedStackHeight;
+        return avgTeleopContainerCappedStackHeight / numDataPoints;
     }
 
     public double getAvgTeleopNumContainerCappedStacks()
     {
-        return avgTeleopNumContainerCappedStacks;
+        return avgTeleopNumContainerCappedStacks / numDataPoints;
     }
 
     public double getAvgTeleopNumToteStacks()
     {
-        return avgTeleopNumToteStacks;
+        return avgTeleopNumToteStacks / numDataPoints;
     }
 
     public double getAvgTeleopToteStackHeight()
     {
-        return avgTeleopToteStackHeight;
+        return avgTeleopToteStackHeight / numDataPoints;
     }
 
     public int getTeamNumber()
@@ -161,8 +173,5 @@ public class MultiMatchData
     {
         return matchDataSet;
     }
-    
-    
-    
 
 }

@@ -230,12 +230,15 @@ public class MatchFrame extends javax.swing.JFrame implements ResetableFrame
 
         buttonGroupRobotActive.add(radioActiveYes);
         radioActiveYes.setText("Yes");
+        radioActiveYes.setActionCommand("ACTIVE");
 
         buttonGroupRobotActive.add(radioActiveNo);
         radioActiveNo.setText("No");
+        radioActiveNo.setActionCommand("INACTIVE");
 
         buttonGroupRobotActive.add(radioActivePartial);
         radioActivePartial.setText("Partially");
+        radioActivePartial.setActionCommand("PARTIALLY");
 
         javax.swing.GroupLayout panelRobotActivityRadioLayout = new javax.swing.GroupLayout(panelRobotActivityRadio);
         panelRobotActivityRadio.setLayout(panelRobotActivityRadioLayout);
@@ -258,6 +261,8 @@ public class MatchFrame extends javax.swing.JFrame implements ResetableFrame
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(radioActivePartial))
         );
+
+        radioActiveYes.getAccessibleContext().setAccessibleName("ACTIVE");
 
         panelRobotActivityComments.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Comments (Optional)", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11))); // NOI18N
 
@@ -953,12 +958,14 @@ public class MatchFrame extends javax.swing.JFrame implements ResetableFrame
         RobotActivityType rbtActType;
         try
         {
+            System.out.println("TYPE: " + getSelectedButtonActionCommandOrDefault(buttonGroupRobotActive, RobotActivityType.INACTIVE.toString()));
             rbtActType = RobotActivityType.valueOf(getSelectedButtonActionCommandOrDefault(buttonGroupRobotActive, RobotActivityType.INACTIVE.toString()));
         }
         catch (Exception ex)
         {
             rbtActType = RobotActivityType.INACTIVE;
         }
+        System.out.println("FINAL TYPE: " + rbtActType.toString());
         String rbtActComment = textAreaRobotActivityComments.getText().trim();
 
         //GET StackTotes            

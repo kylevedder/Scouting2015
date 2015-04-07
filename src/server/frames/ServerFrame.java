@@ -29,6 +29,7 @@ import main.Globals;
 import main.Main;
 import server.filemanager.ServerFileManager;
 import server.networking.SyncFilesServerThread;
+import server.objects.MultiMatchData;
 import utils.FileUtils;
 
 /**
@@ -43,6 +44,9 @@ public class ServerFrame extends javax.swing.JFrame
     private ServerFileManager serverFileManager = ServerFileManager.getInstance();
     public MatchViewerFrame matchViewerFrame = new MatchViewerFrame(null);
     public ActiveViewerFrame activeViewerFrame = new ActiveViewerFrame(null);
+    public MultiMatchViewer multiMatchViewerFrame = new MultiMatchViewer();
+    
+    public HashMap<Integer, MultiMatchData> mapHash = null;
 
     /**
      * Creates new form ServerFrame
@@ -74,6 +78,7 @@ public class ServerFrame extends javax.swing.JFrame
         setupTeamViewer();
         this.matchViewerFrame.setVisible(false);
         this.activeViewerFrame.setVisible(false);
+        this.multiMatchViewerFrame.setVisible(false);
 
     }
 
@@ -82,26 +87,55 @@ public class ServerFrame extends javax.swing.JFrame
      */
     private void setupTeamViewer()
     {
+        System.out.println("Setting up team viewer");
         ArrayList<File> files = this.serverFileManager.getMatchFiles();
-        HashMap<Integer, ArrayList<MatchData>> mapHash = new HashMap<>();
+        mapHash = new HashMap<>();                        
         for (File f : files)
         {
             MatchData matchData = MatchData.deserialize(FileUtils.readFileContents(f));
-
-            ArrayList<MatchData> matchDataList = mapHash.getOrDefault(matchData.getMatchTeamNumber(), null);
-            if (matchDataList != null)
+            MultiMatchData multiMatchData = mapHash.get(matchData.getMatchTeamNumber());
+            if(multiMatchData != null)
             {
-                matchDataList.add(matchData);
-                mapHash.replace(matchData.getMatchTeamNumber(), matchDataList);
+                multiMatchData.addMatchData(matchData);
+                mapHash.remove(matchData.getMatchTeamNumber());
+                mapHash.put(matchData.getMatchTeamNumber(), multiMatchData);
             }
             else
             {
-                matchDataList = new ArrayList<MatchData>();
-                matchDataList.add(matchData);
-                mapHash.put(matchData.getMatchTeamNumber(), matchDataList);
+                multiMatchData = new MultiMatchData(null, matchData.getMatchTeamNumber());
+                multiMatchData.addMatchData(matchData);
+                mapHash.put(matchData.getMatchTeamNumber(), multiMatchData);
             }
         }
-        this.tableTeamViewer.setModel(new TeamViewerTableModel(files));
+        System.out.println("Team viewer setup...");
+        this.tableTeamViewer.setModel(new TeamViewerTableModel(mapHash));
+        TableRowSorter mySorter = new TableRowSorter(tableTeamViewer.getModel());
+        mySorter.setComparator(0, new NumericComparator());
+        mySorter.setComparator(1, new NumericComparator());
+        mySorter.setComparator(2, new NumericComparator());
+        mySorter.setComparator(3, new NumericComparator());
+        mySorter.setComparator(4, new NumericComparator());
+        mySorter.setComparator(5, new NumericComparator());
+        mySorter.setComparator(6, new NumericComparator());
+        mySorter.setComparator(7, new NumericComparator());
+        mySorter.setComparator(8, new NumericComparator());
+        tableTeamViewer.setRowSorter(mySorter);
+        tableTeamViewer.addMouseListener(new MouseAdapter()
+        {
+            @Override
+            public void mouseClicked(MouseEvent e)
+            {
+                if (e.getClickCount() == 1)
+                {
+                    System.out.println("Click");
+                    int teamNum = (Integer) tableTeamViewer.getValueAt(tableTeamViewer.getSelectedRow(), 0);
+                    System.out.println("Team num: " + teamNum);
+                    MultiMatchData multiMatchData = mapHash.get(teamNum);                    
+                    multiMatchViewerFrame.loadData(multiMatchData);
+                    multiMatchViewerFrame.setVisible(true);
+                }
+            }
+        });
     }
 
     /**
@@ -185,7 +219,7 @@ public class ServerFrame extends javax.swing.JFrame
         tableMatch = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
         tableActive = new javax.swing.JTable();
-        jScrollPane4 = new javax.swing.JScrollPane();
+        jScrollPane5 = new javax.swing.JScrollPane();
         tableTeamViewer = new javax.swing.JTable();
         labelIP = new javax.swing.JLabel();
         buttonRefrest = new javax.swing.JButton();
@@ -243,9 +277,9 @@ public class ServerFrame extends javax.swing.JFrame
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane4.setViewportView(tableTeamViewer);
+        jScrollPane5.setViewportView(tableTeamViewer);
 
-        tabbedPane.addTab("Team Viewer", jScrollPane4);
+        tabbedPane.addTab("Table Viewer", jScrollPane5);
 
         jScrollPane3.setViewportView(tabbedPane);
 
@@ -272,7 +306,7 @@ public class ServerFrame extends javax.swing.JFrame
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(buttonRefrest, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
-            .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 486, Short.MAX_VALUE)
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 916, Short.MAX_VALUE)
         );
         panelMainPanelLayout.setVerticalGroup(
             panelMainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -313,7 +347,7 @@ public class ServerFrame extends javax.swing.JFrame
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JLabel labelIP;
     private javax.swing.JLabel labelTitle;
     private javax.swing.JPanel panelMainPanel;

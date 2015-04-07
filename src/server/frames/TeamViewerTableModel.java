@@ -5,12 +5,12 @@
  */
 package server.frames;
 
-import client.objects.matchdata.MatchData;
-import java.io.File;
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map.Entry;
+import java.util.Set;
 import javax.swing.table.AbstractTableModel;
-import org.json.JSONObject;
-import utils.FileUtils;
+import server.objects.MultiMatchData;
 
 /**
  *
@@ -19,29 +19,36 @@ import utils.FileUtils;
 public class TeamViewerTableModel extends AbstractTableModel
 {
 
-    private int NUM_COLS = 2;
+    private int NUM_COLS = 9;
 
-    private ArrayList<File> filesToPopulateWith = null;
+    private HashMap<Integer, MultiMatchData> hashMap = null;
     private Object[][] objArray = null;
 
-    public TeamViewerTableModel(ArrayList<File> filesToPopulateWith)
+    public TeamViewerTableModel(HashMap<Integer, MultiMatchData> hashMap)
     {
-        this.filesToPopulateWith = filesToPopulateWith;
-
-        objArray = new Object[this.filesToPopulateWith.size()][NUM_COLS];
-
-        //populate each element of the array
-        for (int i = 0; i < filesToPopulateWith.size(); i++)
-        {
-            File f = filesToPopulateWith.get(i);
-            JSONObject json = new JSONObject(FileUtils.readFileContents(f));
-            MatchData md = MatchData.deserialize(json.toString());
-            objArray[i][0] = md.getMatchTeamNumber();
-            objArray[i][1] = md.getMatchMatchNumber();
-            objArray[i][2] = md.getMatchScouter();
-            objArray[i][3] = md.getMatchFinalScore();
-            objArray[i][4] = f.getName();
-        }
+        this.hashMap = hashMap;
+        
+        Set<Entry<Integer, MultiMatchData>> set = hashMap.entrySet();
+        Iterator<Entry<Integer, MultiMatchData>> itr = set.iterator();
+        objArray = new Object[set.size()][NUM_COLS];
+        int index = 0;
+        while (itr.hasNext())
+        {            
+            Entry<Integer, MultiMatchData> entity = itr.next();
+            int teamNum = entity.getKey();
+            MultiMatchData multiMatchData = entity.getValue();            
+            objArray[index][0] = teamNum;   
+            objArray[index][1] = multiMatchData.getAvgMatchScore();
+            objArray[index][2] = multiMatchData.getAvgTeleopToteStackHeight();
+            objArray[index][3] = multiMatchData.getAvgTeleopNumToteStacks();
+            objArray[index][4] = multiMatchData.getAvgTeleopContainerCappedStackHeight();
+            objArray[index][5] = multiMatchData.getAvgTeleopNumContainerCappedStacks();
+            objArray[index][6] = multiMatchData.getAvgAutoContainersScored();
+            objArray[index][7] = multiMatchData.getAvgAutoTotesScored();
+            objArray[index][8] = multiMatchData.getAvgAutoRobotInAutoZone();
+            index++;
+        }       
+        System.out.println("Team Viewer Model Setup.");
     }
 
     @Override
@@ -58,7 +65,7 @@ public class TeamViewerTableModel extends AbstractTableModel
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex)
-    {        
+    {
         if (objArray.length > rowIndex && objArray[0].length > columnIndex)
         {
             return objArray[rowIndex][columnIndex];
@@ -71,7 +78,7 @@ public class TeamViewerTableModel extends AbstractTableModel
 
     String[] columnNames =
     {
-        "Team #", "Match #", "Scouter", "Match Score", "File Name"
+        "Team #", "Match Score", "Tote Stack Height", "# Tote Stacks", "Cont Stack Height", "# Cont Stacks", "Auto Totes Scored", "Auto Conts Scored", "% in Auto Zone"
     };
 
     @Override

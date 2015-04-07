@@ -21,7 +21,7 @@ import org.json.JSONObject;
  *
  * @author Kyle
  */
-public class MatchData implements UserDataInterface
+public class MatchData implements UserDataInterface, Comparable<MatchData>
 {
 
     //match meta data
@@ -268,6 +268,32 @@ public class MatchData implements UserDataInterface
         return teleopToteStacks;
     }
 
+    public int getTeleopAvgToteStackHeight()
+    {
+        int avgToteHeight = 0;
+        for (StackTote stackTote : this.getTeleopToteStacks())
+        {
+            avgToteHeight += stackTote.getHeight();
+        }
+        
+        //avoid div by zero bug
+        avgToteHeight /= ((this.getTeleopToteStacks().length > 0) ? this.getTeleopToteStacks().length : 1);
+        return avgToteHeight;
+    }
+    
+    public int getTeleopAvgContainerStackHeight()
+    {
+        int avgContainerHeight = 0;
+        for (StackContainer stackContainer : this.getTeleopContainerStacks())
+        {
+            avgContainerHeight += stackContainer.getHeight();
+        }
+        
+        //avoid div by zero bug
+        avgContainerHeight /= ((this.getTeleopContainerStacks().length > 0) ? this.getTeleopContainerStacks().length : 1);
+        return avgContainerHeight;
+    }
+
     public boolean isAutoInAutoZone()
     {
         return autoInAutoZone;
@@ -322,4 +348,22 @@ public class MatchData implements UserDataInterface
         };
         return objs;
     }
+
+    @Override
+    public int compareTo(MatchData o)
+    {
+        if (o.getMatchMatchNumber() == this.getMatchMatchNumber())
+        {
+            return 0;
+        }
+        if (o.getMatchMatchNumber() > this.getMatchMatchNumber())
+        {
+            return 1;
+        }
+        else
+        {
+            return -1;
+        }
+    }
+
 }

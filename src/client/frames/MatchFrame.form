@@ -298,7 +298,11 @@
                           <ComponentRef name="buttonGroupRobotActive"/>
                         </Property>
                         <Property name="text" type="java.lang.String" value="Yes"/>
+                        <Property name="actionCommand" type="java.lang.String" value="ACTIVE"/>
                       </Properties>
+                      <AccessibilityProperties>
+                        <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="ACTIVE"/>
+                      </AccessibilityProperties>
                     </Component>
                     <Component class="javax.swing.JRadioButton" name="radioActiveNo">
                       <Properties>
@@ -306,6 +310,7 @@
                           <ComponentRef name="buttonGroupRobotActive"/>
                         </Property>
                         <Property name="text" type="java.lang.String" value="No"/>
+                        <Property name="actionCommand" type="java.lang.String" value="INACTIVE"/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JRadioButton" name="radioActivePartial">
@@ -314,6 +319,7 @@
                           <ComponentRef name="buttonGroupRobotActive"/>
                         </Property>
                         <Property name="text" type="java.lang.String" value="Partially"/>
+                        <Property name="actionCommand" type="java.lang.String" value="PARTIALLY"/>
                       </Properties>
                     </Component>
                   </SubComponents>

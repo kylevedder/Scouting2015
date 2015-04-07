@@ -20,7 +20,7 @@ import utils.Utils;
  * @author kyle
  */
 public class MainFrame extends javax.swing.JFrame
-{   
+{
 
     /**
      * Creates form MainFrame
@@ -248,10 +248,13 @@ public class MainFrame extends javax.swing.JFrame
     {//GEN-HEADEREND:event_menuServerSyncActionPerformed
         System.out.println("sync...");
         String ip = Utils.showInputBoxAndGetResponse("Enter Server IP", "Server IP").trim();
-        System.out.println(ip);
+        if (ip != null && !ip.equals(""))
+        {
+            System.out.println(ip);
 
-        Thread sendFilesThread = new Thread(new SyncFilesClientThread(ip, Globals.PORT, Globals.CONNECT_NUM_RETRIES));
-        sendFilesThread.start();
+            Thread sendFilesThread = new Thread(new SyncFilesClientThread(ip, Globals.PORT, Globals.CONNECT_NUM_RETRIES));
+            sendFilesThread.start();
+        }
     }//GEN-LAST:event_menuServerSyncActionPerformed
 
     private void buttonScoutingNewActiveActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_buttonScoutingNewActiveActionPerformed
@@ -268,20 +271,21 @@ public class MainFrame extends javax.swing.JFrame
         }
         else
         {
-            Main.serverFrame.setVisible(false);            
+            Main.serverFrame.setVisible(false);
             menuStartServer.setText(Globals.START_SERVER_STRING);
         }
     }//GEN-LAST:event_menuStartServerActionPerformed
 
     /**
      * Sets the text of the start server menu button.
-     * @param text 
+     *
+     * @param text
      */
     public void setMenuStartServerText(String text)
     {
         menuStartServer.setText(text);
     }
-    
+
     /**
      * @param args the command line arguments
      */
